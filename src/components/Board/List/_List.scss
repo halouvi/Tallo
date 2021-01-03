@@ -13,7 +13,7 @@
     padding: 0 6px 6px;
     background-color: #ebecf0;
     max-height: 100%;
-    position: relative;
+    // position: relative;
     // white-space: normal;
     >.list-title {
       padding: 12px 6px;
@@ -23,6 +23,15 @@
       overflow-y: auto;
       overflow-x: hidden;
       @import '../Card/Card';
+      @import '../CardModal/CardModal';
     }
   }
+}
+
+.insert-list {
+  width: 100px;
+  height: 50px;
+  // display: inline-block;
+
+  // border: 1px solid gray;
 }

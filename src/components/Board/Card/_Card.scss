@@ -6,11 +6,16 @@
   // transition: 200ms;
   border-radius: 3px;
   background-color: #dbdbdf;
+  cursor: grab;
   &.is-dragging {
     opacity: 0;
     display: inline-block;
     transform: rotate(-7deg);
     -webkit-transform: rotate(-7deg);
+    cursor: grabbing;
+  }
+  &.is-over {
+    margin-top: 100px;
   }
   > .container {
     height: inherit;
@@ -18,4 +23,13 @@
     border-radius: inherit;
     padding: 6px;
   }
+}
+
+
+.insert-here {
+  width: 100%;
+  height: 50px;
+  display: inline-block;
+
+  // border: 1px solid gray;
 }

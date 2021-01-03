@@ -23,6 +23,8 @@ export const List = ({ list, thisListIdx, handleDrop }) => {
   
 
   return (
+    <>
+    {/* <div ref={drop} className={isOver ? 'insert-list' : ''}></div> */}
     <div ref={drag} className={`list flex col`}>
       <div
         ref={drop}
@@ -31,6 +33,7 @@ export const List = ({ list, thisListIdx, handleDrop }) => {
         }`}>
         <span className="list-title">{list.title}</span>
         <div className="cards flex col">
+        {/* {isOver? <div>insert here</div> : '' } */}
           {list.cards.map((card, idx) => (
             <Card
               key={card._id}
@@ -40,9 +43,11 @@ export const List = ({ list, thisListIdx, handleDrop }) => {
               handleDrop={handleDrop}
             />
           ))}
+       
         </div>
         {/* <div onClick={addCard}>+ Add another card</div> */}
       </div>
     </div>
+    </>
   )
 }

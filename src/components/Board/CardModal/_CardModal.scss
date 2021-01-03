@@ -1,0 +1,22 @@
+
+.modal-container {
+  position: absolute;
+  z-index: 2;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+
+  .modal-section {
+    height: 600px;
+    width: 400px;
+    background-color: whitesmoke;
+    border: 1px solid gray;
+    position: absolute;
+    top: 20%;
+    left: 25vw;
+    z-index: 5;
+}
+
+}
