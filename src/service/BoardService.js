@@ -10,8 +10,8 @@ export const boardService = {
   //   return httpService.get(`board/${queryURL}`)
   // },
   getById(id) {
-    // return boards.find(board => board._id === id)
-    return httpService.get(`board/${id}`)
+    return boards.find(board => board._id === id)
+    // return httpService.get(`board/${id}`)
   },
   update(updatedBoard) {
     const idx = boards.findIndex(board => board._id === updatedBoard._id)
@@ -39,7 +39,7 @@ export const boardService = {
 
 const boards = [
   {
-    _id: '123',
+    _id: '5fe4b65432d4a24dbcb7afa2',
     title: 'MyBoard',
     lists: [
       {
