@@ -1,5 +1,4 @@
-
-.modal-container {
+.modal-section {
   position: absolute;
   z-index: 2;
   height: 100vh;
@@ -8,15 +7,35 @@
   right: 0;
   background-color: rgba(0, 0, 0, 0.1);
 
-  .modal-section {
+  .modal-container {
     height: 600px;
-    width: 400px;
+    width: 450px;
     background-color: whitesmoke;
     border: 1px solid gray;
     position: absolute;
     top: 20%;
     left: 25vw;
     z-index: 5;
-}
+    padding: 20px;
+
+    h3 {
+      font-weight: bold;
+    }
+   
+
+    .exit-btn {
+      border: 1px solid gray;
+      border-radius: 5px;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    .modal-subtitle {
+
+      span {
+        text-decoration: underline;
+      }
+    }
+  }
 
 }
