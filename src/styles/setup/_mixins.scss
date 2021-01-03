@@ -1,0 +1,76 @@
+/* Media queries Breakpoint mixins */
+
+@mixin for-narrow-layout {
+  @media (min-width: $breakNarrow) {
+    @content;
+  }
+}
+
+@mixin for-medium-layout {
+  @media (min-width: $breakMedium) {
+    @content;
+  }
+}
+
+@mixin for-desktop-layout {
+  @media (min-width: $breakDesktop) {
+    @content;
+  }
+}
+
+@mixin for-wide-layout {
+  @media (min-width: $breakWide) {
+    @content;
+  }
+}
+
+/* Media  Mixins */
+
+//aspect ratio mixin
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  overflow: hidden;
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  > img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Mixin for removing hover efects on iphone screen
+@mixin hover-supported {
+  @media not all and (pointer: coarse) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin scrollBar($width, $color) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #2934624f;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: $color;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken($color, 1);
+  }
+}

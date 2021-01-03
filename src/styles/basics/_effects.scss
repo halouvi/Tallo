@@ -1,0 +1,30 @@
+// .slide {
+//   transition: 1200ms cubic-bezier(0, 0.25, 0, 1);
+//   &:nth-child(odd) {
+//     opacity: 0;
+//     transform: translate(80vw);
+//   }
+//   &:nth-child(even) {
+//     opacity: 0;
+//     transform: translate(-80vw);
+//   }
+//   &.visible {
+//     opacity: 1;
+//     transform: translate(0);
+//   }
+// }
+// .fade {
+//   transition: 600ms ease-in-out;
+//   &:nth-child(odd) {
+//     opacity: 0;
+//     transform: scaleX(0.97) translateY(-25%);
+//   }
+//   &:nth-child(even) {
+//     opacity: 0;
+//     transform: scaleX(0.97) translateY(-25%);
+//   }
+//   &.visible {
+//     opacity: 1;
+//     transform: scaleX(1) translateY(0%);
+//   }
+// }

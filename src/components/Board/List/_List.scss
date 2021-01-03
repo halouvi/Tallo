@@ -1,0 +1,28 @@
+>.list {
+  width: 272px;
+  margin: 0 4px;
+  // height: 100%;
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  // white-space: nowrap;
+  border-radius: 3px;
+  
+  >.container {
+    border-radius: inherit;
+    padding: 0 6px 6px;
+    background-color: #ebecf0;
+    max-height: 100%;
+    position: relative;
+    // white-space: normal;
+    >.list-title {
+      padding: 12px 6px;
+    }
+    >.cards {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      @import '../Card/Card';
+    }
+  }
+}
