@@ -12,6 +12,7 @@ export const getBoardById = id => async dispatch => {
 }
 
 export const updateBoard = updatedBoard => async dispatch => {
+  console.log(updatedBoard);
   const savedBoard = await boardService.update(updatedBoard)
   dispatch({ type: types.SET_BOARD, payload: savedBoard })
 }
