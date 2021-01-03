@@ -10,13 +10,14 @@ export const boardService = {
   //   return httpService.get(`board/${queryURL}`)
   // },
   getById(id) {
-    return boards.find(board => board._id === id)
-    // return httpService.get(`board/${id}`)
+    // return boards.find(board => board._id === id)
+    return httpService.get(`board/${id}`)
   },
-  update(updatedBoard) {
-    const idx = boards.findIndex(board => board._id === updatedBoard._id)
-    boards.splice(idx, 1, updatedBoard)
-    return boards[idx]
+  update(board) {
+    // const idx = boards.findIndex(board => board._id === updatedBoard._id)
+    // boards.splice(idx, 1, updatedBoard)
+    // return boards[idx]
+    return httpService.put(`board/${board._id}`, board)
     // return httpService.get(`board/${boardId}`)
   },
   // start(boardId) {
@@ -27,7 +28,7 @@ export const boardService = {
   // },
   // save(board) {
   //   if (board._id) {
-  //     return httpService.put(`board/${board._id}`, board)
+      // return httpService.put(`board/${board._id}`, board)
   //   } else {
   //     return _add(board).then(board => board)
   //   }
