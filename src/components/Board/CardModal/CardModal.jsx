@@ -68,9 +68,10 @@ class _CardModal extends Component {
             <h3>Description</h3>
             <Textarea desc={currCard.desc} onSaveDesc={this.onSaveDesc}></Textarea>
           </div>
-          {/* {currCard.attachments[0]? <div className="attachments-container">
+          {/* {currCard?.attachments[0] && <div className="attachments-container">
+            <h3>Attachments</h3>
             <img src={currCard.attachments[0]} alt="" />
-          </div> : ''} */}
+          </div>} */}
           <div className="activity-section">
             <h3>Activity</h3>
             <ul className="activity-container">
