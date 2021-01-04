@@ -1,6 +1,6 @@
 
 import { useDrag, useDrop } from 'react-dnd';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const _Card = ({history, card, thisListIdx, thisCardIdx, handleDrop }) => {
   

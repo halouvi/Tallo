@@ -8,7 +8,6 @@
   background-color: #dbdbdf;
   cursor: grab;
 
-
   &.is-dragging {
     opacity: 0;
     display: inline-block;
@@ -20,8 +19,8 @@
     margin-top: 100px;
   }
   > .container {
-    height: inherit;
-    width: inherit;
+    min-height: inherit;
+    width: 100%;
     border-radius: inherit;
     padding: 6px;
     display: flex;
