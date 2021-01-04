@@ -35,6 +35,7 @@ const _Card = ({history, card, thisListIdx, thisCardIdx, handleDrop }) => {
       <div className={`card${isDragging ? ' is-dragging ' : ''}`} ref={drag}>
         {/* <Link to={`/board/modal/${card._id}`}> */}
           <div onClick={onOpenModal} className="container" id={card._id} ref={drop}>
+           {card?.attachments[0]? <img src={card.attachments[0]} alt=""/> : ''}
             <span>{card._id}</span>
           </div>
         {/* </Link> */}
