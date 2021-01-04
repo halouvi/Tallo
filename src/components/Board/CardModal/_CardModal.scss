@@ -8,7 +8,7 @@
   background-color: rgba(0, 0, 0, 0.1);
 
   .modal-container {
-    height: 600px;
+    min-height: 600px;
     width: 450px;
     background-color: whitesmoke;
     border: 1px solid gray;
@@ -44,6 +44,19 @@
       h4 {
         font-weight: bold;
         font-size: 1rem;
+      }
+    }
+
+    .attachments-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+
+      img {
+        width: 150px;
+        height: 200px;
+        object-fit: cover;
       }
     }
 
