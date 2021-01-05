@@ -5,6 +5,6 @@ export const types = {
 }
 
 export const getUserById = id => async dispatch => {
-  const user = await userService.getUserById(id)
+  const user = await userService.getById(id)
   dispatch({ type: types.GET_USER_BY_ID, payload: user })
 }

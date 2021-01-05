@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { updateBoard } from '../../../store/board/BoardActions';
 import { Textarea } from '../../Textarea/Textarea';
-import Avatar from '@material-ui/core/Avatar';
-import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import { SideBar } from './SideBar/SideBar'
-
+import { CardAvatars } from '../avatars/CardAvatars';
 
 class _CardModal extends Component {
   state = {
@@ -19,17 +16,41 @@ class _CardModal extends Component {
     this.loadCard();
   }
 
-  onSaveDesc = async (desc) => {
+  onHandleChange = (ev, isDesc) => {
+    ev.preventDefault();
+    var card = JSON.parse(JSON.stringify(this.state.currCard));
+    var field = ev.target.name;
+    var value = ev.target.value;
+    if (isDesc || isDesc === '') {
+      field = 'desc';
+      value = isDesc;
+    }
+    this.setState(prevState => ({ currCard: { ...prevState.currCard, [field]: value } }), () => {
+      try {
+        this.onSaveCard()
+      }
+      catch (err) {
+        this.setState({ currCard: card })
+        console.error(err);
+      }
+    })
+  }
+
+  onSaveCard = async () => {
     var board = JSON.parse(JSON.stringify(this.props.board));
     var card = JSON.parse(JSON.stringify(this.state.currCard));
-    card.desc = desc;
     var listIdx = board.lists.findIndex((list) => {
       return list.cards.find(aCard => aCard._id === card._id)
     });
     var cardIdx = board.lists[listIdx].cards.findIndex(aCard => aCard._id === card._id);
     board.lists[listIdx].cards.splice(cardIdx, 1, card);
-    await this.props.updateBoard(board);
-    alert('Saved');
+    try {
+      await this.props.updateBoard(board);
+      alert('Saved');
+    }
+    catch (err) {
+      throw new Error(err)
+    }
   }
 
   loadCard = () => {
@@ -45,6 +66,7 @@ class _CardModal extends Component {
 
   render() {
     const { currCard } = this.state;
+
     return (
       <div className="modal-section" >
         <div className="modal-container">
@@ -56,19 +78,13 @@ class _CardModal extends Component {
           </div>
           <div className="members-container">
             <h4>MEMBERS</h4>
-            <AvatarGroup max={4}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-              <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-              <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            </AvatarGroup>
+            <CardAvatars card={currCard}></CardAvatars>
           </div>
           <div className="desc-container">
             <h3>Description</h3>
-            <Textarea desc={currCard.desc} onSaveDesc={this.onSaveDesc}></Textarea>
+            <Textarea desc={currCard.desc} onSaveDesc={this.onHandleChange}></Textarea>
           </div>
-          { currCard.attachments && currCard.attachments[0] && <div className="attachments-container">
+          {currCard.attachments && currCard.attachments[0] && <div className="attachments-container">
             <h3>Attachments</h3>
             <img src={currCard?.attachments[0]} alt="" />
           </div>}

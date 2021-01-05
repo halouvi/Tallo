@@ -15,7 +15,6 @@ export const Textarea = ({ desc, onSaveDesc }) => {
     const [value, setValue] = React.useState('');
 
     useEffect(() => {
-        // console.log(desc);
         setValue(desc)
     }, [desc])
 
@@ -26,7 +25,7 @@ export const Textarea = ({ desc, onSaveDesc }) => {
 
     return (
         <>
-            <form className={classes.root} noValidate autoComplete="off">
+            <form className={classes.root} noValidate autoComplete="off" onSubmit={(event) => onSaveDesc(event, value)}>
                 <div>
                     <TextField
                         id="outlined-multiline-static"
@@ -36,10 +35,12 @@ export const Textarea = ({ desc, onSaveDesc }) => {
                         variant="outlined"
                         value={value}
                         onChange={handleChange}
+                        name="desc"
                     />
                 </div>
+                <div className="btns-container"><button >Save</button> <button>X</button></div>
             </form>
-            <div className="btns-container"><button onClick={() => { onSaveDesc(value) }} >Save</button> <button>X</button></div>
+            {/* <div className="btns-container"><button onClick={() => { onSaveDesc(value) }} >Save</button> <button>X</button></div> */}
         </>
     );
 }
