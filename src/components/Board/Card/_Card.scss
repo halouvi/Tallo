@@ -1,12 +1,13 @@
 > .card {
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   margin-bottom: 6px;
   box-shadow: 0 2px 2px 0 rgba($color: #5f5f5f, $alpha: 0.3);
   // transition: 200ms;
   border-radius: 3px;
   background-color: #dbdbdf;
   cursor: grab;
+
   &.is-dragging {
     opacity: 0;
     display: inline-block;
@@ -18,10 +19,18 @@
     margin-top: 100px;
   }
   > .container {
-    height: inherit;
-    width: inherit;
+    min-height: inherit;
+    width: 100%;
     border-radius: inherit;
     padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  img {
+    width: 80%;
+    margin: 0 auto;
   }
 }
 

@@ -1,5 +1,4 @@
-
-.modal-container {
+.modal-section {
   position: absolute;
   z-index: 2;
   height: 100vh;
@@ -8,15 +7,116 @@
   right: 0;
   background-color: rgba(0, 0, 0, 0.1);
 
-  .modal-section {
-    height: 600px;
-    width: 400px;
+  .modal-container {
+    min-height: 600px;
+    width: 450px;
     background-color: whitesmoke;
     border: 1px solid gray;
+    border-radius: 5px;
     position: absolute;
     top: 20%;
     left: 25vw;
     z-index: 5;
-}
+    padding: 20px;
+
+    h3 {
+      font-weight: bold;
+    }
+
+
+    .exit-btn {
+      // border: 1px solid gray;
+      // border-radius: 5px;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    .modal-subtitle {
+
+      span {
+        text-decoration: underline;
+      }
+    }
+
+    .members-container {
+      margin-bottom: 15px;
+      
+      h4 {
+        font-weight: bold;
+        font-size: 1rem;
+      }
+    }
+
+    .attachments-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+
+      img {
+        width: 150px;
+        height: 200px;
+        object-fit: cover;
+      }
+    }
+
+    .desc-container {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .makeStyles-root-1 .MuiTextField-root, .makeStyles-root-6 .MuiTextField-root {
+        margin: 0 0 10px;
+      }
+
+      textarea {
+        width: 360px;
+        height: 20px;
+        margin: 0;
+        font-size: 0.9rem;
+        cursor: pointer;
+
+        &:focus {
+          height: 100px;
+          cursor: initial;
+        }
+      }
+    }
+
+    .activity-section {
+
+      >h3 {
+        margin-bottom: 10px;
+      }
+
+      .activity-container {
+
+        li {
+          display: flex;
+          flex-direction: column;
+
+          .activity-main {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            h3 {
+              font-size: 1rem;
+            }
+
+            p {
+              margin: 0;
+            }
+          }
+
+          >p {
+            font-size: 0.9rem;
+            color: rgb(105, 103, 103);
+          }
+        }
+      }
+    }
+  }
 
 }

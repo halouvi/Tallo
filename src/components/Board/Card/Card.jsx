@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { useDrag, useDrop } from 'react-dnd'
-import { CardModal } from '../CardModal/CardModal'
 
-export const Card = ({ card, thisListIdx, thisCardIdx, handleDrop }) => {
-  const [isModal, setIsModal] = useState(false)
+import { useDrag, useDrop } from 'react-dnd';
+import { withRouter } from 'react-router-dom';
 
-  const onToggleModal = () => {
-    setIsModal(!isModal)
+const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
+
+
+  const onOpenModal = () => {
+    history.push(`/board/modal/${card._id}`);
   }
 
   const [{ isOver }, drop] = useDrop({
@@ -31,13 +31,15 @@ export const Card = ({ card, thisListIdx, thisCardIdx, handleDrop }) => {
   return (
     <>
       <div ref={drop} className={isOver ? 'insert-here' : ''}></div>
-      {isModal ? <CardModal card={card} closeModal={onToggleModal}></CardModal> : ''}
       {/* <div className={`card${isDragging ? ' is-dragging ' : ' '} ${isOver ? ' is-over' : ''}`} ref={drag}> */}
       <div className={`card${isDragging ? ' is-dragging ' : ''}`} ref={drag}>
-        <div onClick={onToggleModal} className="container" id={card._id} ref={drop}>
-          <span>{card._id}</span>
+        <div onClick={onOpenModal} className="container" id={card._id} ref={drop}>
+          {card?.attachments[0] ? <img src={card.attachments[0]} alt="" /> : ''}
+          <p>{card._id}</p>
         </div>
       </div>
     </>
   )
 }
+
+export const Card = withRouter(_Card);
