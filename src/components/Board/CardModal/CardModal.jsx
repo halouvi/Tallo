@@ -18,23 +18,46 @@ class _CardModal extends Component {
     this.loadCard();
   }
 
-  onSaveDesc = async (desc) => {
-    console.log('Saved:', desc);
+  onHandleChange = (ev, isDesc) => {
+    ev.preventDefault();
+    var card = JSON.parse(JSON.stringify(this.state.currCard));
+    if (!isDesc) {
+      var field = ev.target.name;
+      var value = ev.target.value;
+    } else if (isDesc || isDesc === '') {
+      var field = 'desc';
+      var value = isDesc;
+    }
+    this.setState(prevState => ({ currCard: { ...prevState.currCard, [field]: value } }), () => {
+      try {
+        this.onSaveCard()
+      }
+      catch (err) {
+        this.setState({ currCard: card })
+        console.error(err);
+      }
+    })
+  }
+
+  onSaveCard = async () => {
     var board = JSON.parse(JSON.stringify(this.props.board));
     var card = JSON.parse(JSON.stringify(this.state.currCard));
-    card.desc = desc;
     var listIdx = board.lists.findIndex((list) => {
       return list.cards.find(aCard => aCard._id === card._id)
     });
     var cardIdx = board.lists[listIdx].cards.findIndex(aCard => aCard._id === card._id);
     board.lists[listIdx].cards.splice(cardIdx, 1, card);
-    await this.props.updateBoard(board);
-    alert('Saved');
+    try {
+      await this.props.updateBoard(board);
+      alert('Saved');
+    }
+    catch (err) {
+      throw new Error(err)
+    }
   }
 
   loadCard = () => {
     const cardId = this.props.match.params.id;
-    console.log(cardId);
     const lists = this.props.board.lists;
     const list = lists.find((list, index) => {
       return list.cards.find(card => card._id === cardId)
@@ -66,9 +89,9 @@ class _CardModal extends Component {
           </div>
           <div className="desc-container">
             <h3>Description</h3>
-            <Textarea desc={currCard.desc} onSaveDesc={this.onSaveDesc}></Textarea>
+            <Textarea desc={currCard.desc} onSaveDesc={this.onHandleChange}></Textarea>
           </div>
-          { currCard.attachments && currCard.attachments[0] && <div className="attachments-container">
+          {currCard.attachments && currCard.attachments[0] && <div className="attachments-container">
             <h3>Attachments</h3>
             <img src={currCard?.attachments[0]} alt="" />
           </div>}
