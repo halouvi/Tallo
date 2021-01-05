@@ -6,8 +6,8 @@ html {
   height: 100%;
   color: $black;
   background-color: $white;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
 }
 
 body {
@@ -65,4 +65,9 @@ img {
 
 button {
   cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  display: inline;
+  padding: 0;
 }

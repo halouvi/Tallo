@@ -5,6 +5,7 @@ import { updateBoard } from '../../../store/board/BoardActions';
 import { Textarea } from '../../Textarea/Textarea';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import { SideBar } from './SideBar/SideBar'
 
 
 class _CardModal extends Component {
@@ -19,7 +20,6 @@ class _CardModal extends Component {
   }
 
   onSaveDesc = async (desc) => {
-    console.log('Saved:', desc);
     var board = JSON.parse(JSON.stringify(this.props.board));
     var card = JSON.parse(JSON.stringify(this.state.currCard));
     card.desc = desc;
@@ -34,7 +34,6 @@ class _CardModal extends Component {
 
   loadCard = () => {
     const cardId = this.props.match.params.id;
-    console.log(cardId);
     const lists = this.props.board.lists;
     const list = lists.find((list, index) => {
       return list.cards.find(card => card._id === cardId)
@@ -50,6 +49,7 @@ class _CardModal extends Component {
       <div className="modal-section" >
         <div className="modal-container">
           <NavLink className="exit-btn" to="/board">X</NavLink>
+          <SideBar />
           <div className="modal-title">
             <h3>{currCard.title}</h3>
             <p className="modal-subtitle">in list <span>{this.state.currList.title}</span></p>

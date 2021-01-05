@@ -1,0 +1,13 @@
+.members {
+  --padding: 12px;
+  padding: var(--padding);
+  position: relative;
+  .title {
+    
+  }
+  .close-btn {
+    position: absolute;
+    top: var(--padding);
+    right: var(--padding);
+  }
+}
