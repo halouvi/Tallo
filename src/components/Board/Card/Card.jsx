@@ -2,9 +2,9 @@
 import { useDrag, useDrop } from 'react-dnd';
 import { withRouter } from 'react-router-dom';
 
-const _Card = ({history, card, thisListIdx, thisCardIdx, handleDrop }) => {
-  
-  
+const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
+
+
   const onOpenModal = () => {
     history.push(`/board/modal/${card._id}`);
   }
@@ -33,12 +33,10 @@ const _Card = ({history, card, thisListIdx, thisCardIdx, handleDrop }) => {
       <div ref={drop} className={isOver ? 'insert-here' : ''}></div>
       {/* <div className={`card${isDragging ? ' is-dragging ' : ' '} ${isOver ? ' is-over' : ''}`} ref={drag}> */}
       <div className={`card${isDragging ? ' is-dragging ' : ''}`} ref={drag}>
-        {/* <Link to={`/board/modal/${card._id}`}> */}
-          <div onClick={onOpenModal} className="container" id={card._id} ref={drop}>
-           {card?.attachments[0]? <img src={card.attachments[0]} alt=""/> : ''}
-            <span>{card._id}</span>
-          </div>
-        {/* </Link> */}
+        <div onClick={onOpenModal} className="container" id={card._id} ref={drop}>
+          {card?.attachments[0] ? <img src={card.attachments[0]} alt="" /> : ''}
+          <p>{card._id}</p>
+        </div>
       </div>
     </>
   )
