@@ -40,6 +40,22 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
     // console.log(newCard);
   }
 
+  const onAddCard = (ev) => {
+    ev.preventDefault()
+    addCard(newCard, list._id);
+    setisAddCard(false)
+    setNewCard({
+      title: '',
+      activity: [],
+      attachments: [],
+      checklist: [],
+      desc: '',
+      dueDate: 0,
+      labels: [],
+      members: []
+    })
+  }
+
   return (
     <>
       {/* <div ref={drop} className={isOver ? 'insert-list' : ''}></div> */}
@@ -62,7 +78,7 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
             ))}
 
           </div>
-          {isAddCard && <form action="" className="add-card-form" onSubmit={(ev) => {addCard(ev, newCard, list._id); setisAddCard(false)}}>
+          {isAddCard && <form action="" className="add-card-form" onSubmit={onAddCard}>
             <input placeholder="Enter a title for this card..." type="text" name="title" value={newCard.title} onChange={onHandleChange} id="" />
             <div><button>Add Card</button><button onClick={(ev) => { ev.preventDefault(); setisAddCard(false) }}>X</button></div>
           </form>}

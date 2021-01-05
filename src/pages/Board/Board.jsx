@@ -14,8 +14,7 @@ export const Board = () => {
     dispatch(getBoardById('5fe4b65432d4a24dbcb7afa2'))
   }, [dispatch])
 
-  const addCard = (ev, card, listId) => {
-    ev.preventDefault();
+  const addCard = (card, listId) => {
     card._id = UtilService.makeId();
     card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: 'Orly Amdadi'})
     var newBoard = JSON.parse(JSON.stringify(board))
