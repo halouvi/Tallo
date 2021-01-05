@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { updateBoard } from '../../../store/board/BoardActions';
 import { Textarea } from '../../Textarea/Textarea';
 import { CardAvatars } from '../avatars/CardAvatars';
+import { SideBar } from './SideBar/SideBar'
 
 class _CardModal extends Component {
   state = {
