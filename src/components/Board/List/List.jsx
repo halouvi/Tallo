@@ -1,7 +1,19 @@
+import { useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { Card } from '../Card/Card'
 
-export const List = ({ list, thisListIdx, handleDrop }) => {
+export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
+  const [isAddCard, setisAddCard] = useState(false);
+  const [newCard, setNewCard] = useState({
+    title: '',
+    activity: [],
+    attachments: [],
+    checklist: [],
+    desc: '',
+    dueDate: 0,
+    labels: [],
+    members: []
+  });
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: 'LIST',
@@ -20,34 +32,43 @@ export const List = ({ list, thisListIdx, handleDrop }) => {
       isOver: !!monitor.isOver(),
     }),
   })
-  
+
+  const onHandleChange = (ev) => {
+    const field = ev.target.name;
+    const value = ev.target.value;
+    setNewCard({ ...newCard, [field]: value })
+    // console.log(newCard);
+  }
 
   return (
     <>
-    {/* <div ref={drop} className={isOver ? 'insert-list' : ''}></div> */}
-    <div ref={drag} className={`list flex col`}>
-      <div
-        ref={drop}
-        className={`container flex col${
-          isOver ? ' is-over' : isDragging ? ' is-dragging' : ''
-        }`}>
-        <span className="list-title">{list.title}</span>
-        <div className="cards flex col">
-        {/* {isOver? <div>insert here</div> : '' } */}
-          {list.cards.map((card, idx) => (
-            <Card
-              key={card._id}
-              card={card}
-              thisListIdx={thisListIdx}
-              thisCardIdx={idx}
-              handleDrop={handleDrop}
-            />
-          ))}
-       
+      {/* <div ref={drop} className={isOver ? 'insert-list' : ''}></div> */}
+      <div ref={drag} className={`list flex col`}>
+        <div
+          ref={drop}
+          className={`container flex col${isOver ? ' is-over' : isDragging ? ' is-dragging' : ''
+            }`}>
+          <span className="list-title">{list.title}</span>
+          <div className="cards flex col">
+            {/* {isOver? <div>insert here</div> : '' } */}
+            {list.cards.map((card, idx) => (
+              <Card
+                key={card._id}
+                card={card}
+                thisListIdx={thisListIdx}
+                thisCardIdx={idx}
+                handleDrop={handleDrop}
+              />
+            ))}
+
+          </div>
+          {isAddCard && <form action="" className="add-card-form" onSubmit={(ev) => {addCard(ev, newCard, list._id); setisAddCard(false)}}>
+            <input placeholder="Enter a title for this card..." type="text" name="title" value={newCard.title} onChange={onHandleChange} id="" />
+            <div><button>Add Card</button><button onClick={(ev) => { ev.preventDefault(); setisAddCard(false) }}>X</button></div>
+          </form>}
+          <div className="add-card" onClick={() => setisAddCard(true)}><span>+</span> Add another card</div>
         </div>
-        {/* <div onClick={addCard}>+ Add another card</div> */}
       </div>
-    </div>
     </>
   )
 }

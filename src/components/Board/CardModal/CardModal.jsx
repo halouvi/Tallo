@@ -21,12 +21,11 @@ class _CardModal extends Component {
   onHandleChange = (ev, isDesc) => {
     ev.preventDefault();
     var card = JSON.parse(JSON.stringify(this.state.currCard));
-    if (!isDesc) {
-      var field = ev.target.name;
-      var value = ev.target.value;
-    } else if (isDesc || isDesc === '') {
-      var field = 'desc';
-      var value = isDesc;
+    var field = ev.target.name;
+    var value = ev.target.value;
+    if (isDesc || isDesc === '') {
+      field = 'desc';
+      value = isDesc;
     }
     this.setState(prevState => ({ currCard: { ...prevState.currCard, [field]: value } }), () => {
       try {

@@ -3,6 +3,8 @@ import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBoardById, updateBoard } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
+import UtilService from '../../service/UtilService'
+
 
 export const Board = () => {
   const board = useSelector(state => state.boardReducer.board)
@@ -11,6 +13,16 @@ export const Board = () => {
   useEffect(() => {
     dispatch(getBoardById('5fe4b65432d4a24dbcb7afa2'))
   }, [dispatch])
+
+  const addCard = (ev, card, listId) => {
+    ev.preventDefault();
+    card._id = UtilService.makeId();
+    card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: 'Orly Amdadi'})
+    var newBoard = JSON.parse(JSON.stringify(board))
+    var listIdx = newBoard.lists.findIndex((list) => list._id === listId);
+    newBoard.lists[listIdx].cards.push(card);
+    dispatch(updateBoard(newBoard));
+  }
 
   const [{ isOver }, drop] = useDrop({
     accept: 'LIST',
@@ -41,7 +53,7 @@ export const Board = () => {
       <span>{board?.title}</span>
       <section className="container flex as">
         {board?.lists.map((list, idx) => (
-          <List list={list} key={list._id} thisListIdx={idx} handleDrop={handleDrop} />
+          <List list={list} key={list._id} thisListIdx={idx} addCard={addCard} handleDrop={handleDrop} />
         ))}
       </section>
     </main>
