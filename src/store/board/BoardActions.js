@@ -32,7 +32,7 @@ export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const prevBoard = getState().boardReducer.board
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
   card._id = UtilService.makeId();
-  const loggedUser = getState().userReducer.user;
+  const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
   card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: loggedUser._id});
   var listIdx = updatedBoard.lists.findIndex((list) => list._id === listId);
   updatedBoard.lists[listIdx].cards.push(card);

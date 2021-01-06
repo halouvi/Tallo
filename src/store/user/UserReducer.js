@@ -9,7 +9,7 @@ export const userReducer = (state = initState, { type, user }) => {
     case types.SET_LOGGED_USER:
       return {
         ...state,
-        user,
+        user: user,
       }
     default:
       return state

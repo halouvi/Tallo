@@ -60,7 +60,7 @@ export const CardAvatars = ({ card }) => {
   return (
     <AvatarGroup max={4}>
       {members && members[0] && members?.map((member, idx) => (
-        <Avatar key={idx} alt={ member.name} src={member.imgUrl? member.imgUrl: '/'} className={colorsPick(idx)} />
+        <Avatar key={idx} alt={ member.fullname} src={member.imgUrl? member.imgUrl: '/'} className={colorsPick(idx)} />
       ))}
     </AvatarGroup>
   )

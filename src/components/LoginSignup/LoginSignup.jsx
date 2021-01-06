@@ -10,7 +10,7 @@ export const LoginSingup = ({props}) => {
     password: ''
   });
   const [userCred, setUserCred] = useState({
-    name: '',
+    fullname: '',
     email: '',
     password: '',
     imgUrl: ''
@@ -55,7 +55,7 @@ export const LoginSingup = ({props}) => {
       <h2>Signup</h2>
       <form action="" className="signup-form" onSubmit={signup}>
         <label htmlFor="">Full Name:</label>
-        <input type="text" name="name" value={userCred.name} onChange={(event) => onHandleChange(event, 'signup')} id="" />
+        <input type="text" name="fullname" value={userCred.fullname} onChange={(event) => onHandleChange(event, 'signup')} id="" />
         <label htmlFor="">Email:</label>
         <input type="text" name="email" value={userCred.email} onChange={(event) => onHandleChange(event, 'signup')} id="" />
         <label htmlFor="">Password:</label>

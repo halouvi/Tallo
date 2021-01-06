@@ -16,8 +16,8 @@ export const LOGIN = ({email, password}) => async dispatch => {
   dispatch({ type: types.SET_LOGGED_USER, user })
 }
 
-export const SIGNUP = ({name, email, password, imgUrl}) => async dispatch => {
-  const user = await UserService.signup({name, email, password, imgUrl});
+export const SIGNUP = ({fullname, email, password, imgUrl}) => async dispatch => {
+  const user = await UserService.signup({fullname, email, password, imgUrl});
   dispatch({ type: types.SET_LOGGED_USER, user })
 }
 
