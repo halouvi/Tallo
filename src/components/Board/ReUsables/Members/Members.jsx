@@ -22,7 +22,7 @@ export const Members = ({ card: { members, _id: cardId }, setAnchorEl }) => {
 
   return (
     <div className="members flex col">
-      <span className="title asc">Members</span>
+      <span className="title bold asc">Members</span>
       <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
         X
       </button>
@@ -41,9 +41,8 @@ export const Members = ({ card: { members, _id: cardId }, setAnchorEl }) => {
         ))}
       </div>
       {searchTerm && (
-        <div>
-          <span>BOARD MEMBERS</span>
           <div className="list flex col">
+          <span className="bold">Board Members</span>
             {searchRes.map(user => (
               <div className="flex jb" key={user._id}>
                 <span>{user.name}</span>
@@ -51,7 +50,6 @@ export const Members = ({ card: { members, _id: cardId }, setAnchorEl }) => {
               </div>
             ))}
           </div>
-        </div>
       )}
     </div>
   )

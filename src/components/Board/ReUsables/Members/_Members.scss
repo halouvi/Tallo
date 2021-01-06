@@ -1,16 +1,22 @@
 .members {
-  --padding: 16px;
+  --padding: 12px;
   padding: var(--padding);
   position: relative;
-  .input {
-    
+  > .title {
+    margin: 0 0 8px 0;
   }
-  .title {
-    
-  }
-  .close-btn {
+  > .close-btn {
     position: absolute;
     top: var(--padding);
     right: var(--padding);
+  }
+  > input {
+    margin: 0 0 8px 0;
+    padding: 6px;
+  }
+  > .list {
+    >* {
+      margin: 6px 0 0 0;
+    }
   }
 }

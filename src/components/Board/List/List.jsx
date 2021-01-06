@@ -84,9 +84,9 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
           ref={drop}
           className={`container flex col${isOver ? ' is-over' : isDragging ? ' is-dragging' : ''}`}>
           <ContentEditable
+            tagName="span"
             id="title"
             className="list-title"
-            tagName="span"
             html={editables.title}
             onChange={handleEditable}
           />

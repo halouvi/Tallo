@@ -20,7 +20,6 @@ export const SideBar = ({ card }) => {
     const DynCmp = cmpMap[anchorEl.innerText.split(' ').join('')]
     return (
       <DynCmp
-        className={anchorEl.innerText.split(' ').join('-').toLowerCase()}
         setAnchorEl={setAnchorEl}
         card={card}
       />
