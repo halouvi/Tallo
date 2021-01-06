@@ -12,6 +12,12 @@ export const GET_BOARD_BY_ID = id => async dispatch => {
   dispatch({ type: types.SET_BOARD, payload: board })
 }
 
+export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
+  const users = getState().boardReducer.boardUsers
+  const user = users.find(user => user._id === id)
+  return user;
+}
+
 export const UPDATE_BOARD = updatedBoard => async dispatch => {
   try {
     const res = await boardService.update(updatedBoard)
@@ -26,7 +32,8 @@ export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const prevBoard = getState().boardReducer.board
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
   card._id = UtilService.makeId();
-  card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: 'Orly Amdadi'})
+  const loggedUser = getState().userReducer.user;
+  card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: loggedUser._id});
   var listIdx = updatedBoard.lists.findIndex((list) => list._id === listId);
   updatedBoard.lists[listIdx].cards.push(card);
   dispatch(UPDATE_BOARD(updatedBoard));

@@ -4,6 +4,7 @@ const initState = {
   board: null,
   list: null,
   card: null,
+  boardUsers: null
 }
 
 export const boardReducer = (state = initState, { type, payload }) => {
@@ -12,6 +13,7 @@ export const boardReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         board: payload,
+        boardUsers: [...payload.users]
       }
     case types.SET_LIST:
       return {
