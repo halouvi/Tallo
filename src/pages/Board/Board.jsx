@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBoardById, updateBoard } from '../../store/board/BoardActions'
+import { GET_BOARD_BY_ID, UPDATE_BOARD } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
 import UtilService from '../../service/UtilService'
 
@@ -11,16 +11,16 @@ export const Board = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getBoardById('5fe4b65432d4a24dbcb7afa2'))
+    dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
   }, [dispatch])
 
   const addCard = (card, listId) => {
     card._id = UtilService.makeId();
     card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: 'Orly Amdadi'})
-    var newBoard = JSON.parse(JSON.stringify(board))
-    var listIdx = newBoard.lists.findIndex((list) => list._id === listId);
-    newBoard.lists[listIdx].cards.push(card);
-    dispatch(updateBoard(newBoard));
+    const boardClone = JSON.parse(JSON.stringify(board))
+    var listIdx = boardClone.lists.findIndex((list) => list._id === listId);
+    boardClone.lists[listIdx].cards.push(card);
+    dispatch(UPDATE_BOARD(boardClone));
   }
 
   const [{ isOver }, drop] = useDrop({
@@ -44,10 +44,10 @@ export const Board = () => {
       const [card] = sourceList.splice(sourceCardIdx, 1)
       targetCardIdx >= 0 ? targetList.splice(targetCardIdx, 0, card) : targetList.unshift(card)
     }
-    dispatch(updateBoard(boardClone))
+    dispatch(UPDATE_BOARD(boardClone))
   }
 
-  return (
+  return ( board &&
     <main ref={drop} className={`board flex col as`}>
       <span>{board?.title}</span>
       <section className="container flex as">
