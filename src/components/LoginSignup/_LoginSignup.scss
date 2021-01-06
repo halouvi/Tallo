@@ -1,0 +1,36 @@
+.login-signup-section {
+
+    h2 {
+        font-weight: bold;
+        margin-bottom: 5px;
+        text-decoration: underline;
+    }
+
+    .login-form,
+    .signup-form {
+        display: flex;
+        flex-direction: column;
+
+        input {
+            max-width: 300px;
+            margin-bottom: 5px;
+        }
+
+        button {
+            padding: 6px 12px;
+            border-radius: 3px;
+            background-color: royalblue;
+            color: white;
+            width: fit-content;
+
+        }
+
+        &:not(:last-of-type) {
+            margin-bottom: 15px;
+        }
+    }
+
+    .forms-seperator {
+        margin-bottom: 15px;
+    }
+}

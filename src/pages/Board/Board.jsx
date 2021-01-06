@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { GET_BOARD_BY_ID, UPDATE_BOARD } from '../../store/board/BoardActions'
+import { ADD_CARD, GET_BOARD_BY_ID, UPDATE_BOARD } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
-import UtilService from '../../service/UtilService'
-
 
 export const Board = () => {
   const board = useSelector(state => state.boardReducer.board)
@@ -15,12 +13,7 @@ export const Board = () => {
   }, [dispatch])
 
   const addCard = (card, listId) => {
-    card._id = UtilService.makeId();
-    card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: 'Orly Amdadi'})
-    const boardClone = JSON.parse(JSON.stringify(board))
-    var listIdx = boardClone.lists.findIndex((list) => list._id === listId);
-    boardClone.lists[listIdx].cards.push(card);
-    dispatch(UPDATE_BOARD(boardClone));
+    dispatch(ADD_CARD(card, listId));
   }
 
   const [{ isOver }, drop] = useDrop({

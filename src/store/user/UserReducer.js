@@ -4,12 +4,12 @@ const initState = {
   user: {},
 }
 
-export const userReducer = (state = initState, { type, payload }) => {
+export const userReducer = (state = initState, { type, user }) => {
   switch (type) {
-    case types.GET_USER_BY_ID:
+    case types.SET_LOGGED_USER:
       return {
         ...state,
-        user: payload,
+        user,
       }
     default:
       return state
