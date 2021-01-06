@@ -6,7 +6,7 @@ import { DueDate } from '../../ReUsables/DueDate/DueDate'
 import { Labels } from '../../ReUsables/Labels/Labels'
 import { Members } from '../../ReUsables/Members/Members'
 
-export const SideBar = props => {
+export const SideBar = ({ card }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const cmpMap = {
     Members,
@@ -16,12 +16,13 @@ export const SideBar = props => {
     Attachment,
   }
 
-  const DynCmp = props => {
+  const DynCmp = () => {
     const DynCmp = cmpMap[anchorEl.innerText.split(' ').join('')]
     return (
       <DynCmp
-      className={anchorEl.innerText.split(' ').join('-').toLowerCase()}
-      setAnchorEl={setAnchorEl}
+        className={anchorEl.innerText.split(' ').join('-').toLowerCase()}
+        setAnchorEl={setAnchorEl}
+        card={card}
       />
     )
   }
@@ -36,8 +37,8 @@ export const SideBar = props => {
           </span>
         ))}
         <Popover
-          id={Boolean(anchorEl) ? 'sidebar-popover' : undefined}
-          open={Boolean(anchorEl)}
+          id={anchorEl ? 'sidebar-popover' : undefined}
+          open={!!anchorEl}
           anchorEl={anchorEl}
           onClose={() => setAnchorEl(null)}
           anchorOrigin={{

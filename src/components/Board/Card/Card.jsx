@@ -36,6 +36,7 @@ const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
         <div onClick={onOpenModal} className="container" id={card._id} ref={drop}>
           {card?.attachments[0] ? <img src={card.attachments[0]} alt="" /> : ''}
           <p>{card._id}</p>
+          <p>{card.desc}</p>
         </div>
       </div>
     </>

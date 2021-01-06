@@ -1,9 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import ContentEditable from 'react-contenteditable'
 import { useDrag, useDrop } from 'react-dnd'
+import { useDispatch } from 'react-redux'
+import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
 export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
-  const [isAddCard, setisAddCard] = useState(false);
+  const dispatch = useDispatch()
+  const [isAddCard, setisAddCard] = useState(false)
+
   const [newCard, setNewCard] = useState({
     title: '',
     activity: [],
@@ -12,8 +17,9 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
     desc: '',
     dueDate: 0,
     labels: [],
-    members: []
-  });
+    members: [],
+  })
+
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: 'LIST',
@@ -23,6 +29,7 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
       isDragging: !!monitor.isDragging(),
     }),
   })
+
   const [{ isOver }, drop] = useDrop({
     accept: ['CARD', 'LIST'],
     drop: (item, monitor) => {
@@ -33,16 +40,29 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
     }),
   })
 
-  const onHandleChange = (ev) => {
-    const field = ev.target.name;
-    const value = ev.target.value;
+  const handleInput = ev => {
+    const field = ev.target.name
+    const value = ev.target.value
     setNewCard({ ...newCard, [field]: value })
-    // console.log(newCard);
   }
 
-  const onAddCard = (ev) => {
+  var timer
+  const editables = {
+    title: list.title,
+  }
+  const handleEditable = ev => {
+    const field = ev.currentTarget.id
+    const value = ev.currentTarget.innerText
+    editables[field] = value
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      dispatch(UPDATE_LIST({ field, value, listId: list._id }))
+    }, 500)
+  }
+
+  const onAddCard = ev => {
     ev.preventDefault()
-    addCard(newCard, list._id);
+    addCard(newCard, list._id)
     setisAddCard(false)
     setNewCard({
       title: '',
@@ -52,7 +72,7 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
       desc: '',
       dueDate: 0,
       labels: [],
-      members: []
+      members: [],
     })
   }
 
@@ -62,9 +82,14 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
       <div ref={drag} className={`list flex col`}>
         <div
           ref={drop}
-          className={`container flex col${isOver ? ' is-over' : isDragging ? ' is-dragging' : ''
-            }`}>
-          <span className="list-title">{list.title}</span>
+          className={`container flex col${isOver ? ' is-over' : isDragging ? ' is-dragging' : ''}`}>
+          <ContentEditable
+            id="title"
+            className="list-title"
+            tagName="span"
+            html={editables.title}
+            onChange={handleEditable}
+          />
           <div className="cards flex col">
             {/* {isOver? <div>insert here</div> : '' } */}
             {list.cards.map((card, idx) => (
@@ -76,16 +101,35 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
                 handleDrop={handleDrop}
               />
             ))}
-
           </div>
-          {isAddCard && <form action="" className="add-card-form" onSubmit={onAddCard}>
-            <input placeholder="Enter a title for this card..." type="text" name="title" value={newCard.title} onChange={onHandleChange} id="" />
-            <div className="add-card-btns">
-              <button className="add-card-btn">Add Card</button>
-              <button onClick={(ev) => { ev.preventDefault(); setisAddCard(false) }} className="close-btn">X</button>
+          {isAddCard && (
+            <form action="" className="add-card-form" onSubmit={onAddCard}>
+              <input
+                placeholder="Enter a title for this card..."
+                type="text"
+                name="title"
+                value={newCard.title}
+                onChange={handleInput}
+                id=""
+              />
+              <div className="add-card-btns">
+                <button className="add-card-btn">Add Card</button>
+                <button
+                  onClick={ev => {
+                    ev.preventDefault()
+                    setisAddCard(false)
+                  }}
+                  className="close-btn">
+                  X
+                </button>
+              </div>
+            </form>
+          )}
+          {!isAddCard && (
+            <div className="add-card" onClick={() => setisAddCard(true)}>
+              <span>+</span> Add another card
             </div>
-          </form>}
-          {!isAddCard && <div className="add-card" onClick={() => setisAddCard(true)}><span>+</span> Add another card</div>}
+          )}
         </div>
       </div>
     </>
