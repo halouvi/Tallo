@@ -112,21 +112,24 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
                 onChange={handleInput}
                 id=""
               />
-              <div>
-                <button>Add Card</button>
+              <div className="add-card-btns">
+                <button className="add-card-btn">Add Card</button>
                 <button
                   onClick={ev => {
                     ev.preventDefault()
                     setisAddCard(false)
-                  }}>
+                  }}
+                  className="close-btn">
                   X
                 </button>
               </div>
             </form>
           )}
-          <div className="add-card" onClick={() => setisAddCard(true)}>
-            <span>+</span> Add another card
-          </div>
+          {!isAddCard && (
+            <div className="add-card" onClick={() => setisAddCard(true)}>
+              <span>+</span> Add another card
+            </div>
+          )}
         </div>
       </div>
     </>
