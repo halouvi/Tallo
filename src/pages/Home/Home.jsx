@@ -5,7 +5,7 @@ import { LoginSingup } from "../../components/LoginSignup/LoginSignup"
 // import { getRate } from '../../store/bitcoin/BitcoinActions'
 
 
-export const Home = () => {
+export const Home = (props) => {
   // const { user } = useSelector(store => store.user)
   // const { bitcoinRate } = useSelector(store => store.bitcoin)
   // const dispatch = useDispatch()
@@ -17,7 +17,7 @@ export const Home = () => {
     <main className="home main-grid">
       <div className="container grid-col-c flex col ac jc">
         <div className="flex col">
-          <LoginSingup></LoginSingup>
+          <LoginSingup props={props}></LoginSingup>
         </div>
       </div>
     </main>

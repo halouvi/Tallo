@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { LOGIN, SIGNUP } from '../../store/user/UserActions';
 
 
-export const LoginSingup = props => {
+export const LoginSingup = ({props}) => {
   const dispatch = useDispatch()
   const [user, setUser] = useState({
     email: '',
@@ -25,20 +25,19 @@ export const LoginSingup = props => {
     const value = ev.target.value;
     if (type === 'login') setUser({ ...user, [field]: value })
     else setUserCred({ ...userCred, [field]: value })
-    console.log(userCred);
   }
 
   const login = async (ev) => {
     ev.preventDefault();
     await dispatch(LOGIN(user));
-    
+    props.history.push('board');
   }
 
-  const signup = (ev) => {
+  const signup = async (ev) => {
     ev.preventDefault();
-    dispatch(SIGNUP(userCred));
+    await dispatch(SIGNUP(userCred));
+    props.history.push('board');
   }
-
 
   return (
     <div className="login-signup-section">
