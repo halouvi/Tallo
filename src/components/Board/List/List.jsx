@@ -80,9 +80,12 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
           </div>
           {isAddCard && <form action="" className="add-card-form" onSubmit={onAddCard}>
             <input placeholder="Enter a title for this card..." type="text" name="title" value={newCard.title} onChange={onHandleChange} id="" />
-            <div><button>Add Card</button><button onClick={(ev) => { ev.preventDefault(); setisAddCard(false) }}>X</button></div>
+            <div className="add-card-btns">
+              <button className="add-card-btn">Add Card</button>
+              <button onClick={(ev) => { ev.preventDefault(); setisAddCard(false) }} className="close-btn">X</button>
+            </div>
           </form>}
-          <div className="add-card" onClick={() => setisAddCard(true)}><span>+</span> Add another card</div>
+          {!isAddCard && <div className="add-card" onClick={() => setisAddCard(true)}><span>+</span> Add another card</div>}
         </div>
       </div>
     </>
