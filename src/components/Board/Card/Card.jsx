@@ -34,8 +34,8 @@ const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
       {/* <div className={`card${isDragging ? ' is-dragging ' : ' '} ${isOver ? ' is-over' : ''}`} ref={drag}> */}
       <div className={`card${isDragging ? ' is-dragging ' : ''}`} ref={drag}>
         <div onClick={onOpenModal} className="container" id={card._id} ref={drop}>
+          <p>{card.title}</p>
           {card?.attachments[0] ? <img src={card.attachments[0]} alt="" /> : ''}
-          <p>{card._id}</p>
           <p>{card.desc}</p>
         </div>
       </div>
