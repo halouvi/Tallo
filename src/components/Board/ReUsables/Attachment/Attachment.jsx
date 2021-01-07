@@ -3,11 +3,12 @@ import { useDispatch } from 'react-redux';
 import { uploadImg } from '../../../../service/ImgUploadService.js';
 import { UPDATE_CARD } from '../../../../store/board/BoardActions.js';
 
-export const Attachment = ({card: {attachments, _id: cardId}}) => {
+export const Attachment = ({ card: { attachments, _id: cardId }, setAnchorEl }) => {
   const [attachmentUrl, setAttachmentUrl] = useState('');
   const dispatch = useDispatch();
 
-  const saveAttachment = () => {
+  const saveAttachment = (ev) => {
+    ev.preventDefault();
     dispatch(UPDATE_CARD({ field: 'attachments', value: [...attachments, attachmentUrl], cardId }))
   }
 
@@ -18,7 +19,10 @@ export const Attachment = ({card: {attachments, _id: cardId}}) => {
   }
 
   return (
-    <div className="attachment-section">
+    <div className="attachment-section reusable">
+      <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
+        X
+      </button>
       <p>Attachments</p>
       <form action="" onSubmit={saveAttachment} className="attachment-form">
         <label htmlFor="imgUrl">
