@@ -1,8 +1,10 @@
 import { useDrag, useDrop } from 'react-dnd'
+import { useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { CardAvatars } from '../avatars/CardAvatars'
 
 const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
+  const gLabels = useSelector(state => state.boardReducer.board.labels)
   const { _id, title, attachments, members, desc, dueDate } = card || {}
 
   const onOpenModal = () => {
@@ -38,6 +40,15 @@ const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
             <div className="card-title">{title}</div>
             {attachments[0] ? <img src={attachments[0]} alt="" /> : ''}
             <p className="card-desc">{desc}</p>
+            <div className="labels-section">
+              {card?.labels[0] &&
+                gLabels.map(
+                  gLabel =>
+                    card.labels.some(label => label === gLabel._id) && (
+                      <div className={`label ${gLabel.color}`} key={gLabel._id}></div>
+                    )
+                )}
+            </div>
             <div className="bottom-section">
               {dueDate && (
                 <div className="due-date">

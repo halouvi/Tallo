@@ -23,10 +23,7 @@
       font-weight: bold;
     }
 
-
     .exit-btn {
-      // border: 1px solid gray;
-      // border-radius: 5px;
       padding: 2px 6px;
       cursor: pointer;
     }
@@ -46,6 +43,8 @@
         font-size: 1rem;
       }
     }
+
+   
 
     .attachments-container {
       display: flex;
@@ -84,6 +83,34 @@
       }
     }
 
+    .labels-section {
+      .labels-container {
+        padding: 10px 0;
+        display: flex;
+      }
+
+      .label-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &:not(:last-child) {
+          margin-inline-end: 10px;
+        }
+        
+        p {
+          font-size: 0.6rem;
+        }
+      }
+
+      .label {
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+      }
+    }
+
     .activity-section {
 
       >h3 {
@@ -107,6 +134,8 @@
 
             p {
               margin: 0;
+              font-size: 0.9rem;
+              color: rgb(82, 81, 81);
             }
           }
 
@@ -118,5 +147,4 @@
       }
     }
   }
-
 }

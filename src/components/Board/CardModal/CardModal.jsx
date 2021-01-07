@@ -9,7 +9,7 @@ import { SideBar } from './SideBar/SideBar'
 
 export const CardModal = props => {
   const { board, list, card, users } = useSelector(state => state.boardReducer) || {}
-  const { activity, title, attachments, members, desc } = card || {}
+  const { activity, title, attachments, members, desc, labels } = card || {}
   const { id } = useParams()
   const dispatch = useDispatch()
 
@@ -41,6 +41,22 @@ export const CardModal = props => {
               <CardAvatars className="card-avatars" members={members}></CardAvatars>
             )}
           </div>
+          {card?.labels[0] && (
+            <div className="labels-section">
+              <h3>Labels</h3>
+              <div className="labels-container">
+                {board.labels.map(
+                  ({ _id, color, name }) =>
+                    labels.some(label => label === _id) && (
+                      <div className="label-container" key={_id}>
+                        <div className={`label ${color}`}></div>
+                        <p>{name}</p>
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
+          )}
           <div className="desc-container">
             <h3>Description</h3>
             <Textarea desc={desc} updateCard={updateCard}></Textarea>
@@ -54,13 +70,13 @@ export const CardModal = props => {
           <div className="activity-section">
             <h3>Activity</h3>
             <ul className="activity-container">
-              {activity.map(({ activity, createdBy, createdAt }, idx) => {
+              {activity.map(({ activity, createdBy, createdAt }) => {
                 const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
                 return (
                   fullname && (
-                    <li key={idx}>
+                    <li key={createdAt}>
                       <div className="activity-main">
-                        <Avatar key={idx} alt={fullname} src={imgUrl ? imgUrl : '/'} />
+                        <Avatar key={createdAt} alt={fullname} src={imgUrl ? imgUrl : '/'} />
                         <h3>{fullname}</h3>
                         <p>{activity}</p>
                       </div>

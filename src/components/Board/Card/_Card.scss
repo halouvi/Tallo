@@ -32,6 +32,21 @@
       margin-bottom: 8px;
     }
 
+    .labels-section {
+      display: flex;
+
+      .label {
+        width: 40px;
+        height: 9px;
+        border-radius: 5px;
+
+        &:not(:last-child) {
+          margin-inline-end: 5px;
+        }
+      }
+    }
+
+
     .due-date {
       display: flex;
       align-items: center;
