@@ -23,7 +23,7 @@ const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
       sourceListIdx: thisListIdx,
       sourceCardIdx: thisCardIdx,
     },
-    begin: monitor => {},
+    begin: monitor => { },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -37,6 +37,10 @@ const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
           <p>{card.title}</p>
           {card?.attachments[0] ? <img src={card.attachments[0]} alt="" /> : ''}
           <p>{card.desc}</p>
+          {card.dueDate && <div className="due-date">
+            <img src="https://res.cloudinary.com/ariecloud/image/upload/v1610026807/tallo/clock-circular-outline_rdwoyz.svg" alt="" />
+            <p>{new Date(card.dueDate).toDateString()}</p>
+          </div>}
         </div>
       </div>
     </>
