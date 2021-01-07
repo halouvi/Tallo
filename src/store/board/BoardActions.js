@@ -32,8 +32,7 @@ export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const prevBoard = getState().boardReducer.board
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
   card._id = UtilService.makeId();
-  const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
-  card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: loggedUser._id});
+  card = _activityLog(card, 'card');
   var listIdx = updatedBoard.lists.findIndex((list) => list._id === listId);
   updatedBoard.lists[listIdx].cards.push(card);
   dispatch(UPDATE_BOARD(updatedBoard));
@@ -49,9 +48,10 @@ export const GET_CARD_BY_ID = cardId => async (dispatch, getState) => {
 export const UPDATE_CARD = ({ field, value, cardId }) => async (dispatch, getState) => {
   const prevBoard = getState().boardReducer.board
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
-  const { card } = _findItems(updatedBoard, cardId)
+  var { card } = _findItems(updatedBoard, cardId)
   card[field] = value
-  // console.log(card)
+  card = _activityLog(card, field);
+  console.log(card)
   await dispatch(UPDATE_BOARD(updatedBoard))
   dispatch(GET_CARD_BY_ID(cardId))
 }
@@ -70,4 +70,39 @@ const _findItems = (board, cardId) => {
   })
   const card = list.cards.find(card => card._id === cardId)
   return { list, card }
+}
+
+const _activityLog = (card, field) => {
+  const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
+  var activity;
+  switch (field) {
+    case 'card':
+      activity = 'Added this card'
+      break;
+    case 'desc':
+      activity = 'Changed card description'
+      break;
+    case 'members':
+      activity = 'Changed card members list'
+      break;
+    case 'title':
+      activity = 'Changed card title'
+      break;
+    case 'labels':
+      activity = 'Changed card labels'
+      break;
+    case 'attachments':
+      activity = 'Added an attachment to card'
+      break;
+    case 'dueDate':
+      activity = 'Changed card\'s due date'
+      break;
+    case 'checklist':
+      activity = 'Add a checklist to card'
+      break;
+    default:
+      break;
+  }
+  card.activity.unshift({ activity, createdAt: Date.now(), createdBy: loggedUser._id });
+  return card
 }

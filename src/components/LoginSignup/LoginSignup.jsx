@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { LOGIN, SIGNUP } from '../../store/user/UserActions';
+import { uploadImg } from '../../service/ImgUploadService.js'
 
-
-export const LoginSingup = ({props}) => {
+export const LoginSingup = ({ props }) => {
   const dispatch = useDispatch()
   const [user, setUser] = useState({
     email: '',
@@ -39,6 +39,12 @@ export const LoginSingup = ({props}) => {
     props.history.push('board');
   }
 
+  const onUploadImg = async (ev) => {
+    const res = await uploadImg(ev);
+    console.log(res.url);
+    setUserCred({ ...userCred, imgUrl: res.url })
+  }
+
   return (
     <div className="login-signup-section">
       <h2>Login</h2>
@@ -60,6 +66,11 @@ export const LoginSingup = ({props}) => {
         <input type="text" name="email" value={userCred.email} onChange={(event) => onHandleChange(event, 'signup')} id="" />
         <label htmlFor="">Password:</label>
         <input type="text" name="password" value={userCred.password} onChange={(event) => onHandleChange(event, 'signup')} id="" />
+        <label htmlFor="imgUrl">
+          <p>Upload a Profile Picture:</p>
+          <img src="https://cdn.onlinewebfonts.com/svg/img_192880.png" alt=""/>
+        </label>
+        <input className="upload-img" type="file" name="imgUrl" onChange={onUploadImg} id="imgUrl" />
         <button>Signup</button>
       </form>
     </div>

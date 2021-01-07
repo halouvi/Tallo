@@ -28,6 +28,17 @@
         &:not(:last-of-type) {
             margin-bottom: 15px;
         }
+
+        img {
+            width: 50px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .upload-img {
+            display: none;
+        }
+
     }
 
     .forms-seperator {
