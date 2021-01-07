@@ -1,6 +1,7 @@
 
 import { useDrag, useDrop } from 'react-dnd';
 import { withRouter } from 'react-router-dom';
+import { CardAvatars } from '../avatars/CardAvatars';
 
 const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
 
@@ -34,13 +35,17 @@ const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
       {/* <div className={`card${isDragging ? ' is-dragging ' : ' '} ${isOver ? ' is-over' : ''}`} ref={drag}> */}
       <div className={`card${isDragging ? ' is-dragging ' : ''}`} ref={drag}>
         <div onClick={onOpenModal} className="container" id={card._id} ref={drop}>
-          <p>{card.title}</p>
+          <div className="card-title">{card.title}</div>
           {card?.attachments[0] ? <img src={card.attachments[0]} alt="" /> : ''}
-          <p>{card.desc}</p>
-          {card.dueDate && <div className="due-date">
-            <img src="https://res.cloudinary.com/ariecloud/image/upload/v1610026807/tallo/clock-circular-outline_rdwoyz.svg" alt="" />
-            <p>{new Date(card.dueDate).toDateString()}</p>
-          </div>}
+          <p className="card-desc">{card.desc}</p>
+          <div className="bottom-section">
+            {card.dueDate && <div className="due-date">
+              <img src="https://res.cloudinary.com/ariecloud/image/upload/v1610026807/tallo/clock-circular-outline_rdwoyz.svg" alt="" />
+              <p>{new Date(card.dueDate).toDateString()}</p>
+            </div>}
+            { !card.dueDate && <div></div> }
+            <CardAvatars card={card}></CardAvatars>
+          </div>
         </div>
       </div>
     </>

@@ -42,7 +42,7 @@ export const CardModal = props => {
           </div>
           <div className="members-container">
             <h4>MEMBERS</h4>
-            <CardAvatars card={card}></CardAvatars>
+            <CardAvatars className="card-avatars" card={card}></CardAvatars>
           </div>
           <div className="desc-container">
             <h3>Description</h3>

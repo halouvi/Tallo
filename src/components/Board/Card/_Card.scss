@@ -28,6 +28,10 @@
     flex-direction: column;
     gap: 8px;
 
+    .card-title {
+      margin-bottom: 8px;
+    }
+
     .due-date {
       display: flex;
       align-items: center;
@@ -48,6 +52,18 @@
         height: 16px;
         margin-inline-end: 5px;
       }
+    }
+
+    .bottom-section {
+      display: flex;
+      justify-content: space-between;
+
+      .MuiAvatarGroup-avatar {
+        height: 30px;
+        width: 30px;
+        font-size: 1rem;
+      }
+     
     }
   }
 
