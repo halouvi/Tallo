@@ -12,11 +12,11 @@ export const Attachment = ({ card: { attachments, _id: cardId }, setAnchorEl }) 
     dispatch(UPDATE_CARD({ field: 'attachments', value: [...attachments, attachmentUrl], cardId }))
   }
 
-  const onUploadImg = async (ev) => {
-    const res = await uploadImg(ev);
-    console.log(res.url);
-    setAttachmentUrl(res.url)
-  }
+  // const onUploadImg = async (ev) => {
+  //   const res = await uploadImg(ev);
+  //   console.log(res.url);
+  //   setAttachmentUrl(res.url)
+  // }
 
   return (
     <div className="attachment-section reusable">

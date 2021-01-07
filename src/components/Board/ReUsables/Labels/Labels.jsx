@@ -8,6 +8,8 @@ export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [labelToEdit, setLabelToEdit] = useState(null)
   const dispatch = useDispatch()
+  const newLabel = { _id: '', name: '', color: 'red' }
+  const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'black']
 
   const toggleLabel = gLabelId => {
     if (labels.some(label => label === gLabelId)) {
@@ -18,7 +20,7 @@ export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
 
   return (
     <div className="labels reusable flex col">
-      <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
+      <button className="close-btn" onClick={() => setAnchorEl(null)}>
         X
       </button>
       {!labelToEdit ? (
@@ -34,7 +36,7 @@ export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
             {gLabels.map(
               gLabel =>
                 gLabel.name.toLowerCase().includes(searchTerm) && (
-                  <div className={`label flex jb pointer ${gLabel.color}`}>
+                  <div className={`label fast flex jb pointer ${gLabel.color}`} key={gLabel._id}>
                     <div className="fw" onClick={() => toggleLabel(gLabel._id)}>
                       {gLabel.name}
                       {labels.some(label => label === gLabel._id) && <span> V</span>}
@@ -44,9 +46,10 @@ export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
                 )
             )}
           </div>
+          <button onClick={() => setLabelToEdit(newLabel)}>Add Label</button>
         </>
       ) : (
-        <LabelEditor labelToEdit={labelToEdit}  />
+        <LabelEditor labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} colors={colors} />
       )}
     </div>
   )

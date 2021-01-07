@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { ADD_CARD, GET_BOARD_BY_ID, UPDATE_BOARD } from '../../store/board/BoardActions'
+import { ADD_CARD, GET_BOARD_BY_ID, _saveBoard } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
 
 export const Board = () => {
@@ -37,7 +37,7 @@ export const Board = () => {
       const [card] = sourceList.splice(sourceCardIdx, 1)
       targetCardIdx >= 0 ? targetList.splice(targetCardIdx, 0, card) : targetList.unshift(card)
     }
-    dispatch(UPDATE_BOARD(boardClone))
+    dispatch(_saveBoard(boardClone))
   }
 
   return ( board &&

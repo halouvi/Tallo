@@ -33,7 +33,6 @@ export const CardAvatars = ({ card }) => {
     const members = card.members.map(member => {
       return getMember(member)
     })
-    console.log(members);
     setMembers(members);
   }, [])
 

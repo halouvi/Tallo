@@ -1,5 +1,3 @@
-// Flex
-
 .flex {
   display: flex;
   &.col {
@@ -40,16 +38,61 @@
   }
 }
 
-.fw {
-  width: 100%;
-  max-width: 100%;
+.grid {
+  display: grid;
+  &.c1 {
+    grid-template-columns: 1fr;
+  }
+  &.c2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  &.c3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  &.c4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  &.r1 {
+    grid-template-rows: 1fr;
+  }
+  &.r2 {
+    grid-template-rows: 1fr 1fr;
+  }
+  &.r3 {
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+  &.r4 {
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+  }
+  &.g2 {
+    gap: 2px;
+  }
+  &.g4 {
+    gap: 4px;
+  }
+  &.g6 {
+    gap: 6px;
+  }
+  &.g8 {
+    gap: 8px;
+  }
 }
 
+.ass {
+  align-self: flex-start;
+}
+.ase {
+  align-self: flex-end;
+}
 .asc {
   align-self: center;
 }
 
 //Size
+.fw {
+  width: 100%;
+  max-width: 100%;
+}
 
 .fp {
   height: 100%;
@@ -62,8 +105,40 @@
   margin: 0 calc(-50vw + 50%);
 }
 
+// Font
+
 .bold {
   font-weight: 600;
+}
+
+// Transition
+
+.slow {
+  transition: 400ms;
+  &::before {
+    transition: 400ms;
+  }
+  &::after {
+    transition: 400ms;
+  }
+}
+.med {
+  transition: 250ms;
+  &::before {
+    transition: 250ms;
+  }
+  &::after {
+    transition: 250ms;
+  }
+}
+.fast {
+  transition: 100ms;
+  &::before {
+    transition: 100ms;
+  }
+  &::after {
+    transition: 100ms;
+  }
 }
 
 //General
@@ -71,30 +146,6 @@
 .pointer {
   cursor: pointer;
 }
-// .button-reset {
-//   background-color: transparent;
-//   border: none;
-//   outline: none;
-//   display: inline;
-//   padding: 0;
-// }
-
-// .icon {
-//   font-size: 1.3rem;
-//   color: rgb(70, 70, 70);
-//   cursor: pointer;
-// }
-
-// .modal-content {
-//   position: fixed;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-//   &:hover {
-//     cursor: auto;
-//   }
-// }
-
 // Aspect ratios
 
 .ratio-16-9 {

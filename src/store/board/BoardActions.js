@@ -15,27 +15,17 @@ export const GET_BOARD_BY_ID = id => async dispatch => {
 export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
   const users = getState().boardReducer.boardUsers
   const user = users.find(user => user._id === id)
-  return user;
-}
-
-export const UPDATE_BOARD = updatedBoard => async dispatch => {
-  try {
-    const res = await boardService.update(updatedBoard)
-    dispatch({ type: types.SET_BOARD, payload: res })
-  } catch (error) {
-    console.error(error)
-    throw new Error(error)
-  }
+  return user
 }
 
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const prevBoard = getState().boardReducer.board
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
-  card._id = UtilService.makeId();
-  card = _activityLog(card, 'card');
-  var listIdx = updatedBoard.lists.findIndex((list) => list._id === listId);
-  updatedBoard.lists[listIdx].cards.push(card);
-  dispatch(UPDATE_BOARD(updatedBoard));
+  card._id = UtilService.makeId()
+  card = _activityLog(card, 'card')
+  var listIdx = updatedBoard.lists.findIndex(list => list._id === listId)
+  updatedBoard.lists[listIdx].cards.push(card)
+  dispatch(_saveBoard(updatedBoard))
 }
 
 export const GET_CARD_BY_ID = cardId => async (dispatch, getState) => {
@@ -50,9 +40,9 @@ export const UPDATE_CARD = ({ field, value, cardId }) => async (dispatch, getSta
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
   var { card } = _findItems(updatedBoard, cardId)
   card[field] = value
-  card = _activityLog(card, field);
+  card = _activityLog(card, field)
   console.log(card)
-  await dispatch(UPDATE_BOARD(updatedBoard))
+  await dispatch(_saveBoard(updatedBoard))
   dispatch(GET_CARD_BY_ID(cardId))
 }
 
@@ -61,7 +51,24 @@ export const UPDATE_LIST = ({ field, value, listId }) => (dispatch, getState) =>
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
   const list = updatedBoard.lists.find(list => list._id === listId)
   list[field] = value
-  dispatch(UPDATE_BOARD(updatedBoard))
+  dispatch(_saveBoard(updatedBoard))
+}
+
+export const UPDATE_BOARD = ({ field, value }) => (dispatch, getState) => {
+  const prevBoard = getState().boardReducer.board
+  const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
+  updatedBoard[field] = value
+  dispatch(_saveBoard(updatedBoard))
+}
+
+export const _saveBoard = updatedBoard => async dispatch => {
+  try {
+    const res = await boardService.update(updatedBoard)
+    dispatch({ type: types.SET_BOARD, payload: res })
+  } catch (error) {
+    console.error(error)
+    throw new Error(error)
+  }
 }
 
 const _findItems = (board, cardId) => {
@@ -73,36 +80,36 @@ const _findItems = (board, cardId) => {
 }
 
 const _activityLog = (card, field) => {
-  const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
-  var activity;
+  const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'))
+  var activity
   switch (field) {
     case 'card':
       activity = 'Added this card'
-      break;
+      break
     case 'desc':
       activity = 'Changed card description'
-      break;
+      break
     case 'members':
       activity = 'Changed card members list'
-      break;
+      break
     case 'title':
       activity = 'Changed card title'
-      break;
+      break
     case 'labels':
       activity = 'Changed card labels'
-      break;
+      break
     case 'attachments':
       activity = 'Added an attachment to card'
-      break;
+      break
     case 'dueDate':
-      activity = 'Changed card\'s due date'
-      break;
+      activity = "Changed card's due date"
+      break
     case 'checklist':
       activity = 'Add a checklist to card'
-      break;
+      break
     default:
-      break;
+      break
   }
-  card.activity.unshift({ activity, createdAt: Date.now(), createdBy: loggedUser._id });
+  card.activity.unshift({ activity, createdAt: Date.now(), createdBy: loggedUser._id })
   return card
 }
