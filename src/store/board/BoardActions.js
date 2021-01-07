@@ -1,5 +1,5 @@
-import { boardService } from '../../service/BoardService';
-import UtilService from '../../service/UtilService';
+import { boardService } from '../../service/BoardService'
+import UtilService from '../../service/UtilService'
 
 export const types = {
   SET_BOARD: 'SET_BOARD',
@@ -51,6 +51,7 @@ export const UPDATE_CARD = ({ field, value, cardId }) => async (dispatch, getSta
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
   const { card } = _findItems(updatedBoard, cardId)
   card[field] = value
+  // console.log(card)
   await dispatch(UPDATE_BOARD(updatedBoard))
   dispatch(GET_CARD_BY_ID(cardId))
 }

@@ -12,7 +12,9 @@
 
 // COMPONENTS
 @import '../components/Header/Header';
+@import '../components/Board/ReUsables/ReUsables';
 @import '../components/Board/ReUsables/Members/Members';
+@import '../components/Board/ReUsables/Labels/Labels';
 
 //VIEWS
 @import '../pages/Home/Home';
