@@ -44,6 +44,8 @@
       }
     }
 
+   
+
     .attachments-container {
       display: flex;
       flex-direction: column;
@@ -78,6 +80,34 @@
           height: 100px;
           cursor: initial;
         }
+      }
+    }
+
+    .labels-section {
+      .labels-container {
+        padding: 10px 0;
+        display: flex;
+      }
+
+      .label-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &:not(:last-child) {
+          margin-inline-end: 10px;
+        }
+        
+        p {
+          font-size: 0.6rem;
+        }
+      }
+
+      .label {
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
       }
     }
 

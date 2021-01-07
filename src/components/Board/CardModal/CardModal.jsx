@@ -44,6 +44,18 @@ export const CardModal = props => {
             <h4>MEMBERS</h4>
             <CardAvatars className="card-avatars" card={card}></CardAvatars>
           </div>
+          {card?.labels[0] && <div className="labels-section">
+            <h3>Labels</h3>
+            <div className="labels-container">
+              {board.labels.map(gLabel => (
+                card.labels.some(label => label === gLabel._id) && <div className="label-container">
+                  <div className={`label ${gLabel.color}`} key={gLabel._id}></div>
+                  <p>{gLabel.name}</p>
+                </div>
+              )
+              )}
+            </div>
+          </div>}
           <div className="desc-container">
             <h3>Description</h3>
             <Textarea desc={card.desc} updateCard={updateCard}></Textarea>
