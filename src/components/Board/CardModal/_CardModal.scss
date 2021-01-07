@@ -23,10 +23,7 @@
       font-weight: bold;
     }
 
-
     .exit-btn {
-      // border: 1px solid gray;
-      // border-radius: 5px;
       padding: 2px 6px;
       cursor: pointer;
     }
@@ -107,6 +104,8 @@
 
             p {
               margin: 0;
+              font-size: 0.9rem;
+              color: rgb(82, 81, 81);
             }
           }
 
@@ -118,5 +117,4 @@
       }
     }
   }
-
 }
