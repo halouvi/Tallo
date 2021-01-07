@@ -1,0 +1,30 @@
+.attachment-section {
+  padding: 10px;
+
+  >p {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .attachment-form {
+    img {
+      width: 30px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .upload-img {
+      display: none;
+    }
+
+    button {
+      padding: 3px 6px;
+      border-radius: 3px;
+      background-color: royalblue;
+      color: white;
+      width: fit-content;
+
+  }
+  }
+}
