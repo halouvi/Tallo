@@ -11,15 +11,16 @@ export const Attachment = (props) => {
   }
 
   return (
-    // <div className="attachment-section">
-    //   <span>Attachment</span>
-    //   <form action="">
-    //     <label htmlFor="imgUrl">
-    //       <p>Upload a Profile Picture:</p>
-    //       <img src="https://cdn.onlinewebfonts.com/svg/img_192880.png" alt="" />
-    //     </label>
-    //     <input className="upload-img" type="file" name="imgUrl" onChange={onUploadImg} id="imgUrl" />
-    //   </form>
-    // </div>
+    <div className="attachment-section">
+      <span>Attachment</span>
+      <form action="">
+        <label htmlFor="imgUrl">
+          <p>Upload an attachment:</p>
+          <img src="https://cdn.onlinewebfonts.com/svg/img_192880.png" alt="" />
+        </label>
+        <input className="upload-img" type="file" name="imgUrl" onChange={onUploadImg} id="imgUrl" />
+        <button>Save</button>
+      </form>
+    </div>
   )
 }
