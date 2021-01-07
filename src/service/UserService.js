@@ -11,8 +11,8 @@ export default {
     unreadBooking,
     resetUnreadBookings
 }
-function getUsers() {
-    return httpService.get('user')
+function getUsers(usersIds) {
+    return httpService.get(`user/${usersIds}`)
 }
 function getById(userId) {
     return httpService.get(`user/${userId}`)
