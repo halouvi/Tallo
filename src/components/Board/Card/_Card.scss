@@ -39,6 +39,7 @@
       border-radius: 3px;
       background-color: royalblue;
       width: fit-content;
+      max-height: 28px;
 
       p {
         color: whitesmoke;
@@ -57,6 +58,7 @@
     .bottom-section {
       display: flex;
       justify-content: space-between;
+      align-items: center;
 
       .MuiAvatarGroup-avatar {
         height: 30px;
