@@ -1,46 +1,65 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_CARD } from '../../../../store/board/BoardActions'
+import UtilService from '../../../../service/UtilService'
+import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 
-export const LabelEditor = ({ labelToEdit }) => {
-  // const gLabels = useSelector(state => state.boardReducer.board.labels)
-  const [labelName, setLabelName] = useState(labelToEdit.name)
-  // const [isEdit, setIsEdit] = useState(false)
+export const LabelEditor = ({ labelToEdit, setLabelToEdit, editMode, colors }) => {
   const dispatch = useDispatch()
+  const gLabels = useSelector(state => state.boardReducer.board.labels)
+  const [updatedLabel, setUpdatedLabel] = useState({ ...labelToEdit })
 
-  // const updateLabel = gLabelId => {
-  //   if (labels.some(label => label === gLabelId)) {
-  //     const labelsFiltered = labels.filter(label => label !== gLabelId)
-  //     dispatch(UPDATE_BOARD({ field: 'labels', value: labelsFiltered, cardId }))
-  //   }
-  // }
+  const handleInput = ev => {
+    const { name, value } = ev.target
+    setUpdatedLabel({ ...updatedLabel, [name]: value })
+  }
+
+  const saveLabel = () => {
+    const labelsClone = JSON.parse(JSON.stringify(gLabels))
+    if (!updatedLabel._id) {
+      updatedLabel._id = UtilService.makeId()
+      labelsClone.push(updatedLabel)
+    } else {
+      const idx = gLabels.findIndex(label => label._id === labelToEdit._id)
+      labelsClone.splice(idx, 1, updatedLabel)
+    }
+    dispatch(UPDATE_BOARD({ field: 'labels', value: labelsClone }))
+    setLabelToEdit(null)
+  }
+
+  const deleteLabel = () => {
+    const labelsClone = JSON.parse(JSON.stringify(gLabels))
+    const labelsFiltered = labelsClone.filter(label => label._id !== labelToEdit._id)
+    dispatch(UPDATE_BOARD({ field: 'labels', value: labelsFiltered }))
+    setLabelToEdit(null)
+  }
 
   return (
     <>
-      {labelToEdit.color}
-      {/* <span className="title bold asc">Edit Label</span>
+      <button className="ass" onClick={()=>setLabelToEdit(null)}>
+        Back
+      </button>
+      <span className="title bold asc">{updatedLabel._id ? 'Edit' : 'Add'} Label</span>
       <label htmlFor="name">Name</label>
-      <input
-        id="name"
-        type="text"
-        placeholder="Search Labels"
-        value={searchTerm}
-        onChange={ev => setSearchTerm(ev.target.value.toLowerCase())}
-      />
-      <div className="list flex col">
-        {gLabels.map(
-          ({ color, name, _id: gLabelId }) =>
-            name.toLowerCase().includes(searchTerm) && (
-              <div style={{ backgroundColor: color }} className="flex jb pointer">
-                <div className="fw" onClick={() => toggleLabel(gLabelId)}>
-                  {name}
-                  {labels.some(label => label === gLabelId) && <span> V</span>}
-                </div>
-                <button onClick={() => setIsEdit(true)}>edit</button>
-              </div>
-            )
-        )}
-      </div> */}
+      <input id="name" name="name" type="text" value={updatedLabel.name} onChange={handleInput} />
+      <label>Select Color</label>
+      <div className="grid c4 g6">
+        {colors.map(color => (
+          <input
+            key={color}
+            type="button"
+            name="color"
+            value={color}
+            onClick={handleInput}
+            className={`pointer color fast ${color}${
+              updatedLabel.color === color ? ' selected' : ''
+            }`}
+          />
+        ))}
+      </div>
+      <div className="flex jb">
+        <button onClick={saveLabel}>Save</button>
+        {updatedLabel._id && <button onClick={deleteLabel}>Delete</button>}
+      </div>
     </>
   )
 }

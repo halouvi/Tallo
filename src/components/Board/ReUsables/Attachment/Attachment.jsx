@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { uploadImg } from '../../../../service/ImgUploadService.js';
 
 export const Attachment = (props) => {
-  const [attachmentUrl, setAttachmentUrl] = useState('');
+  // const [attachmentUrl, setAttachmentUrl] = useState('');
 
-  const onUploadImg = async (ev) => {
-    const res = await uploadImg(ev);
-    console.log(res.url);
-    setAttachmentUrl(res.url)
-  }
+  // const onUploadImg = async (ev) => {
+  //   const res = await uploadImg(ev);
+  //   console.log(res.url);
+  //   setAttachmentUrl(res.url)
+  // }
 
-  return (
+  return (<></>
     // <div className="attachment-section">
     //   <span>Attachment</span>
     //   <form action="">

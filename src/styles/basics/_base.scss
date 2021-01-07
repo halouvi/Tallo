@@ -52,8 +52,8 @@ li {
 }
 
 input {
+  outline: 0px;
   &:focus {
-    outline: 0px;
     // outline-color: black !important;
   }
 }
