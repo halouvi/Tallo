@@ -1,19 +1,22 @@
 import { boardService } from '../../service/BoardService'
+import userService from '../../service/userService'
 import UtilService from '../../service/UtilService'
 
 export const types = {
   SET_BOARD: 'SET_BOARD',
+  SET_USERS: 'SET_USERS',
   SET_CARD: 'SET_CARD',
   SET_LIST: 'SET_LIST',
 }
 
 export const GET_BOARD_BY_ID = id => async dispatch => {
-  const board = await boardService.getById(id)
+  const { board, users } = await boardService.getById(id)
   dispatch({ type: types.SET_BOARD, payload: board })
+  dispatch({ type: types.SET_USERS, payload: users })
 }
 
 export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
-  const users = getState().boardReducer.boardUsers
+  const users = getState().boardReducer.users
   const user = users.find(user => user._id === id)
   return user
 }
