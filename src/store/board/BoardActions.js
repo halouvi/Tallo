@@ -1,5 +1,4 @@
 import { boardService } from '../../service/BoardService'
-import userService from '../../service/userService'
 import UtilService from '../../service/UtilService'
 
 export const types = {
