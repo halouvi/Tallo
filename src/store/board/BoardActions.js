@@ -1,5 +1,5 @@
-import { boardService } from '../../service/BoardService';
-import UtilService from '../../service/UtilService';
+import { boardService } from '../../service/BoardService'
+import UtilService from '../../service/UtilService'
 
 export const types = {
   SET_BOARD: 'SET_BOARD',
@@ -25,11 +25,15 @@ export const UPDATE_BOARD = updatedBoard => async dispatch => {
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const prevBoard = getState().boardReducer.board
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
-  card._id = UtilService.makeId();
-  card.activity.push({activity: 'Added this card', createdAt: Date.now(), createdBy: 'Orly Amdadi'})
-  var listIdx = updatedBoard.lists.findIndex((list) => list._id === listId);
-  updatedBoard.lists[listIdx].cards.push(card);
-  dispatch(UPDATE_BOARD(updatedBoard));
+  card._id = UtilService.makeId()
+  card.activity.push({
+    activity: 'Added this card',
+    createdAt: Date.now(),
+    createdBy: 'Orly Amdadi',
+  })
+  var listIdx = updatedBoard.lists.findIndex(list => list._id === listId)
+  updatedBoard.lists[listIdx].cards.push(card)
+  dispatch(UPDATE_BOARD(updatedBoard))
 }
 
 export const GET_CARD_BY_ID = cardId => async (dispatch, getState) => {
@@ -44,6 +48,7 @@ export const UPDATE_CARD = ({ field, value, cardId }) => async (dispatch, getSta
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
   const { card } = _findItems(updatedBoard, cardId)
   card[field] = value
+  // console.log(card)
   await dispatch(UPDATE_BOARD(updatedBoard))
   dispatch(GET_CARD_BY_ID(cardId))
 }

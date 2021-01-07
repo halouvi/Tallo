@@ -1,0 +1,24 @@
+.reusable {
+  --padding: 12px;
+  padding: var(--padding);
+  position: relative;
+  > .title {
+    margin: 0 0 8px 0;
+  }
+  > .close-btn {
+    position: absolute;
+    top: var(--padding);
+    right: var(--padding);
+  }
+  > input {
+    margin: 0 0 8px 0;
+    padding: 6px;
+  }
+  > .list {
+    >* {
+      border-radius: 6px;
+      padding: 6px;
+      margin: 6px 0 0 0;
+    }
+  }
+}
