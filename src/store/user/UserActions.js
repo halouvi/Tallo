@@ -1,4 +1,4 @@
-import userService from '../../service/userService.js'
+import userService from '../../service/UserService.js'
 
 export const types = {
   GET_USER_BY_ID: 'GET_USER_BY_ID',
