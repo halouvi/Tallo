@@ -72,7 +72,6 @@ export const CardModal = props => {
             <ul className="activity-container">
               {activity.map(({ activity, createdBy, createdAt }) => {
                 const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
-                console.log(fullname);
                 return (
                   fullname && (
                     <li key={createdAt}>
