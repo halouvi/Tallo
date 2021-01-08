@@ -60,7 +60,7 @@ const _Card = ({ history, card, thisListIdx, thisCardIdx, handleDrop }) => {
                 </div>
               )}
               {!dueDate && <div></div>}
-              <CardAvatars members={members}></CardAvatars>
+              {members[0] && <CardAvatars members={members}></CardAvatars>}
             </div>
           </div>
         </div>

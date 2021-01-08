@@ -61,7 +61,7 @@ export const CardModal = props => {
             <h3>Description</h3>
             <Textarea desc={desc} updateCard={updateCard}></Textarea>
           </div>
-          {attachments.length && (
+          {attachments[0] && (
             <div className="attachments-container">
               <h3>Attachments</h3>
               <img src={attachments[0]} alt="" />
@@ -72,6 +72,7 @@ export const CardModal = props => {
             <ul className="activity-container">
               {activity.map(({ activity, createdBy, createdAt }) => {
                 const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
+                console.log(fullname);
                 return (
                   fullname && (
                     <li key={createdAt}>
