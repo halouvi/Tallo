@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { LOGIN, SIGNUP } from '../../store/user/UserActions';
-import { uploadImg } from '../../service/ImgUploadService.js'
+import { uploadImg } from '../../service/imgUploadService.js'
 
 export const LoginSingup = ({ props }) => {
   const dispatch = useDispatch()

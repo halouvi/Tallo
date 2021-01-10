@@ -1,5 +1,5 @@
-import { boardService } from '../../service/BoardService'
-import UtilService from '../../service/UtilService'
+import { boardService } from '../../service/boardService'
+import utilService from '../../service/utilService'
 
 export const types = {
   SET_BOARD: 'SET_BOARD',
@@ -23,7 +23,7 @@ export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const prevBoard = getState().boardReducer.board
   const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
-  card._id = UtilService.makeId()
+  card._id = utilService.makeId()
   card = _activityLog(card, 'card')
   var listIdx = updatedBoard.lists.findIndex(list => list._id === listId)
   updatedBoard.lists[listIdx].cards.push(card)
@@ -43,33 +43,31 @@ export const UPDATE_CARD = ({ field, value, cardId }) => async (dispatch, getSta
   var { card } = _findItems(updatedBoard, cardId)
   card[field] = value
   card = _activityLog(card, field)
-  console.log(card)
   await dispatch(_saveBoard(updatedBoard))
   dispatch(GET_CARD_BY_ID(cardId))
 }
 
-export const UPDATE_LIST = ({ field, value, listId }) => (dispatch, getState) => {
-  const prevBoard = getState().boardReducer.board
-  const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
+export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
+  const updatedBoard = JSON.parse(JSON.stringify(getState().boardReducer.board))
   const list = updatedBoard.lists.find(list => list._id === listId)
-  list[field] = value
+  list[name] = value
   dispatch(_saveBoard(updatedBoard))
 }
 
 export const UPDATE_BOARD = ({ field, value }) => (dispatch, getState) => {
-  const prevBoard = getState().boardReducer.board
-  const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
+  const updatedBoard = JSON.parse(JSON.stringify(getState().boardReducer.board))
   updatedBoard[field] = value
   dispatch(_saveBoard(updatedBoard))
 }
 
-export const _saveBoard = updatedBoard => async dispatch => {
+export const _saveBoard = updatedBoard => async (dispatch, getState) => {
+  const prevBoard = JSON.parse(JSON.stringify(getState().boardReducer.board))
+  dispatch({ type: types.SET_BOARD, payload: updatedBoard })
   try {
-    const res = await boardService.update(updatedBoard)
-    dispatch({ type: types.SET_BOARD, payload: res })
+    await boardService.update(updatedBoard)
   } catch (error) {
-    console.error(error)
-    throw new Error(error)
+    dispatch({ type: types.SET_BOARD, payload: prevBoard })
+    console.error('Could not update board', error)
   }
 }
 

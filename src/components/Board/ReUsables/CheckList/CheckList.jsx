@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { UPDATE_CARD } from "../../../../store/board/BoardActions";
-import UtilService from "../../../../service/UtilService"
+import utilService from "../../../../service/utilService"
 
 export const CheckList = ({card: {_id: cardId, checklist: cardChecklist}, setAnchorEl}) => {
   const [checklist, setChecklist] = useState({
-    _id: UtilService.makeId(),
+    _id: utilService.makeId(),
     title: '',
     items: [],
   })

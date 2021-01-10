@@ -4,7 +4,7 @@ const initState = {
   board: null,
   list: null,
   card: null,
-  users: null
+  users: null,
 }
 
 export const boardReducer = (state = initState, { type, payload }) => {

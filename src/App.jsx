@@ -3,16 +3,18 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { store } from './store/Store'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import MouseBackEnd from 'react-dnd-mouse-backend'
 import { Header } from './components/Header/Header'
 import { Home } from './pages/Home/Home'
 import { Board } from './pages/Board/Board'
 import { CardModal } from './components/Board/CardModal/CardModal'
+import { DragLayer } from './components/DragLayer/DragLayer'
 import './styles/styles.scss'
 
 export const App = () => {
   return (
     <ReduxProvider store={store}>
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={MouseBackEnd}>
         <Router>
           <Header />
           <Switch>
@@ -23,6 +25,7 @@ export const App = () => {
           </Switch>
           <Route path="/board/modal/:id" component={CardModal} />
         </Router>
+        <DragLayer />
       </DndProvider>
     </ReduxProvider>
   )

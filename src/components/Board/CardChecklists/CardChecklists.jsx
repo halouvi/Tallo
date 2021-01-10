@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { UPDATE_CARD } from "../../../store/board/BoardActions";
 import ProgressBar from "./ProgressBar/ProgressBar";
-import UtilService from "../../../service/UtilService";
+import utilService from "../../../service/utilService";
 
 
 export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
     const [showInput, setShowInput] = useState(false);
     const [newItem, setNewItem] = useState({
-        _id: UtilService.makeId(),
+        _id: utilService.makeId(),
         desc: '',
         isChecked: false,
 
@@ -44,7 +44,7 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         console.log(listIdx);
         lists[listIdx].items.push(newItem);
         await dispatch(UPDATE_CARD({ field: 'checklist', value: [...lists], cardId }));
-        setNewItem({ _id: UtilService.makeId(), desc: '', isChecked: false })
+        setNewItem({ _id: utilService.makeId(), desc: '', isChecked: false })
         toggleInput();
     }
 

@@ -17,40 +17,44 @@ export const Board = () => {
   }
 
   const [{ isOver }, drop] = useDrop({
-    accept: 'LIST',
+    accept: 'List',
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
   })
 
-  const handleDrop = (item, targetListIdx, targetCardIdx) => {
-    const { type, sourceListIdx, sourceCardIdx } = item
+  const handleDrop = ({ item, targetListId, targetCardId, placeholderPos }) => {
+    const { type, sourceListId, sourceCardId } = item
     const lists = JSON.parse(JSON.stringify(board.lists))
-    if (type === 'LIST') {
+    if (type === 'List') {
+      const sourceListIdx = lists.findIndex(list => list._id === sourceListId)
       const [list] = lists.splice(sourceListIdx, 1)
-      targetListIdx >= 0 ? lists.splice(targetListIdx, 0, list) : lists.push(list)
-    } else if (type === 'CARD') {
-      const sourceList = lists[sourceListIdx].cards
-      const targetList = lists[targetListIdx].cards
-      const [card] = sourceList.splice(sourceCardIdx, 1)
-      targetCardIdx >= 0 ? targetList.splice(targetCardIdx, 0, card) : targetList.unshift(card)
+      const targetListIdx = lists.findIndex(list => list._id === targetListId)
+      !(targetListIdx + placeholderPos)
+        ? lists.unshift(list)
+        : lists.splice(targetListIdx + placeholderPos, 0, list)
+        
+    } else if (type === 'Card') {
+      const sourceList = lists.find(list => list._id === sourceListId)
+      const targetList = lists.find(list => list._id === targetListId)
+      const sourceCardIdx = sourceList.cards.findIndex(card => card._id === sourceCardId)
+      const [card] = sourceList.cards.splice(sourceCardIdx, 1)
+      const targetCardIdx = targetList.cards.findIndex(card => card._id === targetCardId)
+      !(targetCardIdx + placeholderPos)
+        ? targetList.cards.unshift(card)
+        : targetList.cards.splice(targetCardIdx + placeholderPos, 0, card)
     }
-    dispatch(UPDATE_BOARD({ field: 'lists', value: lists}))
+
+    dispatch(UPDATE_BOARD({ field: 'lists', value: lists }))
   }
 
   return (
     board && (
-      <main ref={drop} className={`board flex col as`}>
-        <span>{board?.title}</span>
-        <section className="container flex as">
-          {board?.lists.map((list, idx) => (
-            <List
-              list={list}
-              key={list._id}
-              thisListIdx={idx}
-              addCard={addCard}
-              handleDrop={handleDrop}
-            />
+      <main ref={drop} className="board flex col as">
+        <span>{board.title}</span>
+        <section className="container flex">
+          {board.lists.map(list => (
+            <List list={list} key={list._id} addCard={addCard} handleDrop={handleDrop} />
           ))}
         </section>
       </main>

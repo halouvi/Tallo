@@ -105,6 +105,16 @@
   margin: 0 calc(-50vw + 50%);
 }
 
+.hidden {
+  min-height: 0 !important;
+  height: 0 !important;
+  min-width: 0 !important;
+  width: 0 !important;
+  * {
+    display: none;
+  }
+}
+
 // Font
 
 .bold {
