@@ -63,10 +63,19 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         setNewItem({ ...newItem, [field]: value })
     }
 
+    const onRemoveList = () => {
+        let lists = JSON.parse(JSON.stringify(cardChecklists));
+        const listIdx = lists.findIndex(list => list._id === checklist._id);
+        lists.splice(listIdx, 1)
+        dispatch(UPDATE_CARD({ field: 'checklist', value: [...lists], cardId }));
+    }
 
     return (
         <div className="checklists-section">
-            <h3>{checklist.title}</h3>
+            <div className="list-header">
+                <h3>{checklist.title}</h3>
+                <button onClick={onRemoveList}>Delete</button>
+            </div>
             <ProgressBar progress={progressStatus()}></ProgressBar>
             {checklist.items.map((item, idx) => (
                 <div key={idx} className="checklist-item-container">
