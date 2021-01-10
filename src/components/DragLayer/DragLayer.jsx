@@ -1,6 +1,6 @@
 import { useDragLayer } from 'react-dnd'
 import { Card } from '../Board/Card/Card'
-// import { List } from '../Board/List/List'
+import { List } from '../Board/List/List'
 
 export const DragLayer = () => {
   const { item, init, diff } = useDragLayer(monitor => ({
@@ -8,6 +8,7 @@ export const DragLayer = () => {
     init: monitor.getInitialSourceClientOffset(),
     diff: monitor.getDifferenceFromInitialOffset(),
   }))
+  const { type, list, sourceListId, dimensions, card, handleDrop } = item || {}
 
   return (
     item &&
@@ -18,11 +19,11 @@ export const DragLayer = () => {
           position: 'absolute',
           top: `${init.y + diff.y || 0}px`,
           left: `${init.x + diff.x || 0}px`,
-          width: `${item.dimensions.width}px`,
-          transform: 'rotate(5deg)',
+          width: `${dimensions?.width}px`,
+          transform: 'rotate(3deg)',
         }}>
-        {<Card card={item.card} listId={item.sourceListId} handleDrop={item.handleDrop} />}
-        {/* {item?.type === 'List' && <List list={item.list}/>} */}
+        {type === 'Card' && <Card card={card} listId={sourceListId} />}
+        {type === 'List' && <List list={list} />}
       </div>
     )
   )

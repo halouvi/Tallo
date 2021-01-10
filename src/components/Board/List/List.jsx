@@ -1,18 +1,16 @@
-import { useLayoutEffect } from 'react'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
+import { useState, useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
-export const List = ({ list, handleDrop, addCard }) => {
+export const List = ({ list, addCard, handleDrop }) => {
   const { _id, title, cards } = list
   const [isAddCard, setisAddCard] = useState(false)
-  const [placeholderPos, setPlaceholderPos] = useState(0)
-  const widthRef = useRef(null)
+  const [placeholderPos, setPlaceholderPos] = useState(null)
+  const rectRef = useRef(null)
   const dispatch = useDispatch()
-  const [thisListWidth, setThisListWidth] = useState(null)
-  useLayoutEffect(() => setThisListWidth(window.getComputedStyle(widthRef.current).width), [])
 
   const [newCard, setNewCard] = useState({
     title: '',
@@ -26,28 +24,38 @@ export const List = ({ list, handleDrop, addCard }) => {
   })
 
   const [{ isDragging }, drag] = useDrag({
-    item: {
-      type: 'List',
-      sourceListId: _id,
-    },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
-  })
-
-  const [{ isOver }, drop] = useDrop({
-    accept: ['Card', 'List'],
-    drop: (item, monitor) => {
-      !monitor.didDrop() && handleDrop({ item, targetListId: _id, placeholderPos })
-    },
-    hover: (item, monitor) => handleDragOver(monitor.getClientOffset().x),
-    collect: monitor => ({
-      isOver: !!monitor.isOver() && monitor.getItemType() === 'List',
+    item: { type: 'List' },
+    begin: () => ({
+      type: 'List',
+      sourceListId: _id,
+      dimensions: rectRef.current.getBoundingClientRect(),
+      list,
     }),
   })
 
+  const [{ isOver, hoveringListDimensions }, drop] = useDrop({
+    accept: ['Card', 'List'],
+    hover: (item, monitor) => handleDragOver(monitor.getClientOffset().x),
+    collect: monitor => ({
+      hoveringListDimensions: monitor.getItem()?.dimensions,
+      isOver:
+        !!monitor.isOver() &&
+        monitor.getItemType() === 'List' &&
+        monitor.getItem().sourceListId !== _id,
+    }),
+    drop: (item, monitor) => {
+      if (!handleDrop) return
+      if ((item.type === 'Card' && !monitor.didDrop()) || item.type === 'List' || !cards.length) {
+        handleDrop({ item, targetListId: _id, placeholderPos })
+      }
+    },
+  })
+
   const handleDragOver = offsetX => {
-    const { left, width } = widthRef.current.getBoundingClientRect()
+    const { left, width } = rectRef.current.getBoundingClientRect()
     setPlaceholderPos(left + width / 2 > offsetX ? 0 : 1)
   }
 
@@ -78,9 +86,19 @@ export const List = ({ list, handleDrop, addCard }) => {
 
   return (
     <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
-      <div ref={widthRef} className="flex width-ref">
-        <div style={{ width: isOver && !placeholderPos ? thisListWidth : '0px' }} className="" />
-        <div ref={drag} className={`list flex col`}>
+      <div ref={rectRef} className="rect-ref flex">
+        {isOver && !placeholderPos && (
+          <div
+            className="placeholder"
+            style={{
+              width: `${hoveringListDimensions.width}px`,
+              height: `${hoveringListDimensions.height}px`,
+              paddingRight: '8px',
+            }}>
+            <div className="container" />
+          </div>
+        )}
+        <div ref={drag} className={`list`}>
           <div className="container flex col">
             <input
               name="title"
@@ -126,7 +144,17 @@ export const List = ({ list, handleDrop, addCard }) => {
             )}
           </div>
         </div>
-        <div style={{ width: isOver && placeholderPos ? thisListWidth : '0px' }} className="" />
+        {isOver && !!placeholderPos && (
+          <div
+            className="placeholder"
+            style={{
+              width: `${hoveringListDimensions.width}px`,
+              height: `${hoveringListDimensions.height}px`,
+              paddingLeft: '8px',
+            }}>
+            <div className="container" />
+          </div>
+        )}
       </div>
     </div>
   )

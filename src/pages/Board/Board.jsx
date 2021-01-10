@@ -26,7 +26,6 @@ export const Board = () => {
   const handleDrop = ({ item, targetListId, targetCardId, placeholderPos }) => {
     const { type, sourceListId, sourceCardId } = item
     const lists = JSON.parse(JSON.stringify(board.lists))
-
     if (type === 'List') {
       const sourceListIdx = lists.findIndex(list => list._id === sourceListId)
       const [list] = lists.splice(sourceListIdx, 1)
@@ -45,15 +44,16 @@ export const Board = () => {
         ? targetList.cards.unshift(card)
         : targetList.cards.splice(targetCardIdx + placeholderPos, 0, card)
     }
+
     dispatch(UPDATE_BOARD({ field: 'lists', value: lists }))
   }
 
   return (
     board && (
       <main ref={drop} className="board flex col as">
-        <span>{board?.title}</span>
+        <span>{board.title}</span>
         <section className="container flex">
-          {board?.lists.map((list, idx) => (
+          {board.lists.map(list => (
             <List list={list} key={list._id} addCard={addCard} handleDrop={handleDrop} />
           ))}
         </section>

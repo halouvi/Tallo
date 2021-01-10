@@ -1,56 +1,57 @@
-import { useLayoutEffect } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { UPDATE_DRAG_LAYER } from '../../../store/board/BoardActions'
 import { CardAvatars } from '../avatars/CardAvatars'
 
 export const Card = ({ card, listId, handleDrop }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const { _id, title, attachments, members, desc, dueDate, labels } = card || {}
   const [placeholderPos, setPlaceholderPos] = useState(null)
-  var thisCardDimensions = useRef({})
-  const heightRef = useRef(null)
+  const rectRef = useRef(null)
   const history = useHistory()
 
   const onOpenModal = () => history.push(`/board/modal/${_id}`)
 
   const [{ isDragging }, drag] = useDrag({
+    collect: monitor => ({ isDragging: !!monitor.isDragging() }),
     item: { type: 'Card' },
     begin: () => ({
       type: 'Card',
       sourceListId: listId,
       sourceCardId: _id,
-      dimensions: heightRef.current.getBoundingClientRect(),
+      dimensions: rectRef.current.getBoundingClientRect(),
       card,
-      handleDrop,
     }),
-    collect: monitor => ({ isDragging: !!monitor.isDragging() }),
   })
 
   const [{ isOver, hoveringCardHeight }, drop] = useDrop({
     accept: 'Card',
-    drop: item => handleDrop({ item, targetListId: listId, targetCardId: _id, placeholderPos }),
     hover: (item, monitor) => handleDragOver(monitor.getClientOffset().y),
     collect: monitor => ({
       isOver: !!monitor.isOver() && monitor.getItem().sourceCardId !== _id,
-      hoveringCardHeight: monitor.getItem()?.dimensions.height,
+      hoveringCardHeight: monitor.getItem()?.dimensions?.height,
     }),
+    drop: (item, monitor) => {
+      handleDrop && handleDrop({ item, targetListId: listId, targetCardId: _id, placeholderPos })
+    },
   })
 
   const handleDragOver = offsetY => {
-    const { top, height } = heightRef.current.getBoundingClientRect()
+    const { top, height } = rectRef.current.getBoundingClientRect()
     setPlaceholderPos(top + height / 2 > offsetY ? 0 : 1)
   }
 
   return (
     <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
-      <div ref={heightRef} className="height-ref">
-        <div
-          // className={isOver ? 'fast' : ''}
-          style={{ height: isOver && !placeholderPos ? `${hoveringCardHeight}px` : '0px' }}
-        />
+      <div ref={rectRef} className="rect-ref">
+        {isOver && !placeholderPos && (
+          <div
+            className="placeholder"
+            style={{ height: `${hoveringCardHeight}px`, paddingBottom: '6px' }}>
+            <div className="container" />
+          </div>
+        )}
         <div ref={drag} className="card-preview fast">
           <div onClick={onOpenModal} className={`container`}>
             <div className="card-title">{title}</div>
@@ -80,10 +81,13 @@ export const Card = ({ card, listId, handleDrop }) => {
             </div>
           </div>
         </div>
-        <div
-          // className={isOver ? 'fast' : ''}
-          style={{ height: isOver && placeholderPos ? `${hoveringCardHeight}px` : '0px' }}
-        />
+        {isOver && !!placeholderPos && (
+          <div
+            className="placeholder"
+            style={{ height: `${hoveringCardHeight}px`, paddingTop: '6px' }}>
+            <div className="container" />
+          </div>
+        )}
       </div>
     </div>
   )
