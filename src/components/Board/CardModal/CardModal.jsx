@@ -22,11 +22,11 @@ export const CardModal = props => {
   }, [id, board])
 
   useEffect(() => {
-    document.addEventListener('keyup', handleClick)
-    document.getElementById('root').addEventListener('mousedown', handleClick)
+    document.addEventListener('keyup', closeModal)
+    document.getElementById('root').addEventListener('mouseup', closeModal)
     return () => {
-      document.removeEventListener('keyup', handleClick)
-      document.getElementById('root').removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keyup', closeModal)
+      document.getElementById('root').removeEventListener('mouseup', closeModal)
     }
   }, [])
 
@@ -34,14 +34,14 @@ export const CardModal = props => {
     dispatch(UPDATE_CARD({ field, value, cardId: id }))
   }
 
-  const handleClick = ev => {
-    if (ev.key === 'Escape' || !outClick.current.contains(ev.target)) history.push('/board')
+  const closeModal = ev => {
+    if (ev.key === 'Escape' || outClick.current === ev.target) history.push('/board')
   }
 
   return (
     card &&
     users && (
-      <div className="modal-section fvw" ref={outClick}>
+      <div className="modal-section" ref={outClick}>
         <div className="modal-container">
           <NavLink className="exit-btn" to="/board">
             X
@@ -78,11 +78,17 @@ export const CardModal = props => {
             <h3>Description</h3>
             <Textarea desc={desc} updateCard={updateCard}></Textarea>
           </div>
-          {checklist[0] && <div className="checklists-container">
-              {checklist.map((currChecklist, idx) => 
-                <CardChecklists key={idx} cardChecklists={checklist} checklist={currChecklist} cardId={id}></CardChecklists>
-              )}
-          </div>}
+          {checklist[0] && (
+            <div className="checklists-container">
+              {checklist.map((currChecklist, idx) => (
+                <CardChecklists
+                  key={idx}
+                  cardChecklists={checklist}
+                  checklist={currChecklist}
+                  cardId={id}></CardChecklists>
+              ))}
+            </div>
+          )}
           {attachments[0] && (
             <div className="attachments-container">
               <h3>Attachments</h3>
