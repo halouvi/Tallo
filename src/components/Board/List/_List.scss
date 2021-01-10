@@ -1,86 +1,81 @@
->.list {
-  width: 272px;
-  margin: 0 4px;
-  // height: 100%;
-  box-sizing: border-box;
-  display: inline-block;
-  vertical-align: top;
-  // white-space: nowrap;
-  border-radius: 3px;
-
-  >.container {
-    border-radius: inherit;
-    padding: 0 6px 6px;
-    background-color: #ebecf0;
-    max-height: 100%;
-
-    // position: relative;
-    // white-space: normal;
-    >.list-title {
-      padding: 12px 6px;
-      font-weight: bold;
-      color: rgb(94, 93, 93);
-    }
-
-    >.cards {
-      flex: 1 1 auto;
-      overflow-y: auto;
-      overflow-x: hidden;
-      @import '../Card/Card';
-    }
+> .list-drop-container {
+  > div {
+    padding: 0 4px;
   }
 
-  .add-card-form {
+  .list {
+    width: 272px;
+    box-sizing: border-box;
+    border-radius: 3px;
 
-    input {
-      width: 100%;
-      height: 65px;
-      border: none;
+    > .container {
+      border-radius: inherit;
+      background-color: #d5d6da;
+      max-height: 100%;
+      padding: 0 6px 6px;
+      > .list-title {
+        margin: 6px 0;
+        position: relative;
+        color: rgb(50, 50, 50);
+        background-color: transparent;
+        border: none;
+        padding: 8px 6px;
+        font-weight: bold;
+        border-radius: 6px;
+        border: none;
+        border: 2px solid transparent;
+        &:focus {
+          background-color: white;
+          border-color: black;
+        }
+      }
+      > .cards {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+    }
+
+    .add-card-form {
+      input {
+        width: 100%;
+        height: 65px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+        margin-bottom: 5px;
+      }
+    }
+
+    .add-card {
+      color: rgb(116, 116, 116);
+      cursor: pointer;
+      padding: 10px;
       border-radius: 5px;
-      box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
-      margin-bottom: 5px;
 
+      &:hover {
+        background-color: rgba(173, 172, 172, 0.582);
+      }
+
+      // span {
+      //   font-size: 1.5rem;
+      // }
+    }
+    .add-card-btns {
+      display: flex;
+      margin-bottom: 3px;
+
+      .add-card-btn {
+        background-color: #5aac44;
+        padding: 6px 12px;
+        border-radius: 3px;
+        color: white;
+        margin-right: 10px;
+      }
+      .close-btn {
+        font-size: 1.2rem;
+        color: gray;
+      }
     }
   }
-
-  .add-card {
-    color: rgb(116, 116, 116);
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
-
-    &:hover {
-      background-color: rgba(173, 172, 172, 0.582);
-    }
-
-    // span {
-    //   font-size: 1.5rem;
-    // }
-
-  }
-  .add-card-btns {
-    display: flex;
-    margin-bottom: 3px;
-
-
-    .add-card-btn {
-      background-color: #5aac44;
-      padding: 6px 12px;
-      border-radius: 3px;
-      color: white;
-      margin-right: 10px;
-    }
-    .close-btn {
-      font-size: 1.2rem;
-      color: gray;
-    }
-  }
-}
-
-.insert-list {
-  width: 100px;
-  height: 50px;
-  // display: inline-block;
-
-  // border: 1px solid gray;
 }

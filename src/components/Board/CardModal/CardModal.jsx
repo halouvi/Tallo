@@ -1,7 +1,7 @@
 import { Avatar } from '@material-ui/core'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useHistory, useParams } from 'react-router-dom'
 import { GET_BOARD_BY_ID, GET_CARD_BY_ID, UPDATE_CARD } from '../../../store/board/BoardActions'
 import { Textarea } from '../../Textarea/Textarea'
 import { CardAvatars } from '../avatars/CardAvatars'
@@ -12,19 +12,35 @@ export const CardModal = props => {
   const { activity, title, attachments, members, desc, labels } = card || {}
   const { id } = useParams()
   const dispatch = useDispatch()
+  const history = useHistory()
+  const outClick = useRef()
 
-  useEffect(async () => {
-    if (!board) await dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
-    dispatch(GET_CARD_BY_ID(id))
-  }, [id])
+  useEffect(() => {
+    if (board) dispatch(GET_CARD_BY_ID(id))
+    else dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
+  }, [id, board])
+
+  useEffect(() => {
+    document.addEventListener('keyup', handleClick)
+    document.getElementById('root').addEventListener('mousedown', handleClick)
+    return () => {
+      document.removeEventListener('keyup', handleClick)
+      document.getElementById('root').removeEventListener('mousedown', handleClick)
+    }
+  }, [])
 
   const updateCard = ({ field, value }) => {
     dispatch(UPDATE_CARD({ field, value, cardId: id }))
   }
+
+  const handleClick = ev => {
+    if (ev.key === 'Escape' || !outClick.current.contains(ev.target)) history.push('/board')
+  }
+
   return (
     card &&
     users && (
-      <div className="modal-section">
+      <div className="modal-section fvw" ref={outClick}>
         <div className="modal-container">
           <NavLink className="exit-btn" to="/board">
             X
@@ -37,18 +53,18 @@ export const CardModal = props => {
             </p>
           </div>
           <div className="members-container">
-            {members && members[0] && (
+            {members?.length && (
               <CardAvatars className="card-avatars" members={members}></CardAvatars>
             )}
           </div>
-          {card?.labels[0] && (
+          {labels?.length && (
             <div className="labels-section">
               <h3>Labels</h3>
               <div className="labels-container">
                 {board.labels.map(
-                  ({ _id, color, name }) =>
-                    labels.some(label => label === _id) && (
-                      <div className="label-container" key={_id}>
+                  ({ _id: gLabelId, color, name }) =>
+                    labels.some(labelId => labelId === gLabelId) && (
+                      <div className="label-container" key={gLabelId}>
                         <div className={`label ${color}`}></div>
                         <p>{name}</p>
                       </div>
@@ -76,7 +92,7 @@ export const CardModal = props => {
                   fullname && (
                     <li key={createdAt}>
                       <div className="activity-main">
-                        <Avatar key={createdAt} alt={fullname} src={imgUrl ? imgUrl : '/'} />
+                        <Avatar alt={fullname} src={imgUrl ? imgUrl : '/'} />
                         <h3>{fullname}</h3>
                         <p>{activity}</p>
                       </div>

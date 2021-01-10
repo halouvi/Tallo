@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import UtilService from '../../../../service/UtilService'
+import utilService from '../../../../service/utilService'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 
 export const LabelEditor = ({ labelToEdit, setLabelToEdit, editMode, colors }) => {
@@ -8,15 +8,14 @@ export const LabelEditor = ({ labelToEdit, setLabelToEdit, editMode, colors }) =
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const [updatedLabel, setUpdatedLabel] = useState({ ...labelToEdit })
 
-  const handleInput = ev => {
-    const { name, value } = ev.target
+  const handleInput = ({ target: { name, value } }) => {
     setUpdatedLabel({ ...updatedLabel, [name]: value })
   }
 
   const saveLabel = () => {
     const labelsClone = JSON.parse(JSON.stringify(gLabels))
     if (!updatedLabel._id) {
-      updatedLabel._id = UtilService.makeId()
+      updatedLabel._id = utilService.makeId()
       labelsClone.push(updatedLabel)
     } else {
       const idx = gLabels.findIndex(label => label._id === labelToEdit._id)
@@ -35,7 +34,7 @@ export const LabelEditor = ({ labelToEdit, setLabelToEdit, editMode, colors }) =
 
   return (
     <>
-      <button className="ass" onClick={()=>setLabelToEdit(null)}>
+      <button className="ass" onClick={() => setLabelToEdit(null)}>
         Back
       </button>
       <span className="title bold asc">{updatedLabel._id ? 'Edit' : 'Add'} Label</span>

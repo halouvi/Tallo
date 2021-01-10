@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { uploadImg } from '../../../../service/ImgUploadService.js';
+import { uploadImg } from '../../../../service/imgUploadService.js';
 import { UPDATE_CARD } from '../../../../store/board/BoardActions.js';
 
 export const Attachment = ({ card: { attachments, _id: cardId }, setAnchorEl }) => {

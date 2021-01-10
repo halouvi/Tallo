@@ -1,13 +1,18 @@
+import { useLayoutEffect } from 'react'
 import { useState, useEffect, useRef } from 'react'
-import ContentEditable from 'react-contenteditable'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
-export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
-  const dispatch = useDispatch()
+export const List = ({ list, handleDrop, addCard }) => {
+  const { _id, title, cards } = list
   const [isAddCard, setisAddCard] = useState(false)
+  const [placeholderPos, setPlaceholderPos] = useState(0)
+  const widthRef = useRef(null)
+  const dispatch = useDispatch()
+  const [thisListWidth, setThisListWidth] = useState(null)
+  useLayoutEffect(() => setThisListWidth(window.getComputedStyle(widthRef.current).width), [])
 
   const [newCard, setNewCard] = useState({
     title: '',
@@ -22,8 +27,8 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
 
   const [{ isDragging }, drag] = useDrag({
     item: {
-      type: 'LIST',
-      sourceListIdx: thisListIdx,
+      type: 'List',
+      sourceListId: _id,
     },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
@@ -31,38 +36,33 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
   })
 
   const [{ isOver }, drop] = useDrop({
-    accept: ['CARD', 'LIST'],
+    accept: ['Card', 'List'],
     drop: (item, monitor) => {
-      !monitor.didDrop() && handleDrop(item, thisListIdx)
+      !monitor.didDrop() && handleDrop({ item, targetListId: _id, placeholderPos })
     },
+    hover: (item, monitor) => handleDragOver(monitor.getClientOffset().x),
     collect: monitor => ({
-      isOver: !!monitor.isOver(),
+      isOver: !!monitor.isOver() && monitor.getItemType() === 'List',
     }),
   })
 
-  const handleInput = ev => {
-    const field = ev.target.name
-    const value = ev.target.value
-    setNewCard({ ...newCard, [field]: value })
+  const handleDragOver = offsetX => {
+    const { left, width } = widthRef.current.getBoundingClientRect()
+    setPlaceholderPos(left + width / 2 > offsetX ? 0 : 1)
   }
 
-  var timer
-  const editables = {
-    title: list.title,
+  const handleInput = ({ target: { name, value } }, item) => {
+    if (item === 'Card') setNewCard({ ...newCard, [name]: value })
+    if (item === 'List') dispatch(UPDATE_LIST({ name, value, listId: _id }))
   }
-  const handleEditable = ev => {
-    const field = ev.currentTarget.id
-    const value = ev.currentTarget.innerText
-    editables[field] = value
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      dispatch(UPDATE_LIST({ field, value, listId: list._id }))
-    }, 500)
+
+  const handleKeyUp = ({ target, key }) => {
+    if (key === 'Enter' || key === 'Escape') target.blur()
   }
 
   const onAddCard = ev => {
     ev.preventDefault()
-    addCard(newCard, list._id)
+    addCard(newCard, _id)
     setisAddCard(false)
     setNewCard({
       title: '',
@@ -77,61 +77,57 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
   }
 
   return (
-    <>
-      {/* <div ref={drop} className={isOver ? 'insert-list' : ''}></div> */}
-      <div ref={drag} className={`list flex col`}>
-        <div
-          ref={drop}
-          className={`container flex col${isOver ? ' is-over' : isDragging ? ' is-dragging' : ''}`}>
-          <ContentEditable
-            tagName="span"
-            id="title"
-            className="list-title"
-            html={editables.title}
-            onChange={handleEditable}
-          />
-          <div className="cards flex col">
-            {/* {isOver? <div>insert here</div> : '' } */}
-            {list.cards.map((card, idx) => (
-              <Card
-                key={card._id}
-                card={card}
-                thisListIdx={thisListIdx}
-                thisCardIdx={idx}
-                handleDrop={handleDrop}
-              />
-            ))}
-          </div>
-          {isAddCard && (
-            <form action="" className="add-card-form" onSubmit={onAddCard}>
-              <input
-                placeholder="Enter a title for this card..."
-                type="text"
-                name="title"
-                value={newCard.title}
-                onChange={handleInput}
-                id=""
-              />
-              <div className="add-card-btns">
-                <button className="add-card-btn">Add Card</button>
-                <button
-                  onClick={ev => {
-                    ev.preventDefault()
-                    setisAddCard(false)
-                  }}
-                  className="close-btn">
-                  X
-                </button>
-              </div>
-            </form>
-          )}
-          {!isAddCard && (
-            <div className="add-card" onClick={() => setisAddCard(true)}>
-              <span>+</span> Add another card
+    <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
+      <div ref={widthRef} className="flex width-ref">
+        <div style={{ width: isOver && !placeholderPos ? thisListWidth : '0px' }} className="" />
+        <div ref={drag} className={`list flex col`}>
+          <div className="container flex col">
+            <input
+              name="title"
+              className="list-title fast"
+              value={title}
+              onFocus={ev => ev.target.select()}
+              onChange={ev => handleInput(ev, 'List')}
+              onKeyUp={handleKeyUp}
+            />
+            <div className="cards flex col">
+              {/* {isOver? <div>insert here</div> : '' } */}
+              {cards.map(card => (
+                <Card key={card._id} card={card} listId={_id} handleDrop={handleDrop} />
+              ))}
             </div>
-          )}
+            {isAddCard && (
+              <form action="" className="add-card-form" onSubmit={onAddCard}>
+                <input
+                  placeholder="Enter a title for this card..."
+                  type="text"
+                  name="title"
+                  value={newCard.title}
+                  onChange={ev => handleInput(ev, 'Card')}
+                  id=""
+                />
+                <div className="add-card-btns">
+                  <button className="add-card-btn">Add Card</button>
+                  <button
+                    onClick={ev => {
+                      ev.preventDefault()
+                      setisAddCard(false)
+                    }}
+                    className="close-btn">
+                    X
+                  </button>
+                </div>
+              </form>
+            )}
+            {!isAddCard && (
+              <div className="add-card" onClick={() => setisAddCard(true)}>
+                <span>+</span> Add another card
+              </div>
+            )}
+          </div>
         </div>
+        <div style={{ width: isOver && placeholderPos ? thisListWidth : '0px' }} className="" />
       </div>
-    </>
+    </div>
   )
 }

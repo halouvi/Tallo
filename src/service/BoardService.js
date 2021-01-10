@@ -1,5 +1,5 @@
 // import utilService from './util-service'
-import { httpService } from './HttpService'
+import { httpService } from './httpService'
 
 export const boardService = {
   // query(query = {}) {
@@ -9,9 +9,13 @@ export const boardService = {
   //   }
   //   return httpService.get(`board/${queryURL}`)
   // },
-  getById(id) {
+  getById: async id => {
     // return boards.find(board => board._id === id)
+    // try {
     return httpService.get(`board/${id}`)
+    // } catch (error) {
+    // throw new Error(error)
+    // }
   },
   update(board) {
     // const idx = boards.findIndex(board => board._id === updatedBoard._id)
@@ -28,7 +32,7 @@ export const boardService = {
   // },
   // save(board) {
   //   if (board._id) {
-      // return httpService.put(`board/${board._id}`, board)
+  // return httpService.put(`board/${board._id}`, board)
   //   } else {
   //     return _add(board).then(board => board)
   //   }
@@ -49,21 +53,21 @@ const boards = [
         cards: [
           {
             _id: 'c101',
-            title: 'Card 1'
+            title: 'Card 1',
           },
           {
             _id: 'c102',
-            title: 'Card 2'
+            title: 'Card 2',
           },
           {
             _id: 'c103',
-            title: 'Card 3'
+            title: 'Card 3',
           },
           {
             _id: 'c104',
-            title: 'Card 4'
-          }
-        ]
+            title: 'Card 4',
+          },
+        ],
       },
       {
         _id: 'l102',
@@ -71,21 +75,21 @@ const boards = [
         cards: [
           {
             _id: 'c201',
-            title: 'Card 1'
+            title: 'Card 1',
           },
           {
             _id: 'c202',
-            title: 'Card 2'
+            title: 'Card 2',
           },
           {
             _id: 'c203',
-            title: 'Card 3'
+            title: 'Card 3',
           },
           {
             _id: 'c204',
-            title: 'Card 4'
-          }
-        ]
+            title: 'Card 4',
+          },
+        ],
       },
       {
         _id: 'l103',
@@ -93,21 +97,21 @@ const boards = [
         cards: [
           {
             _id: 'c301',
-            title: 'Card 1'
+            title: 'Card 1',
           },
           {
             _id: 'c302',
-            title: 'Card 2'
+            title: 'Card 2',
           },
           {
             _id: 'c303',
-            title: 'Card 3'
+            title: 'Card 3',
           },
           {
             _id: 'c304',
-            title: 'Card 4'
-          }
-        ]
+            title: 'Card 4',
+          },
+        ],
       },
       {
         _id: 'l104',
@@ -115,22 +119,22 @@ const boards = [
         cards: [
           {
             _id: 'c401',
-            title: 'Card 1'
+            title: 'Card 1',
           },
           {
             _id: 'c402',
-            title: 'Card 2'
+            title: 'Card 2',
           },
           {
             _id: 'c403',
-            title: 'Card 3'
+            title: 'Card 3',
           },
           {
             _id: 'c404',
-            title: 'Card 4'
-          }
-        ]
-      }
-    ]
-  }
+            title: 'Card 4',
+          },
+        ],
+      },
+    ],
+  },
 ]
