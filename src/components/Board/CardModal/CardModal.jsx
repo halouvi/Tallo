@@ -54,11 +54,11 @@ export const CardModal = props => {
             </p>
           </div>
           <div className="members-container">
-            {members?.length && (
+            {(members?.length > 0) && (
               <CardAvatars className="card-avatars" members={members}></CardAvatars>
             )}
           </div>
-          {labels?.length && (
+          {(labels?.length > 0) && (
             <div className="labels-section">
               <h3>Labels</h3>
               <div className="labels-container">
