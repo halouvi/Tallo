@@ -1,10 +1,11 @@
 import { Checkbox } from "@material-ui/core"
+import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { UPDATE_CARD } from "../../../store/board/BoardActions";
 import ProgressBar from "./ProgressBar/ProgressBar"
 
 export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
-
+    const [showInput, setShowInput] = useState(false);
     const dispatch = useDispatch();
 
     const progressStatus = () => {
@@ -23,6 +24,10 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         dispatch(UPDATE_CARD({ field: 'checklist', value: [...lists], cardId }));
     }
 
+    const toggleInput = () => {
+        setShowInput(!showInput)
+    }
+
 
     return (
         <div className="checklists-section">
@@ -39,7 +44,12 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
                     <p>{item.desc}</p>
                 </div>
             ))}
-            {/* <button>Add an item</button> */}
+            { !showInput && <button onClick={toggleInput}>Add an item</button>}
+            {showInput && <div className="add-item-container">
+                <input type="text" name="" id=""/>
+                <button>Add</button> <button onClick={toggleInput}>X</button>
+            </div>
+            }
         </div>
     )
 }
