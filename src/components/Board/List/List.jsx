@@ -15,7 +15,7 @@ export const List = ({ list, thisListIdx, handleDrop, addCard }) => {
     attachments: [],
     checklist: [],
     desc: '',
-    dueDate: 0,
+    dueDate: '',
     labels: [],
     members: [],
   })
