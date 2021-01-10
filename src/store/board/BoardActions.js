@@ -107,7 +107,7 @@ const _activityLog = (card, field) => {
       activity = "Changed card's due date"
       break
     case 'checklist':
-      activity = 'Added a checklist to card'
+      activity = 'Changed a checklist item'
       break
     default:
       break

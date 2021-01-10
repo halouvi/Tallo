@@ -3,18 +3,40 @@
 
   .checklist-item-container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 10px 10px 10px 0;
+    border-radius: 4px;
 
+    .checklist-item-main {
+      display: flex;
+      align-items: center;
+
+      >*:not(:last-child) {
+        margin-inline-end: 10px;
+      }
+
+      .PrivateSwitchBase-root-17 {
+        padding: 0;
+      }
+
+      
+      p {
+        margin: 0;
+      }
+    }
     &:last-of-type {
       margin-bottom: 10px;
     }
 
-    p {
-      margin: 0;
+    &:hover {
+      background-color: rgba(211, 211, 211, 0.548);
     }
+
+
   }
 
-  button {
+  >button {
     align-self: flex-start;
     padding: 5px 8px;
     border-radius: 3px;
@@ -22,5 +44,39 @@
     background-color: lightgray;
     color: rgb(58, 57, 57);
     width: fit-content;
+  }
+
+  .add-item-container {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      height: 70px;
+      border-radius: 4px;
+      border: 1px solid gray;
+      margin-bottom: 7px;
+    }
+
+    .btns-container {
+      display: flex;
+
+      button {
+        align-self: flex-start;
+        padding: 5px 8px;
+        border-radius: 3px;
+        background-color: royalblue;
+        color: white;
+        width: fit-content;
+
+        &:last-child {
+          background-color: lightgray;
+          color: rgb(58, 57, 57);
+        }
+      }
+
+      :not(:last-child) {
+        margin-inline-end: 10px;
+      }
+    }
   }
 }
