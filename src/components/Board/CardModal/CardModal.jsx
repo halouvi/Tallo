@@ -5,11 +5,12 @@ import { NavLink, useHistory, useParams } from 'react-router-dom'
 import { GET_BOARD_BY_ID, GET_CARD_BY_ID, UPDATE_CARD } from '../../../store/board/BoardActions'
 import { Textarea } from '../../Textarea/Textarea'
 import { CardAvatars } from '../avatars/CardAvatars'
+import { CardChecklists } from '../CardChecklists/CardChecklists'
 import { SideBar } from './SideBar/SideBar'
 
 export const CardModal = props => {
   const { board, list, card, users } = useSelector(state => state.boardReducer) || {}
-  const { activity, title, attachments, members, desc, labels } = card || {}
+  const { activity, title, attachments, members, desc, labels, checklist } = card || {}
   const { id } = useParams()
   const dispatch = useDispatch()
   const history = useHistory()
@@ -77,7 +78,12 @@ export const CardModal = props => {
             <h3>Description</h3>
             <Textarea desc={desc} updateCard={updateCard}></Textarea>
           </div>
-          {attachments.length && (
+          {checklist[0] && <div className="checklists-container">
+              {checklist.map((currChecklist, idx) => 
+                <CardChecklists key={idx} cardChecklists={checklist} checklist={currChecklist} cardId={id}></CardChecklists>
+              )}
+          </div>}
+          {attachments[0] && (
             <div className="attachments-container">
               <h3>Attachments</h3>
               <img src={attachments[0]} alt="" />

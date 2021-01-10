@@ -1,0 +1,26 @@
+.checklists-section {
+  margin-bottom: 20px;
+
+  .checklist-item-container {
+    display: flex;
+    align-items: center;
+
+    &:last-of-type {
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  button {
+    align-self: flex-start;
+    padding: 5px 8px;
+    border-radius: 3px;
+    // background-color: royalblue;
+    background-color: lightgray;
+    color: rgb(58, 57, 57);
+    width: fit-content;
+  }
+}

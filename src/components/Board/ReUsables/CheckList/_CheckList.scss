@@ -1,0 +1,27 @@
+.checklist-section {
+
+  form {
+    >*:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    button {
+      align-self: flex-start;
+      padding: 4px 7px;
+      border-radius: 3px;
+      background-color: royalblue;
+      color: white;
+      width: fit-content;
+    }
+  }
+
+  input {
+    height: 30px;
+  }
+
+  label {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: rgb(105, 103, 103);
+  }
+}
