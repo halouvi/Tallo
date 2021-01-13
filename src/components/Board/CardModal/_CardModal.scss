@@ -98,50 +98,70 @@
           align-items: center;
 
           &:not(:last-child) {
-            margin-inline-end: 10px;
+            margin-bottom: 15px;
           }
 
-          p {
-            font-size: 0.6rem;
-          }
-        }
-
-        .label {
-          width: 40px;
-          height: 40px;
-          border-radius: 5px;
-        }
-      }
-
-      .activity-section {
-        > h3 {
-          margin-bottom: 10px;
-        }
-
-        .activity-container {
-          li {
+          .activity-main {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 8px;
 
-            .activity-main {
+            p {
+              font-size: 0.6rem;
+            }
+          }
+
+          .label {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+          }
+        }
+
+        .activity-section {
+          > h3 {
+            margin-bottom: 10px;
+          }
+
+          .activity-container {
+            li {
               display: flex;
-              align-items: center;
-              gap: 8px;
+              flex-direction: column;
 
-              h3 {
-                font-size: 1rem;
+              .activity-main {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                h3 {
+                  font-size: 1rem;
+                }
+
+                p {
+                  margin: 0;
+                  font-size: 0.9rem;
+                  color: rgb(82, 81, 81);
+                }
               }
 
-              p {
-                margin: 0;
+              > p {
                 font-size: 0.9rem;
-                color: rgb(82, 81, 81);
+                color: rgb(105, 103, 103);
               }
             }
 
-            > p {
-              font-size: 0.9rem;
-              color: rgb(105, 103, 103);
+            .activity-scondary {
+              display: flex;
+              flex-direction: column;
+
+              > p {
+                font-size: 0.9rem;
+                color: rgb(105, 103, 103);
+              }
+            }
+            .activity-txt {
+              display: flex;
+              gap: 8px;
             }
           }
         }

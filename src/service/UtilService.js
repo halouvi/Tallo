@@ -1,5 +1,5 @@
 export default {
-  makeId(length = 5) {
+  makeId(length = 8) {
     var txt = ''
     var possible =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'

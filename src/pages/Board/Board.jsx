@@ -15,11 +15,11 @@ import { socketService, socketTypes } from '../../service/socketService.js'
 const _id = '5fe4b65432d4a24dbcb7afa2'
 
 export const Board = () => {
-  const { lists, title } = useSelector(state => state.boardReducer.board) || {}
+  const { lists, title, _id } = useSelector(state => state.boardReducer.board) || {}
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(GET_BOARD_BY_ID(_id))
+    if(!_id) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
     socketService.setup()
     socketService.emit(socketTypes.JOIN_BOARD, _id)
     socketService.on(socketTypes.BOARD_UPDATED, board =>

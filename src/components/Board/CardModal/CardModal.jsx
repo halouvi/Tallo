@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core'
-import { useEffect, useRef, useState } from 'react'
+import moment from 'moment'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { GET_BOARD_BY_ID, GET_CARD_BY_ID, UPDATE_CARD } from '../../../store/board/BoardActions'
@@ -55,6 +56,10 @@ export const CardModal = props => {
     else if (type === 'mouseup' && !outClick.current.contains(target)) goBack()
   }
 
+  const dateConvert = time => {
+    return moment(time).fromNow()
+  }
+
   return (
     card &&
     users && (
@@ -62,12 +67,7 @@ export const CardModal = props => {
         <div className="modal-section" ref={outClick}>
           <div className="container">
             <div className="modal-header flex as jb">
-              <input
-                autoComplete="off"
-                name="title"
-                value={title}
-                onChange={handleInput}
-              />
+              <input autoComplete="off" name="title" value={title} onChange={handleInput} />
               <button className="exit-btn fast flex ac jc" onClick={goBack}>
                 X
               </button>
@@ -135,10 +135,14 @@ export const CardModal = props => {
                       <li key={createdAt}>
                         <div className="activity-main">
                           <Avatar alt={fullname} src={imgUrl ? imgUrl : '/'} />
-                          <h3>{fullname}</h3>
-                          <p>{activity}</p>
+                          <div className="activity-secondary">
+                            <div className="activity-txt">
+                              <h3>{fullname}</h3>
+                              <p>{activity}</p>
+                            </div>
+                            <p>{dateConvert(createdAt)}</p>
+                          </div>
                         </div>
-                        <p>{createdAt}</p>
                       </li>
                     )
                   )

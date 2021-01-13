@@ -11,14 +11,9 @@ import { DragLayer } from './components/DragLayer/DragLayer'
 import { socketService } from './service/socketService'
 import { useEffect } from 'react'
 import './styles/styles.scss'
+import { CreateBoardModal } from './components/Board/CreateBoardModal/CreateBoardModal'
 
 export const App = () => {
-  // useEffect(() => {
-  //   socketService.setup()
-  //   return () => {
-  //     socketService.terminate()
-  //   }
-  // }, [])
   return (
     <ReduxProvider store={store}>
       <DndProvider backend={MouseBackEnd}>
@@ -31,6 +26,7 @@ export const App = () => {
             <Route path="/" component={Home} />
           </Switch>
           <Route path="/board/modal/:_id" component={CardModal} />
+          <Route path="/create-modal" component={CreateBoardModal} />
         </Router>
         <DragLayer />
       </DndProvider>
