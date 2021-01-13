@@ -1,7 +1,11 @@
 import io from 'socket.io-client'
-const BASE_URL =
-  process.env.NODE_ENV === 'production' ? '/' : '//localhost:3030'
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/' : '//localhost:3030'
 var socket
+
+export const socketTypes = {
+  JOIN_BOARD: 'JOIN_BOARD',
+  BOARD_UPDATED: 'BOARD_UPDATED',
+}
 
 export const socketService = {
   setup() {

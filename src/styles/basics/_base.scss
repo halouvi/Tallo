@@ -2,26 +2,15 @@
   box-sizing: border-box;
 }
 
-html {
-  height: 100%;
-  color: $black;
-  // background-color: $white;
-  background-color: rgb(0, 174, 204);
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
-}
-
 body {
-  height: 100%;
-  overflow-x: hidden;
   margin: 0;
 }
 
 #root {
-  height: 100%;
-  overflow: auto;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  color: $black;
+  background-color: rgb(0, 174, 204);
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
 }
 
 h1,
@@ -54,15 +43,12 @@ li {
 
 input {
   outline: 0px;
-  &:focus {
-    // outline-color: black !important;
-  }
 }
 
 img {
   display: block;
-  width: 100%;
-  object-fit: cover;
+  // width: 100%;
+  object-fit: contain;
 }
 
 button {

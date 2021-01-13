@@ -1,7 +1,9 @@
 import { boardService } from '../../service/boardService'
 import utilService from '../../service/utilService'
+import { socketService, socketTypes } from '../../service/socketService.js'
+import { cloneDeep as clone } from 'lodash'
 
-export const types = {
+export const boardTypes = {
   SET_BOARD: 'SET_BOARD',
   SET_USERS: 'SET_USERS',
   SET_CARD: 'SET_CARD',
@@ -13,14 +15,14 @@ export const types = {
 export const ADD_BOARD = newBoard => async dispatch => {
   const { board, users } = await boardService.add(newBoard)
   console.log(board);
-  dispatch({ type: types.SET_BOARD, payload: board })
-  dispatch({ type: types.SET_USERS, payload: users })
+  dispatch({ type: boardTypes.SET_BOARD, payload: board })
+  dispatch({ type: boardTypes.SET_USERS, payload: users })
 }
 
 export const GET_BOARD_BY_ID = id => async dispatch => {
   const { board, users } = await boardService.getById(id)
-  dispatch({ type: types.SET_BOARD, payload: board })
-  dispatch({ type: types.SET_USERS, payload: users })
+  dispatch({ type: boardTypes.SET_BOARD, payload: board })
+  dispatch({ type: boardTypes.SET_USERS, payload: users })
 }
 
 export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
@@ -30,62 +32,67 @@ export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
 }
 
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
-  const prevBoard = getState().boardReducer.board
-  const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
+  const nextBoard = clone(getState().boardReducer.board)
   card._id = utilService.makeId()
   card = _activityLog(card, 'card')
-  var listIdx = updatedBoard.lists.findIndex(list => list._id === listId)
-  updatedBoard.lists[listIdx].cards.push(card)
-  dispatch(_saveBoard(updatedBoard))
+  var listIdx = nextBoard.lists.findIndex(list => list._id === listId)
+  nextBoard.lists[listIdx].cards.push(card)
+  dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const GET_CARD_BY_ID = cardId => async (dispatch, getState) => {
-  const board = getState().boardReducer.board
-  const { list, card } = _findItems(board, cardId)
-  dispatch({ type: types.SET_LIST, payload: list })
-  dispatch({ type: types.SET_CARD, payload: card })
+export const GET_CARD_BY_ID = cardId => (dispatch, getState) => {
+  const { lists } = getState().boardReducer.board
+  return findItems(lists, cardId)
 }
 
-export const UPDATE_CARD = ({ field, value, cardId }) => async (dispatch, getState) => {
-  const prevBoard = getState().boardReducer.board
-  const updatedBoard = JSON.parse(JSON.stringify(prevBoard))
-  var { card } = _findItems(updatedBoard, cardId)
-  card[field] = value
-  card = _activityLog(card, field)
-  await dispatch(_saveBoard(updatedBoard))
-  dispatch(GET_CARD_BY_ID(cardId))
+export const UPDATE_CARD = ({ name, value, cardId }) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  var { card } = findItems(nextBoard.lists, cardId)
+  card[name] = value
+  card = _activityLog(card, name)
+  dispatch(SAVE_BOARD(nextBoard))
 }
 
 export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
-  const updatedBoard = JSON.parse(JSON.stringify(getState().boardReducer.board))
-  const list = updatedBoard.lists.find(list => list._id === listId)
+  const nextBoard = clone(getState().boardReducer.board)
+  const { list } = nextBoard.lists.find(list => list._id === listId)
   list[name] = value
-  dispatch(_saveBoard(updatedBoard))
+  dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const UPDATE_BOARD = ({ field, value }) => (dispatch, getState) => {
-  const updatedBoard = JSON.parse(JSON.stringify(getState().boardReducer.board))
-  updatedBoard[field] = value
-  dispatch(_saveBoard(updatedBoard))
+export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  nextBoard[name] = value
+  dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const _saveBoard = updatedBoard => async (dispatch, getState) => {
-  const prevBoard = JSON.parse(JSON.stringify(getState().boardReducer.board))
-  dispatch({ type: types.SET_BOARD, payload: updatedBoard })
+export const SAVE_BOARD = nextBoard => async (dispatch, getState) => {
+  const prevBoard = clone(getState().boardReducer.board)
+  dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
   try {
-    await boardService.update(updatedBoard)
+    await boardService.update(nextBoard)
+    socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
   } catch (error) {
-    dispatch({ type: types.SET_BOARD, payload: prevBoard })
+    dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
     console.error('Could not update board', error)
   }
 }
 
-const _findItems = (board, cardId) => {
-  const list = board.lists.find((list, index) => {
-    return list.cards.find(card => card._id === cardId)
-  })
-  const card = list.cards.find(card => card._id === cardId)
-  return { list, card }
+export const findItems = (lists, cardId) => {
+  var card
+  var cardIdx
+  var listIdx
+  var list = lists.find((list, lstIdx) =>
+    list.cards.find((crd, crdIdx) => {
+      if (crd._id === cardId) {
+        card = crd
+        cardIdx = crdIdx
+        listIdx = lstIdx
+        return true
+      } else return false
+    })
+  )
+  return { list, listIdx, card, cardIdx }
 }
 
 const _activityLog = (card, field) => {

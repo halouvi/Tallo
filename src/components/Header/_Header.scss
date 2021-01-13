@@ -1,11 +1,8 @@
 header {
-  height: $headerHeight;
+  height: 10vh;
   background-color: $black;
-  position: sticky;
-  top: 0;
-  z-index: 10;
   color: $white;
-  grid-row: 1;
+  padding: 0.5rem;
   nav {
     width: 200px;
     .active {

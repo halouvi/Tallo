@@ -1,14 +1,10 @@
 .board {
-  user-select: none;
-  white-space: nowrap;
-  margin-bottom: 8px;
-  // overflow: auto;
-  // overflow-x: auto;
-  // overflow-y: hidden;
-  padding-bottom: 8px;
-
-  >.container {
-    // overflow: auto;
-    padding: 1rem 0 0 0;
+  height: 90vh;
+  overflow: hidden;
+  h3 {
+    margin: 0 0 0 0.5rem;
+  }
+  > .container {
+    height: 100%;
   }
 }

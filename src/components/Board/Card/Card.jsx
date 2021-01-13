@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CardAvatars } from '../avatars/CardAvatars'
 
-export const Card = ({ card, listId, handleDrop }) => {
+export const Card = ({ card, handleDrop }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const { _id, title, attachments, members, desc, dueDate, labels } = card || {}
   const [placeholderPos, setPlaceholderPos] = useState(null)
@@ -15,25 +15,28 @@ export const Card = ({ card, listId, handleDrop }) => {
 
   const [{ isDragging }, drag] = useDrag({
     collect: monitor => ({ isDragging: !!monitor.isDragging() }),
-    item: { type: 'Card' },
-    begin: () => ({
-      type: 'Card',
-      sourceListId: listId,
-      sourceCardId: _id,
-      dimensions: rectRef.current.getBoundingClientRect(),
-      card,
-    }),
+    item: { type: 'CARD' },
+    begin: () => {
+      const { height, width } = rectRef.current.getBoundingClientRect()
+      return {
+        type: 'CARD',
+        card,
+        sourceCardId: _id,
+        height,
+        width,
+      }
+    },
   })
 
-  const [{ isOver, hoveringCardHeight }, drop] = useDrop({
-    accept: 'Card',
+  const [{ cardOver, hoverHeight }, drop] = useDrop({
+    accept: 'CARD',
     hover: (item, monitor) => handleDragOver(monitor.getClientOffset().y),
     collect: monitor => ({
-      isOver: !!monitor.isOver() && monitor.getItem().sourceCardId !== _id,
-      hoveringCardHeight: monitor.getItem()?.dimensions?.height,
+      cardOver: !!monitor.isOver() && monitor.getItem().sourceCardId !== _id,
+      hoverHeight: monitor.getItem()?.height,
     }),
-    drop: (item, monitor) => {
-      handleDrop && handleDrop({ item, targetListId: listId, targetCardId: _id, placeholderPos })
+    drop: item => {
+      handleDrop && handleDrop({ item, targetCardId: _id, placeholderPos })
     },
   })
 
@@ -45,17 +48,13 @@ export const Card = ({ card, listId, handleDrop }) => {
   return (
     <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref">
-        {isOver && !placeholderPos && (
-          <div
-            className="placeholder"
-            style={{ height: `${hoveringCardHeight}px`, paddingBottom: '6px' }}>
-            <div className="container" />
-          </div>
+        {cardOver && !placeholderPos && (
+          <div className="placeholder top" style={{ height: `${hoverHeight}px` }} />
         )}
         <div ref={drag} className="card-preview fast">
           <div onClick={onOpenModal} className={`container`}>
             <div className="card-title">{title}</div>
-            {attachments[0] ? <img src={attachments[0]} alt="" /> : ''}
+            <div>{attachments[0] ? <img src={attachments[0]} alt="" /> : ''}</div>
             <p className="card-desc">{desc}</p>
             <div className="labels-section">
               {labels[0] &&
@@ -81,12 +80,8 @@ export const Card = ({ card, listId, handleDrop }) => {
             </div>
           </div>
         </div>
-        {isOver && !!placeholderPos && (
-          <div
-            className="placeholder"
-            style={{ height: `${hoveringCardHeight}px`, paddingTop: '6px' }}>
-            <div className="container" />
-          </div>
+        {cardOver && !!placeholderPos && (
+          <div className="placeholder bottom" style={{ height: `${hoverHeight}px` }} />
         )}
       </div>
     </div>
