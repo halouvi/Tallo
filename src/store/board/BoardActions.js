@@ -11,9 +11,9 @@ export const types = {
 
 
 export const ADD_BOARD = newBoard => async dispatch => {
-  const { board, users } = await boardService.add(newBoard)
-  dispatch({ type: types.SET_BOARD, payload: board })
-  dispatch({ type: types.SET_USERS, payload: users })
+  const boardId = await boardService.add(newBoard)
+  console.log(boardId);
+  dispatch(GET_BOARD_BY_ID(boardId));
 }
 
 export const GET_BOARD_BY_ID = id => async dispatch => {

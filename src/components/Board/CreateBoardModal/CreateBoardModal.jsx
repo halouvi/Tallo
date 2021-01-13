@@ -35,10 +35,8 @@ export const CreateBoardModal = props => {
 
   const addBoard = async () => {
     await dispatch(ADD_BOARD(newBoard));
-    // history.push('/board');
-    history.push('/');
+    history.push('/board'); //need to check how to run it only after board is set..
   }
-
 
   return (
     <div className="create-board-section">
