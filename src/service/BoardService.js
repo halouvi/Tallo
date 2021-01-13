@@ -1,4 +1,4 @@
-// import utilService from './util-service'
+import utilService from './utilService'
 import { httpService } from './httpService'
 
 export const boardService = {
@@ -37,9 +37,27 @@ export const boardService = {
   //     return _add(board).then(board => board)
   //   }
   // },
-  // add(board) {
-  //   return httpService.post(`board`, board)
-  // },
+  add(board) {
+    const newBoard = {
+      title: board.title,
+      labels: [
+        { _id: "label1", name: "Not Started", color: "red" },
+        { _id: "label2", name: "In Progress", color: "orange" },
+        { _id: "label3", name: "QA", color: "yellow" },
+        { _id: "label4", name: "Done", color: "green" },
+        { _id: "label5", name: "Production", color: "blue" }
+      ],
+      users: [JSON.parse(sessionStorage.getItem('loggedUser'))],
+      lists: [
+        {_id: utilService.makeId(), title: 'To Do', cards:[]},
+        {_id: utilService.makeId(), title: 'Doing', cards:[]},
+        {_id: utilService.makeId(), title: 'Done', cards:[]},
+        {_id: utilService.makeId(), title: 'QA', cards:[]}
+      ],
+      activity: []
+    }
+    return httpService.post(`board`, newBoard)
+  },
 }
 
 const boards = [

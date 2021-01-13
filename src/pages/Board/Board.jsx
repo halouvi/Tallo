@@ -10,6 +10,7 @@ export const Board = () => {
 
   useEffect(() => {
     dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
+    // dispatch(GET_BOARD_BY_ID('5ffec4570c1e65325c0e3e19'))
   }, [dispatch])
 
   const addCard = (card, listId) => {
