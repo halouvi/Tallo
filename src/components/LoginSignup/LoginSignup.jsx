@@ -17,7 +17,7 @@ export const LoginSingup = ({ props }) => {
   });
 
   useEffect(() => {
-    console.log(props);
+    // console.log(props);
   }, [])
 
   const onHandleChange = (ev, type) => {
