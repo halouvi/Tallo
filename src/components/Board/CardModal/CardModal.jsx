@@ -1,4 +1,5 @@
 import { Avatar } from '@material-ui/core'
+import moment from 'moment'
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useHistory, useParams } from 'react-router-dom'
@@ -36,6 +37,10 @@ export const CardModal = props => {
 
   const closeModal = ev => {
     if (ev.key === 'Escape' || outClick.current === ev.target) history.push('/board')
+  }
+
+  const dateConvert = (time) => {
+    return moment(time).fromNow();
   }
 
   return (
@@ -105,10 +110,14 @@ export const CardModal = props => {
                     <li key={createdAt}>
                       <div className="activity-main">
                         <Avatar alt={fullname} src={imgUrl ? imgUrl : '/'} />
-                        <h3>{fullname}</h3>
-                        <p>{activity}</p>
+                        <div className="activity-secondary">
+                          <div className="activity-txt">
+                            <h3>{fullname}</h3>
+                            <p>{activity}</p>
+                          </div>
+                          <p>{dateConvert(createdAt)}</p>
+                        </div>
                       </div>
-                      <p>{createdAt}</p>
                     </li>
                   )
                 )

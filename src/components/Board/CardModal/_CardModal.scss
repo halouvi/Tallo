@@ -123,6 +123,10 @@
           display: flex;
           flex-direction: column;
 
+          &:not(:last-child) {
+            margin-bottom: 15px;
+          }
+
           .activity-main {
             display: flex;
             align-items: center;
@@ -137,6 +141,16 @@
               font-size: 0.9rem;
               color: rgb(82, 81, 81);
             }
+          }
+
+          .activity-scondary {
+            display: flex;
+            flex-direction: column;
+
+          }
+          .activity-txt {
+            display: flex;
+            gap: 8px;
           }
 
           >p {
