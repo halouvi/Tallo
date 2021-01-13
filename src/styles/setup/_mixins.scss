@@ -58,19 +58,18 @@
   }
 }
 
-@mixin scrollBar($width, $color) {
+@mixin scrollBar($size, $color) {
   &::-webkit-scrollbar {
-    width: $width;
+    width: $size;
+    height: $size;
+    background-color: $color;
+    border-radius: 2px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #2934624f;
-    border-radius: 10px;
+    background-color: darken($color, 25%);
+    border-radius: 2px;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: $color;
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: darken($color, 1);
+    background-color: darken($color, 40%);
   }
 }

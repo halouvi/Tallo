@@ -2,16 +2,23 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from './store/Store'
 import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import MouseBackEnd from 'react-dnd-mouse-backend'
 import { Header } from './components/Header/Header'
 import { Home } from './pages/Home/Home'
 import { Board } from './pages/Board/Board'
 import { CardModal } from './components/Board/CardModal/CardModal'
 import { DragLayer } from './components/DragLayer/DragLayer'
+import { socketService } from './service/socketService'
+import { useEffect } from 'react'
 import './styles/styles.scss'
 
 export const App = () => {
+  // useEffect(() => {
+  //   socketService.setup()
+  //   return () => {
+  //     socketService.terminate()
+  //   }
+  // }, [])
   return (
     <ReduxProvider store={store}>
       <DndProvider backend={MouseBackEnd}>
@@ -23,11 +30,10 @@ export const App = () => {
             {/* <Route path="/stats" component={Stats} /> */}
             <Route path="/" component={Home} />
           </Switch>
-          <Route path="/board/modal/:id" component={CardModal} />
+          <Route path="/board/modal/:_id" component={CardModal} />
         </Router>
         <DragLayer />
       </DndProvider>
     </ReduxProvider>
   )
 }
-

@@ -1,13 +1,12 @@
-import { useEffect, useLayoutEffect } from 'react'
 import { useState, useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
-export const List = ({ list, addCard, handleDrop }) => {
+export const List = ({ list, addCard, handleDrop}) => {
   const { _id, title, cards } = list
-  const [isAddCard, setisAddCard] = useState(false)
+  const [isAddCard, setIsAddCard] = useState(false)
   const [placeholderPos, setPlaceholderPos] = useState(null)
   const rectRef = useRef(null)
   const dispatch = useDispatch()
@@ -27,28 +26,41 @@ export const List = ({ list, addCard, handleDrop }) => {
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
-    item: { type: 'List' },
-    begin: () => ({
-      type: 'List',
-      sourceListId: _id,
-      dimensions: rectRef.current.getBoundingClientRect(),
-      list,
-    }),
+    item: { type: 'LIST' },
+    begin: () => {
+      const { height, width } = rectRef.current.getBoundingClientRect()
+      return {
+        type: 'LIST',
+        list,
+        sourceListId: _id,
+        width,
+        height,
+      }
+    },
   })
 
-  const [{ isOver, hoveringListDimensions }, drop] = useDrop({
-    accept: ['Card', 'List'],
+  const [{ cardOver, listOver, hoverWidth, hoverHeight }, drop] = useDrop({
+    accept: ['CARD', 'LIST'],
     hover: (item, monitor) => handleDragOver(monitor.getClientOffset().x),
     collect: monitor => ({
-      hoveringListDimensions: monitor.getItem()?.dimensions,
-      isOver:
+      hoverWidth: monitor.getItem()?.width,
+      hoverHeight: monitor.getItem()?.height,
+      cardOver:
         !!monitor.isOver() &&
-        monitor.getItemType() === 'List' &&
+        monitor.getItemType() === 'CARD' &&
+        (!cards.length || (cards.length === 1 && monitor.getItem().sourceCardId === cards[0]._id)),
+      listOver:
+        !!monitor.isOver() &&
+        monitor.getItemType() === 'LIST' &&
         monitor.getItem().sourceListId !== _id,
     }),
     drop: (item, monitor) => {
       if (!handleDrop) return
-      if ((item.type === 'Card' && !monitor.didDrop()) || item.type === 'List' || !cards.length) {
+      if (
+        (item.type === 'CARD' && !monitor.didDrop()) ||
+        item.type === 'LIST' ||
+        !cards.length
+      ) {
         handleDrop({ item, targetListId: _id, placeholderPos })
       }
     },
@@ -60,8 +72,11 @@ export const List = ({ list, addCard, handleDrop }) => {
   }
 
   const handleInput = ({ target: { name, value } }, item) => {
-    if (item === 'Card') setNewCard({ ...newCard, [name]: value })
-    if (item === 'List') dispatch(UPDATE_LIST({ name, value, listId: _id }))
+    setNewCard({ ...newCard, [name]: value })
+  }
+
+  const handleEdit = ({ target: { name, value } }) => {
+    dispatch(UPDATE_LIST({ name, value, listId: _id }))
   }
 
   const handleKeyUp = ({ target, key }) => {
@@ -71,7 +86,7 @@ export const List = ({ list, addCard, handleDrop }) => {
   const onAddCard = ev => {
     ev.preventDefault()
     addCard(newCard, _id)
-    setisAddCard(false)
+    setIsAddCard(false)
     setNewCard({
       title: '',
       activity: [],
@@ -87,16 +102,14 @@ export const List = ({ list, addCard, handleDrop }) => {
   return (
     <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref flex">
-        {isOver && !placeholderPos && (
+        {listOver && !placeholderPos && (
           <div
-            className="placeholder"
+            className="placeholder left"
             style={{
-              width: `${hoveringListDimensions.width}px`,
-              height: `${hoveringListDimensions.height}px`,
-              paddingRight: '8px',
-            }}>
-            <div className="container" />
-          </div>
+              width: `${hoverWidth}px`,
+              height: `${hoverHeight}px`,
+            }}
+          />
         )}
         <div ref={drag} className={`list`}>
           <div className="container flex col">
@@ -105,14 +118,17 @@ export const List = ({ list, addCard, handleDrop }) => {
               className="list-title fast"
               value={title}
               onFocus={ev => ev.target.select()}
-              onChange={ev => handleInput(ev, 'List')}
+              onChange={handleEdit}
               onKeyUp={handleKeyUp}
             />
+
             <div className="cards flex col">
-              {/* {isOver? <div>insert here</div> : '' } */}
               {cards.map(card => (
-                <Card key={card._id} card={card} listId={_id} handleDrop={handleDrop} />
+                <Card key={card._id} card={card} handleDrop={handleDrop}  />
               ))}
+              {cardOver && (
+                <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />
+              )}
             </div>
             {isAddCard && (
               <form action="" className="add-card-form" onSubmit={onAddCard}>
@@ -121,15 +137,14 @@ export const List = ({ list, addCard, handleDrop }) => {
                   type="text"
                   name="title"
                   value={newCard.title}
-                  onChange={ev => handleInput(ev, 'Card')}
-                  id=""
+                  onChange={handleInput}
                 />
                 <div className="add-card-btns">
                   <button className="add-card-btn">Add Card</button>
                   <button
                     onClick={ev => {
                       ev.preventDefault()
-                      setisAddCard(false)
+                      setIsAddCard(false)
                     }}
                     className="close-btn">
                     X
@@ -138,22 +153,20 @@ export const List = ({ list, addCard, handleDrop }) => {
               </form>
             )}
             {!isAddCard && (
-              <div className="add-card" onClick={() => setisAddCard(true)}>
+              <div className="add-card" onClick={() => setIsAddCard(true)}>
                 <span>+</span> Add another card
               </div>
             )}
           </div>
         </div>
-        {isOver && !!placeholderPos && (
+        {listOver && !!placeholderPos && (
           <div
-            className="placeholder"
+            className="placeholder right"
             style={{
-              width: `${hoveringListDimensions.width}px`,
-              height: `${hoveringListDimensions.height}px`,
-              paddingLeft: '8px',
-            }}>
-            <div className="container" />
-          </div>
+              width: `${hoverWidth}px`,
+              height: `${hoverHeight}px`,
+            }}
+          />
         )}
       </div>
     </div>

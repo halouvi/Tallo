@@ -3,18 +3,29 @@
 }
 .card-drop-container {
   > .rect-ref {
-    border-radius: 5px;
-    padding-bottom: 6px;
-    >.placeholder {
+    border-radius: $cardPadding;
+    padding-bottom: $cardPadding;
+    > .placeholder {
       border-radius: inherit;
-      > .container {
+      position: relative;
+      &.top {
+        padding-bottom: $cardPadding;
+      }
+      &.bottom {
+        padding-top: $cardPadding;
+      }
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: calc(100% - #{$cardPadding});
         border-radius: inherit;
-        height: 100%;
         background-color: #d5d6da;
         filter: brightness(0.9);
       }
     }
-    
+
     .card-preview {
       min-height: 100px;
       width: 100%;
