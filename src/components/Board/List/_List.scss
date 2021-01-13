@@ -36,7 +36,13 @@
         background-color: #d5d6da;
         max-height: 100%;
         padding: 0 6px 6px;
+
+        .delete-btn {
+          // display: none;
+        }
+
         > .list-title {
+          width: 85%;
           margin: 6px 0;
           position: relative;
           color: rgb(50, 50, 50);

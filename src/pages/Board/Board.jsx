@@ -9,6 +9,7 @@ import {
   findItems,
   boardTypes,
   ADD_LIST,
+  REMOVE_LIST,
 } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
@@ -43,6 +44,12 @@ export const Board = () => {
   const addList = (ev) => {
     ev.preventDefault()
     dispatch(ADD_LIST(newList))
+    setIsAddList(false)
+    setNewList({  title: '', cards: []})
+  }
+
+  const removeList = (listId) => {
+    dispatch(REMOVE_LIST(listId))
   }
 
   const handleInput = ({ target: { name, value } }, item) => {
@@ -79,7 +86,7 @@ export const Board = () => {
       <h3>{title}</h3>
       <section className="container flex">
         {lists?.map(list => (
-          <List list={list} key={list._id} addCard={addCard} handleDrop={handleDrop} />
+          <List list={list} key={list._id} removeList={removeList} addCard={addCard} handleDrop={handleDrop} />
         ))}
         {isAddList && (
           <form action="" className="add-list-form" onSubmit={addList}>
