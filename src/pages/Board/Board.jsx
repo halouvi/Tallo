@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloneDeep as clone } from 'lodash'
@@ -8,6 +8,8 @@ import {
   UPDATE_BOARD,
   findItems,
   boardTypes,
+  ADD_LIST,
+  REMOVE_LIST,
 } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
@@ -16,10 +18,15 @@ const _id = '5fe4b65432d4a24dbcb7afa2'
 
 export const Board = () => {
   const { lists, title, _id } = useSelector(state => state.boardReducer.board) || {}
+  const [isAddList, setIsAddList] = useState(false)
+  const [newList, setNewList] = useState({
+    title: '',
+    cards: []
+  })
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(!_id) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
+    if (!_id) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
     socketService.setup()
     socketService.emit(socketTypes.JOIN_BOARD, _id)
     socketService.on(socketTypes.BOARD_UPDATED, board =>
@@ -32,6 +39,22 @@ export const Board = () => {
 
   const addCard = (card, listId) => {
     dispatch(ADD_CARD(card, listId))
+  }
+
+  const addList = (ev) => {
+    ev.preventDefault()
+    dispatch(ADD_LIST(newList))
+    setIsAddList(false)
+    setNewList({  title: '', cards: []})
+  }
+
+  const removeList = (listId) => {
+    const isSure = window.confirm('Are you sure?')
+    if(isSure) dispatch(REMOVE_LIST(listId))
+  }
+
+  const handleInput = ({ target: { name, value } }, item) => {
+    setNewList({ ...newList, [name]: value })
   }
 
   const [{ isOver }, drop] = useDrop({
@@ -64,8 +87,35 @@ export const Board = () => {
       <h3>{title}</h3>
       <section className="container flex">
         {lists?.map(list => (
-          <List list={list} key={list._id} addCard={addCard} handleDrop={handleDrop} />
+          <List list={list} key={list._id} removeList={removeList} addCard={addCard} handleDrop={handleDrop} />
         ))}
+        {isAddList && (
+          <form action="" className="add-list-form" onSubmit={addList}>
+            <input
+              placeholder="Enter a title for this list..."
+              type="text"
+              name="title"
+              value={newList.title}
+              onChange={handleInput}
+            />
+            <div className="add-list-btns">
+              <button className="add-list-btn">Add list</button>
+              <button
+                onClick={ev => {
+                  ev.preventDefault()
+                  setIsAddList(false)
+                }}
+                className="close-btn">
+                X
+                  </button>
+            </div>
+          </form>
+        )}
+        {!isAddList && (
+          <div className="add-list-container" onClick={() => setIsAddList(true)}>
+            <p><span>+</span> Add another list</p>
+          </div>
+        )}
       </section>
     </main>
   )

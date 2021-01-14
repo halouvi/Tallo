@@ -31,6 +31,20 @@ export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
   return user
 }
 
+export const ADD_LIST = (list) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  list._id = utilService.makeId()
+  nextBoard.lists.push(list)
+  dispatch(SAVE_BOARD(nextBoard))
+}
+
+export const REMOVE_LIST = (listId) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  const listIdx = nextBoard.lists.findIndex(list => list._id === listId)
+  nextBoard.lists.splice(listIdx, 1)
+  dispatch(SAVE_BOARD(nextBoard))
+}
+
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   card._id = utilService.makeId()

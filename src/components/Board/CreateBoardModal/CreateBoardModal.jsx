@@ -10,21 +10,23 @@ export const CreateBoardModal = props => {
     title: '',
   })
   const dispatch = useDispatch();
+  const { goBack } = useHistory()
   const history = useHistory();
-  // const outClick = useRef();
+  const outClick = useRef();
 
-  // useEffect(() => {
-  //   document.addEventListener('keyup', closeModal)
-  //   document.getElementById('root').addEventListener('mouseup', closeModal)
-  //   return () => {
-  //     document.removeEventListener('keyup', closeModal)
-  //     document.getElementById('root').removeEventListener('mouseup', closeModal)
-  //   }
-  // }, [])
+  useEffect(() => {
+    document.addEventListener('keyup', closeModal)
+    document.getElementById('root').addEventListener('mouseup', closeModal)
+    return () => {
+      document.removeEventListener('keyup', closeModal)
+      document.getElementById('root').removeEventListener('mouseup', closeModal)
+    }
+  }, [])
 
-  // const closeModal = ev => {
-  //   if (ev.key === 'Escape' || outClick.current === ev.target) history.push('/board')
-  // }
+  const closeModal = ({ key, target, type }) => {
+    if (type === 'keyup' && key === 'Escape') goBack()
+    else if (type === 'mouseup' && !outClick.current.contains(target)) goBack()
+  }
 
   const onHandleChange = (ev) => {
     const field = ev.target.name;
@@ -40,7 +42,8 @@ export const CreateBoardModal = props => {
 
   return (
     <div className="create-board-section">
-      <div className="create-board-container">
+      <div className="create-board-container" ref={outClick}>
+        <button onClick={goBack}>X</button>
         <label htmlFor="">Board Title:</label>
         <input name="title" type="text" value={newBoard.title} onChange={onHandleChange} />
         <button onClick={addBoard}>Create Board</button>

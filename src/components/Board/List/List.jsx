@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
-export const List = ({ list, addCard, handleDrop}) => {
+export const List = ({ list, addCard, handleDrop, removeList}) => {
   const { _id, title, cards } = list
   const [isAddCard, setIsAddCard] = useState(false)
   const [placeholderPos, setPlaceholderPos] = useState(null)
@@ -113,6 +113,7 @@ export const List = ({ list, addCard, handleDrop}) => {
         )}
         <div ref={drag} className={`list`}>
           <div className="container flex col">
+            <button className="delete-btn" onClick={() => removeList(_id)}>X</button>
             <input
               name="title"
               className="list-title fast"
@@ -121,7 +122,6 @@ export const List = ({ list, addCard, handleDrop}) => {
               onChange={handleEdit}
               onKeyUp={handleKeyUp}
             />
-
             <div className="cards flex col">
               {cards.map(card => (
                 <Card key={card._id} card={card} listId={_id} handleDrop={handleDrop}  />
