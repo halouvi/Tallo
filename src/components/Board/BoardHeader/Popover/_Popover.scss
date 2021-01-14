@@ -1,0 +1,12 @@
+.board-members-section {
+
+    .board-members-btn {
+        color: white;
+        background-color: rgba(173, 216, 230, 0.418);
+        text-transform: none;
+
+        &:hover {
+            background-color: rgba(173, 216, 230, 0.603);
+        }
+    }
+}

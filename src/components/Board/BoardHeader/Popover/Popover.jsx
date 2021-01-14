@@ -27,9 +27,9 @@ export default function SimplePopover({ boardMembers }) {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-    <div>
-      <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
-        Open Popover
+    <div className="board-members-section">
+      <Button className="board-members-btn" aria-describedby={id} variant="contained" onClick={handleClick}>
+        Board Members ▼
       </Button>
       <Popover
         id={id}
