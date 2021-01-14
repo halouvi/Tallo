@@ -9,7 +9,7 @@ export const Attachment = ({ card: { attachments, _id: cardId }, setAnchorEl }) 
 
   const saveAttachment = (ev) => {
     ev.preventDefault();
-    dispatch(UPDATE_CARD({ field: 'attachments', value: [...attachments, attachmentUrl], cardId }))
+    dispatch(UPDATE_CARD({ name: 'attachments', value: [...attachments, attachmentUrl], cardId }))
   }
 
   const onUploadImg = async (ev) => {

@@ -29,7 +29,7 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         list.items[idx].isChecked = !list.items[idx].isChecked;
         const listIdx = lists.findIndex(aList => aList._id === list._id);
         lists[listIdx] = list;
-        dispatch(UPDATE_CARD({ field: 'checklist', value: [...lists], cardId }));
+        dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }));
     }
 
     const toggleInput = () => {
@@ -43,7 +43,7 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         const listIdx = lists.findIndex(aList => aList._id === list._id);
         console.log(listIdx);
         lists[listIdx].items.push(newItem);
-        await dispatch(UPDATE_CARD({ field: 'checklist', value: [...lists], cardId }));
+        await dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }));
         setNewItem({ _id: utilService.makeId(), desc: '', isChecked: false })
         toggleInput();
     }
@@ -54,7 +54,7 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         list.items.splice(idx, 1);
         const listIdx = lists.findIndex(aList => aList._id === list._id);
         lists[listIdx] = list;
-        dispatch(UPDATE_CARD({ field: 'checklist', value: [...lists], cardId }));
+        dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }));
     }
 
     const onHandleChange = (ev) => {
@@ -67,7 +67,7 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         let lists = JSON.parse(JSON.stringify(cardChecklists));
         const listIdx = lists.findIndex(list => list._id === checklist._id);
         lists.splice(listIdx, 1)
-        dispatch(UPDATE_CARD({ field: 'checklist', value: [...lists], cardId }));
+        dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }));
     }
 
     return (
