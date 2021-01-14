@@ -14,11 +14,11 @@ export const Home = (props) => {
   //   dispatch(getUserById())
   // }, [dispatch])
   return (
-    <main className="home main-grid">
-      <div className="container grid-col-c flex col ac jc">
-        <div className="flex col">
+    <main className="home">
+      <div className="container flex col ac jc">
+        {/* <div className="flex col"> */}
           <LoginSingup props={props}></LoginSingup>
-        </div>
+        {/* </div> */}
       </div>
     </main>
   )

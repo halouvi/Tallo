@@ -124,7 +124,7 @@ export const List = ({ list, addCard, handleDrop}) => {
 
             <div className="cards flex col">
               {cards.map(card => (
-                <Card key={card._id} card={card} handleDrop={handleDrop}  />
+                <Card key={card._id} card={card} listId={_id} handleDrop={handleDrop}  />
               ))}
               {cardOver && (
                 <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />

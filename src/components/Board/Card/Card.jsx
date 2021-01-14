@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CardAvatars } from '../avatars/CardAvatars'
 
-export const Card = ({ card, handleDrop }) => {
+export const Card = ({ card, listId, handleDrop }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const { _id, title, attachments, members, desc, dueDate, labels } = card || {}
   const [placeholderPos, setPlaceholderPos] = useState(null)
@@ -22,6 +22,7 @@ export const Card = ({ card, handleDrop }) => {
         type: 'CARD',
         card,
         sourceCardId: _id,
+        sourceListId: listId,
         height,
         width,
       }
@@ -36,7 +37,7 @@ export const Card = ({ card, handleDrop }) => {
       hoverHeight: monitor.getItem()?.height,
     }),
     drop: item => {
-      handleDrop && handleDrop({ item, targetCardId: _id, placeholderPos })
+      handleDrop && handleDrop({ item, targetCardId: _id, targetListId: listId, placeholderPos })
     },
   })
 
