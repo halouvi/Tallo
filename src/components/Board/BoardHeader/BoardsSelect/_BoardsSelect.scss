@@ -1,0 +1,26 @@
+.boards-select-section {
+    
+    .boards-select-btn {
+        background-color: rgba(173, 216, 230, 0.418);
+        text-transform: none;
+
+        &:hover {
+            background-color: rgba(173, 216, 230, 0.603);
+        }
+    }
+
+    
+    .boards-select-item {
+        
+        &:hover {
+            background-color: rgba(173, 216, 230, 0.603);
+        }
+        
+        li:focus {
+            background-color: unset;
+        }
+    }
+}
+.MuiPaper-root {
+    color: #323232 !important;
+}

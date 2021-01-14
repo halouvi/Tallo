@@ -1,4 +1,4 @@
-import {httpService} from './httpService.js'
+import { httpService } from './httpService.js'
 
 export default {
     login,
@@ -9,8 +9,15 @@ export default {
     remove,
     update,
     unreadBooking,
-    resetUnreadBookings
+    resetUnreadBookings,
+    query
 }
+
+function query(query) {
+    return httpService.get(`user/users/${query}`)
+
+}
+
 function getUsers(usersIds) {
     return httpService.get(`user/${usersIds}`)
 }
@@ -26,8 +33,9 @@ function update(user) {
 }
 
 async function login(userCred) {
-    const user = await httpService.post('auth/login', userCred)
-    return _handleLogin(user)
+    var { user, userBoards } = await httpService.post('auth/login', userCred)
+    user = _handleLogin(user)
+    return { user, userBoards }
 }
 async function signup(userCred) {
     const user = await httpService.post('auth/signup', userCred)
