@@ -1,4 +1,4 @@
-import { Avatar } from '@material-ui/core'
+import { Avatar, ClickAwayListener } from '@material-ui/core'
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,19 +8,22 @@ import TextField from '@material-ui/core/TextField'
 import { CardAvatars } from '../avatars/CardAvatars'
 import { CardChecklists } from '../CardChecklists/CardChecklists'
 import { SideBar } from './SideBar/SideBar'
+import { Popover } from '../ReUsables/Popover/Popover'
+import { Labels } from '../ReUsables/Labels/Labels'
 
 export const CardModal = props => {
   const { board, users } = useSelector(state => state.boardReducer) || {}
   const [list, setList] = useState(null)
   const [card, setCard] = useState(null)
   const [timer, setTimer] = useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
   const { activity, attachments, members, labels, checklist } = card || {}
   const [editables, setEditables] = useState(null)
+  const labelsRef = useRef(null)
   const { title, desc } = editables || {}
   const { _id } = useParams()
   const { goBack } = useHistory()
   const dispatch = useDispatch()
-  const outClick = useRef()
 
   useEffect(() => {
     if (!board) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
@@ -34,12 +37,11 @@ export const CardModal = props => {
 
   useEffect(() => {
     document.addEventListener('keyup', closeModal)
-    document.getElementById('root').addEventListener('mouseup', closeModal)
     return () => {
       document.removeEventListener('keyup', closeModal)
-      document.getElementById('root').removeEventListener('mouseup', closeModal)
     }
   }, [])
+  const closeModal = ({ key }) => key === 'Escape' && goBack()
 
   const handleInput = ({ target: { name, value } }) => {
     setEditables({ ...editables, [name]: value })
@@ -51,9 +53,9 @@ export const CardModal = props => {
     )
   }
 
-  const closeModal = ({ key, target, type }) => {
-    if (type === 'keyup' && key === 'Escape') goBack()
-    else if (type === 'mouseup' && !outClick.current.contains(target)) goBack()
+  const togglePopover = ev => {
+    ev.stopPropagation()
+    setAnchorEl(!anchorEl ? labelsRef.current : null)
   }
 
   const dateConvert = time => {
@@ -64,93 +66,116 @@ export const CardModal = props => {
     card &&
     users && (
       <div className="modal-screen flex as jc">
-        <div className="modal-section" ref={outClick}>
-          <div className="container">
-            <div className="modal-header flex as jb">
-              <input autoComplete="off" name="title" value={title} onChange={handleInput} />
-              <button className="exit-btn fast flex ac jc" onClick={goBack}>
-                X
-              </button>
-            </div>
-            <p className="modal-subtitle">
-              in list <span>{list.title}</span>
-            </p>
-            <SideBar card={card} />
-            <div className="members-container">
-              {members[0] && <CardAvatars className="card-avatars" members={members}></CardAvatars>}
-            </div>
-            {labels[0] && (
-              <div className="labels-section">
-                <h3>Labels</h3>
-                <div className="labels-container">
-                  {board.labels.map(
-                    ({ _id: gLabelId, color, name }) =>
-                      labels.some(labelId => labelId === gLabelId) && (
-                        <div className="label-container" key={gLabelId}>
-                          <div className={`label ${color}`}></div>
-                          <p>{name}</p>
-                        </div>
+        <ClickAwayListener onClickAway={goBack}>
+          <div className="modal-section">
+            <div className="container flex wrap">
+              <div className="modal-header fw flex wrap as jb">
+                <input
+                  className="card-title"
+                  autoComplete="off"
+                  name="title"
+                  value={title}
+                  onFocus={ev => ev.target.select()}
+                  onChange={handleInput}
+                />
+                <button className="exit-btn fast flex ac jc" onClick={goBack}>
+                  X
+                </button>
+                <p className="modal-subtitle fw">
+                  in list <span>{list.title}</span>
+                </p>
+              </div>
+              <div className="content">
+                {members[0] && (
+                  <div className="members-container">
+                    <CardAvatars className="card-avatars" members={members}></CardAvatars>
+                  </div>
+                )}
+                {labels[0] && (
+                  <div className="labels-section">
+                    <h3>Labels</h3>
+                    <div ref={labelsRef} className="labels-container flex">
+                      {board.labels.map(
+                        ({ _id: gLabelId, color, name }) =>
+                          labels.some(labelId => labelId === gLabelId) && (
+                            <div
+                              className={`label ${color} pointer fast`}
+                              key={gLabelId}
+                              onClick={togglePopover}>
+                              {name}
+                            </div>
+                          )
+                      )}
+                      <button className="modal-btn" onClick={togglePopover}>
+                        +
+                      </button>
+                      <Popover anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
+                        <Labels card={card} setAnchorEl={setAnchorEl} />
+                      </Popover>
+                    </div>
+                  </div>
+                )}
+                <div className="desc-container">
+                  <h3>Description</h3>
+                  <TextField
+                    id="outlined-multiline-static"
+                    multiline
+                    placeholder="Add a more detailed description..."
+                    rows={4}
+                    variant="outlined"
+                    name="desc"
+                    value={desc}
+                    onChange={handleInput}
+                  />
+                </div>
+                {checklist[0] && (
+                  <div className="checklists-container">
+                    {checklist.map((currChecklist, idx) => (
+                      <CardChecklists
+                        key={idx}
+                        cardChecklists={checklist}
+                        checklist={currChecklist}
+                        cardId={_id}></CardChecklists>
+                    ))}
+                  </div>
+                )}
+                {attachments[0] && (
+                  <div className="attachments-container">
+                    <h3>Attachments</h3>
+                    <img src={attachments[0]} alt="" />
+                  </div>
+                )}
+                <div className="activity-section">
+                  <h3>Activity</h3>
+                  <ul className="activity-container">
+                    {activity.map(({ activity, createdBy, createdAt }) => {
+                      const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
+                      return (
+                        fullname && (
+                          <li key={createdAt}>
+                            <div className="activity-main">
+                              <div className="activity-secondary flex">
+                                <Avatar alt={fullname} src={imgUrl ? imgUrl : '/'} />
+                                <div className="activity-txt">
+                                  <div>
+                                    <span className="bold">{fullname} </span>
+                                    {activity}
+                                  </div>
+                                  <p>{dateConvert(createdAt)}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        )
                       )
-                  )}
+                    })}
+                  </ul>
                 </div>
               </div>
-            )}
-            <div className="desc-container">
-              <h3>Description</h3>
-              <TextField
-                id="outlined-multiline-static"
-                multiline
-                placeholder="Add a more detailed description..."
-                rows={4}
-                variant="outlined"
-                name="desc"
-                value={desc}
-                onChange={handleInput}
-              />
-            </div>
-            {checklist[0] && (
-              <div className="checklists-container">
-                {checklist.map((currChecklist, idx) => (
-                  <CardChecklists
-                    key={idx}
-                    cardChecklists={checklist}
-                    checklist={currChecklist}
-                    cardId={_id}></CardChecklists>
-                ))}
-              </div>
-            )}
-            {attachments[0] && (
-              <div className="attachments-container">
-                <h3>Attachments</h3>
-                <img src={attachments[0]} alt="" />
-              </div>
-            )}
-            <div className="activity-section">
-              <h3>Activity</h3>
-              <ul className="activity-container">
-                {activity.map(({ activity, createdBy, createdAt }) => {
-                  const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
-                  return (
-                    fullname && (
-                      <li key={createdAt}>
-                        <div className="activity-main">
-                          <Avatar alt={fullname} src={imgUrl ? imgUrl : '/'} />
-                          <div className="activity-secondary">
-                            <div className="activity-txt">
-                              <h3>{fullname}</h3>
-                              <p>{activity}</p>
-                            </div>
-                            <p>{dateConvert(createdAt)}</p>
-                          </div>
-                        </div>
-                      </li>
-                    )
-                  )
-                })}
-              </ul>
+              <SideBar card={card} />
             </div>
           </div>
-        </div>
+        </ClickAwayListener>
       </div>
     )
   )

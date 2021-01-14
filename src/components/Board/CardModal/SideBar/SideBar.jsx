@@ -1,5 +1,5 @@
-import { Popover } from '@material-ui/core'
-import { useState } from 'react'
+import { Popover } from '../../ReUsables/Popover/Popover'
+import { useRef, useState } from 'react'
 import { Attachment } from '../../ReUsables/Attachment/Attachment'
 import { CheckList } from '../../ReUsables/CheckList/CheckList'
 import { DueDate } from '../../ReUsables/DueDate/DueDate'
@@ -13,41 +13,29 @@ export const SideBar = ({ card }) => {
     Labels,
     CheckList,
     DueDate,
-    Attachment,
+    Attachment
   }
 
   const DynCmp = () => {
     const DynCmp = cmpMap[anchorEl.innerText.split(' ').join('')]
-    return (
-      <DynCmp
-        setAnchorEl={setAnchorEl}
-        card={card}
-      />
-    )
+    return <DynCmp setAnchorEl={setAnchorEl} card={card} />
+  }
+
+  const togglePopover = (ev) => {
+    ev.stopPropagation()
+    setAnchorEl(ev.target !== anchorEl ? ev.target : null)
   }
 
   return (
-    <div className="side-bar pointer">
+    <div className="side-bar flex col">
       <span className="title">Add To Card</span>
       <div className="buttons flex col">
         {Object.keys(cmpMap).map(cmp => (
-          <span onClick={ev => setAnchorEl(ev.target)} key={cmp}>
+          <span className="modal-btn fast" onClick={togglePopover} key={cmp}>
             {cmp.split(/(?=[A-Z])/).join(' ')}
           </span>
         ))}
-        <Popover
-          id={anchorEl ? 'sidebar-popover' : undefined}
-          open={!!anchorEl}
-          anchorEl={anchorEl}
-          onClose={() => setAnchorEl(null)}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}>
+        <Popover anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
           {anchorEl && DynCmp()}
         </Popover>
       </div>

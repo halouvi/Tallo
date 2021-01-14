@@ -19,10 +19,30 @@
     margin: 10vh 0;
     > .container {
       height: 100%;
-      h3 {
+      .card-title {
         font-weight: bold;
+        border-radius: 4px;
+        border: 2px solid transparent;
+        font-weight: bold;
+        font-size: 1.5rem;
+        padding: 6px;
+        margin-left: -6px;
+        cursor: pointer;
+        &:focus {
+          cursor: initial;
+          background-color: white;
+          border-color: rgb(66, 66, 66);
+        }
       }
-
+      .modal-btn {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 6px;
+        background-color: rgba(173, 172, 172, 0.26);
+        &:hover {
+          background-color: rgba(173, 172, 172, 0.733);
+        }
+      }
       .exit-btn {
         width: 36px;
         height: 36px;
@@ -37,131 +57,135 @@
           text-decoration: underline;
         }
       }
+      .content {
+        width: 75%;
+        padding-right: 16px;
+        .members-container {
+          margin-bottom: 15px;
 
-      .members-container {
-        margin-bottom: 15px;
-
-        h4 {
-          font-weight: bold;
-          font-size: 1rem;
-        }
-      }
-
-      .attachments-container {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 20px;
-
-        img {
-          width: 150px;
-          height: 200px;
-          object-fit: cover;
-        }
-      }
-
-      .desc-container {
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-
-        .makeStyles-root-1 .MuiTextField-root,
-        .makeStyles-root-6 .MuiTextField-root {
-          margin: 0 0 10px;
-        }
-
-        textarea {
-          width: 360px;
-          height: 20px;
-          margin: 0;
-          font-size: 0.9rem;
-          cursor: pointer;
-
-          &:focus {
-            height: 100px;
-            cursor: initial;
+          h4 {
+            font-weight: bold;
+            font-size: 1rem;
           }
         }
-      }
 
-      .labels-section {
-        .labels-container {
-          padding: 10px 0;
-          display: flex;
-        }
-
-        .label-container {
+        .attachments-container {
           display: flex;
           flex-direction: column;
-          justify-content: center;
-          align-items: center;
+          gap: 8px;
+          margin-bottom: 20px;
 
-          &:not(:last-child) {
-            margin-bottom: 15px;
-          }
-
-          .activity-main {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-
-            p {
-              font-size: 0.6rem;
-            }
-          }
-
-          .label {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
+          img {
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
           }
         }
 
-        .activity-section {
-          > h3 {
-            margin-bottom: 10px;
+        .desc-container {
+          h3 {
+            
+          }
+          margin-bottom: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+
+          .makeStyles-root-1 .MuiTextField-root,
+          .makeStyles-root-6 .MuiTextField-root {
+            margin: 0 0 10px;
           }
 
-          .activity-container {
-            li {
-              display: flex;
-              flex-direction: column;
+          textarea {
+            width: 360px;
+            height: 20px;
+            margin: 0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            &:focus {
+              height: 100px;
+              cursor: initial;
+            }
+          }
+        }
 
-              .activity-main {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-
-                h3 {
-                  font-size: 1rem;
-                }
-
-                p {
-                  margin: 0;
-                  font-size: 0.9rem;
-                  color: rgb(82, 81, 81);
-                }
-              }
-
-              > p {
-                font-size: 0.9rem;
-                color: rgb(105, 103, 103);
-              }
+        .labels-section {
+          .labels-container {
+            padding: 10px 0;
+          }
+          .label {
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: whitesmoke;
+            &:hover {
+              filter: brightness(1.1);
+            }
+            &:not(:last-child) {
+              margin-right: 6px;
             }
 
-            .activity-scondary {
+            .activity-main {
               display: flex;
-              flex-direction: column;
-
-              > p {
-                font-size: 0.9rem;
-                color: rgb(105, 103, 103);
-              }
-            }
-            .activity-txt {
-              display: flex;
+              align-items: center;
               gap: 8px;
+
+              p {
+                font-size: 0.6rem;
+              }
+            }
+
+            .label {
+              width: 40px;
+              height: 40px;
+              border-radius: 5px;
+            }
+          }
+
+          .activity-section {
+            > h3 {
+              margin-bottom: 10px;
+            }
+
+            .activity-container {
+              li {
+                display: flex;
+                flex-direction: column;
+
+                .activity-main {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+
+                  h3 {
+                    font-size: 1rem;
+                  }
+
+                  p {
+                    margin: 0;
+                    font-size: 0.9rem;
+                    color: rgb(82, 81, 81);
+                  }
+                }
+
+                > p {
+                  font-size: 0.9rem;
+                  color: rgb(105, 103, 103);
+                }
+              }
+
+              .activity-scondary {
+                display: flex;
+                flex-direction: column;
+
+                > p {
+                  font-size: 0.9rem;
+                  color: rgb(105, 103, 103);
+                }
+              }
+              .activity-txt {
+                display: flex;
+                gap: 8px;
+              }
             }
           }
         }

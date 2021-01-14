@@ -14,8 +14,8 @@ export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
   const toggleLabel = gLabelId => {
     if (labels.some(label => label === gLabelId)) {
       const labelsFiltered = labels.filter(label => label !== gLabelId)
-      dispatch(UPDATE_CARD({ field: 'labels', value: labelsFiltered, cardId }))
-    } else dispatch(UPDATE_CARD({ field: 'labels', value: [...labels, gLabelId], cardId }))
+      dispatch(UPDATE_CARD({ name: 'labels', value: labelsFiltered, cardId }))
+    } else dispatch(UPDATE_CARD({ name: 'labels', value: [...labels, gLabelId], cardId }))
   }
 
   return (

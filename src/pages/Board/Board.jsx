@@ -14,8 +14,6 @@ import {
 import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
 
-const _id = '5fe4b65432d4a24dbcb7afa2'
-
 export const Board = () => {
   const { lists, title, _id } = useSelector(state => state.boardReducer.board) || {}
   const [isAddList, setIsAddList] = useState(false)
@@ -26,7 +24,7 @@ export const Board = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!_id) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
+    if (!_id) dispatch(GET_BOARD_BY_ID('60006d95c1a9f1ce84d21c64'))
     socketService.setup()
     socketService.emit(socketTypes.JOIN_BOARD, _id)
     socketService.on(socketTypes.BOARD_UPDATED, board =>
