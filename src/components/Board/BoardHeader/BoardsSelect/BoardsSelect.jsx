@@ -31,10 +31,10 @@ const StyledMenu = withStyles({
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
+      // backgroundColor: theme.palette.primary.main,
+      // '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+      //   color: theme.palette.common.white,
+      // },
     },
   },
 }))(MenuItem);
@@ -57,13 +57,14 @@ export default function CustomizedMenus({ userBoards }) {
   };
 
   return (
-    <div>
+    <div className="boards-select-section">
       <Button
         aria-controls="customized-menu"
         aria-haspopup="true"
         variant="contained"
         color="primary"
         onClick={handleClick}
+        className="boards-select-btn"
       >
         Boards ▼
       </Button>
@@ -75,7 +76,7 @@ export default function CustomizedMenus({ userBoards }) {
         onClose={handleClose}
       >
         {userBoards?.map(board => (
-          <StyledMenuItem onClick={() => onSelectBoard(board._id)} key={board._id}>
+          <StyledMenuItem onClick={() => onSelectBoard(board._id)} className="boards-select-item" key={board._id}>
             <ListItemText primary={board.title} />
           </StyledMenuItem>
         ))}

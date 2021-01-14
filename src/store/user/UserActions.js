@@ -6,6 +6,12 @@ export const types = {
   SET_USER_BOARDS: 'SET_USER_BOARDS'
 }
 
+export const GET_USERS = q => async dispatch => {
+  const users = await userService.query(q);
+  return users;
+  // dispatch({ type: types.GET_USER_BY_ID, payload: user })
+}
+
 export const GET_USER_BY_ID = id => async dispatch => {
   const user = await userService.getById(id);
   return user;
@@ -18,8 +24,8 @@ export const LOGIN = ({email, password}) => async dispatch => {
   dispatch({ type: types.SET_USER_BOARDS, userBoards })
 }
 
-export const SIGNUP = ({fullname, email, password, imgUrl}) => async dispatch => {
-  const user = await userService.signup({fullname, email, password, imgUrl});
+export const SIGNUP = ({fullname, email, password, imgUrl, boards}) => async dispatch => {
+  const user = await userService.signup({fullname, email, password, imgUrl, boards});
   dispatch({ type: types.SET_LOGGED_USER, user })
 }
 

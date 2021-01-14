@@ -15,10 +15,10 @@ import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
 
-const _id = '5fe4b65432d4a24dbcb7afa2'
+const _id = '60006d95c1a9f1ce84d21c64'
 
 export const Board = () => {
-  const { lists, title, _id, members } = useSelector(state => state.boardReducer.board) || {}
+  const { lists, title, _id, users } = useSelector(state => state.boardReducer.board) || {}
   const {userBoards} = useSelector(state => state.userReducer) || {}
   const [isAddList, setIsAddList] = useState(false)
   const [newList, setNewList] = useState({
@@ -28,7 +28,7 @@ export const Board = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!_id) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
+    if (!_id) dispatch(GET_BOARD_BY_ID('60006d95c1a9f1ce84d21c64'))
     socketService.setup()
     socketService.emit(socketTypes.JOIN_BOARD, _id)
     socketService.on(socketTypes.BOARD_UPDATED, board =>
@@ -86,7 +86,7 @@ export const Board = () => {
 
   return (
     <main ref={drop} className="board">
-      <BoardHeader boardTitle={title} boardMembers={members} userBoards={userBoards} ></BoardHeader>
+      <BoardHeader boardTitle={title} boardMembers={users} userBoards={userBoards} ></BoardHeader>
       <section className="container flex">
         {lists?.map(list => (
           <List list={list} key={list._id} removeList={removeList} addCard={addCard} handleDrop={handleDrop} />
