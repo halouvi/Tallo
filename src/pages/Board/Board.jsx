@@ -13,11 +13,13 @@ import {
 } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
+import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
 
 const _id = '5fe4b65432d4a24dbcb7afa2'
 
 export const Board = () => {
-  const { lists, title, _id } = useSelector(state => state.boardReducer.board) || {}
+  const { lists, title, _id, members } = useSelector(state => state.boardReducer.board) || {}
+  const {userBoards} = useSelector(state => state.userReducer) || {}
   const [isAddList, setIsAddList] = useState(false)
   const [newList, setNewList] = useState({
     title: '',
@@ -84,7 +86,7 @@ export const Board = () => {
 
   return (
     <main ref={drop} className="board">
-      <h3>{title}</h3>
+      <BoardHeader boardTitle={title} boardMembers={members} userBoards={userBoards} ></BoardHeader>
       <section className="container flex">
         {lists?.map(list => (
           <List list={list} key={list._id} removeList={removeList} addCard={addCard} handleDrop={handleDrop} />

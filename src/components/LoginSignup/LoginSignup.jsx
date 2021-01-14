@@ -13,7 +13,8 @@ export const LoginSingup = ({ props }) => {
     fullname: '',
     email: '',
     password: '',
-    imgUrl: ''
+    imgUrl: '',
+    boards: []
   });
 
   useEffect(() => {

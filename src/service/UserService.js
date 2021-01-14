@@ -26,8 +26,9 @@ function update(user) {
 }
 
 async function login(userCred) {
-    const user = await httpService.post('auth/login', userCred)
-    return _handleLogin(user)
+    var {user, userBoards} = await httpService.post('auth/login', userCred)
+    user = _handleLogin(user)
+    return {user, userBoards}
 }
 async function signup(userCred) {
     const user = await httpService.post('auth/signup', userCred)
