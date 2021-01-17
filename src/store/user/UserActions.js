@@ -6,6 +6,14 @@ export const types = {
   SET_USER_BOARDS: 'SET_USER_BOARDS'
 }
 
+
+export const SET_BOARDS = userBoards => dispatch => {
+  // const users = await userService.query(q);
+  // return users;
+  console.log(userBoards);
+  dispatch({ type: types.SET_USER_BOARDS, userBoards })
+}
+
 export const GET_USERS = q => async dispatch => {
   const users = await userService.query(q);
   return users;

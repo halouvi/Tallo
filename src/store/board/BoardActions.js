@@ -2,6 +2,7 @@ import { boardService } from '../../service/boardService'
 import utilService from '../../service/utilService'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { cloneDeep as clone } from 'lodash'
+import { SET_BOARDS } from '../user/UserActions'
 
 export const boardTypes = {
   SET_BOARD: 'SET_BOARD',
@@ -13,10 +14,11 @@ export const boardTypes = {
 
 
 export const ADD_BOARD = newBoard => async dispatch => {
-  const { board, users } = await boardService.add(newBoard)
+  const { board, users, userBoards } = await boardService.add(newBoard)
   console.log(board);
   dispatch({ type: boardTypes.SET_BOARD, payload: board })
   dispatch({ type: boardTypes.SET_USERS, payload: users })
+  dispatch(SET_BOARDS(userBoards))
 }
 
 export const GET_BOARD_BY_ID = id => async dispatch => {
