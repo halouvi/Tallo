@@ -1,5 +1,23 @@
 .side-bar {
-  width: 25%;
+  // width: 25%;
+  grid-column: 1 / span 3;
+  margin-top: 25px;
+  
+  @include for-medium-layout {
+    grid-column: 3 / span 1;
+    margin-top: 0;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8px;
+    
+    @include for-medium-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
   span {
     margin-bottom: 6px;
   }

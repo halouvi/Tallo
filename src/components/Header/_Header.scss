@@ -1,22 +1,36 @@
 header {
-  height: 6vh;
+  // height: 6vh;
   background-color: rgba(0, 0, 0, 0.13);
   // border-bottom: 0.2px solid white;
   color: $white;
-  padding: 0.5rem;
+  padding: 7px 0.5rem;
+
+  // .nav-container {
+
+  // }
 
   nav {
-    width: 220px;
+    width: 200px;
+    margin-inline-end: 10px;
+
+    @include for-medium-layout {
+      width: 220px;
+    }
 
     .nav-item {
       border-radius: 3px;
       padding: 6px 8px;
-      background-color:  rgba(173, 216, 230, 0.418);
+      font-size: 0.9rem;
+      background-color: rgba(255, 255, 255, 0.226);
       font-weight: bold;
+
+      @include for-medium-layout {
+        font-size: 1rem;
+      }
     }
 
     .active {
-      background-color: rgba(173, 216, 230, 0.747);
+      background-color: rgba(255, 255, 255, 0.555);
     }
 
   }
@@ -24,7 +38,7 @@ header {
   .logo-container {
     display: flex;
     align-items: center;
-    
+
     p {
       font-size: 1.8rem;
       font-weight: bold;
@@ -38,13 +52,39 @@ header {
       margin: 0 3px 0 0;
     }
   }
-  
+
   .nav-item.add-board-btn {
-  //   border: 1px solid white;
     padding: 6px 11px;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  //   text-align: center;
+  }
+
+  .user-container {
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(204, 204, 204);
+    border-radius: 50%;
+    cursor: pointer;
+
+    @include for-medium-layout {
+      height: 40px;
+      width: 40px;
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    svg {
+      height: 75%;
+      width: 75%;
+      border-radius: 50%;
+      fill: white;
+      stroke: white;
+    }
   }
 }

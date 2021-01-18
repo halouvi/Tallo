@@ -26,6 +26,7 @@ export const CardModal = props => {
   const dispatch = useDispatch()
 
   const activityToShow = activity?.slice(0, 5);
+  const attachmentsToShow = attachments?.slice(0, 3);
 
   useEffect(() => {
     if (!board) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
@@ -64,15 +65,13 @@ export const CardModal = props => {
     return moment(time).fromNow()
   }
 
-
-
   return (
     card &&
     users && (
       <div className="modal-screen flex as jc">
         <ClickAwayListener onClickAway={goBack}>
           <div className="modal-section">
-            <div className="container flex wrap">
+            <div className="container wrap">
               <div className="modal-header fw flex wrap as jb">
                 <input
                   className="card-title"
@@ -146,7 +145,10 @@ export const CardModal = props => {
                 {attachments[0] && (
                   <div className="attachments-container">
                     <h3>Attachments</h3>
-                    <img src={attachments[0]} alt="" />
+                    <div className="attach-container flex">
+                      {attachmentsToShow.map(attachment => <img src={attachment} alt="" />)}
+                      {/* <img src={attachments[0]} alt="" /> */}
+                    </div>
                   </div>
                 )}
                 <div className="activity-section">
