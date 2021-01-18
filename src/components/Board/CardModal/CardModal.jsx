@@ -16,9 +16,9 @@ export const CardModal = props => {
   const [list, setList] = useState(null)
   const [card, setCard] = useState(null)
   const [timer, setTimer] = useState(null)
+  const [editables, setEditables] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
   const { activity, attachments, members, labels, checklist } = card || {}
-  const [editables, setEditables] = useState(null)
   const labelsRef = useRef(null)
   const { title, desc } = editables || {}
   const { _id } = useParams()
