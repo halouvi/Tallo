@@ -37,31 +37,27 @@
         max-height: 100%;
         padding: 0 6px 6px;
         position: relative;
-
-        .delete-btn {
-          position: absolute;
-          right: 12px;
-          top: 12px;
-          font-weight: bold;
-          font-size: 1.1rem;
-          color: rgb(128, 126, 126);
-        }
-
-        > .list-title {
-          width: 85%;
-          margin: 4px 0;
-          position: relative;
-          color: rgb(50, 50, 50);
-          background-color: transparent;
-          padding: 8px 6px;
-          font-weight: bold;
-          border-radius: 6px;
-          border: 2px solid transparent;
-          cursor: pointer;
-          &:focus {
-            cursor: initial;
-            background-color: white;
-            border-color: rgb(66, 66, 66);
+        > .list-header {
+          margin: 6px 0;
+          > .list-title {
+            color: rgb(50, 50, 50);
+            background-color: transparent;
+            padding: 8px 6px;
+            margin: 0 4px 0 0;
+            font-weight: bold;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            &:focus {
+              cursor: initial;
+              background-color: white;
+              border-color: rgb(66, 66, 66);
+            }
+          }
+          > .delete-btn {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: rgb(128, 126, 126);
           }
         }
         > .cards {
@@ -87,18 +83,20 @@
       }
 
       .add-card-form {
+        padding-top: 6px;
         input {
           width: 100%;
           height: 65px;
           border: none;
           border-radius: 5px;
           box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-          margin-bottom: 5px;
+          margin-bottom: 6px;
           padding: 0 8px;
         }
       }
 
       .add-card {
+        margin-top: 6px;
         color: rgb(116, 116, 116);
         cursor: pointer;
         padding: 10px;
@@ -113,15 +111,12 @@
         // }
       }
       .add-card-btns {
-        display: flex;
-        margin-bottom: 3px;
-
+        // margin-bottom: 3px;
         .add-card-btn {
           background-color: #5aac44;
-          padding: 6px 12px;
+          padding: 10px;
           border-radius: 3px;
           color: white;
-          margin-right: 10px;
         }
         .close-btn {
           font-size: 1.2rem;
