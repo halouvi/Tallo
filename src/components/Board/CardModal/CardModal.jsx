@@ -25,6 +25,8 @@ export const CardModal = props => {
   const { goBack } = useHistory()
   const dispatch = useDispatch()
 
+  const activityToShow = activity?.slice(0, 5);
+
   useEffect(() => {
     if (!board) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
     else {
@@ -61,6 +63,8 @@ export const CardModal = props => {
   const dateConvert = time => {
     return moment(time).fromNow()
   }
+
+
 
   return (
     card &&
@@ -148,13 +152,13 @@ export const CardModal = props => {
                 <div className="activity-section">
                   <h3>Activity</h3>
                   <ul className="activity-container">
-                    {activity.map(({ activity, createdBy, createdAt }) => {
+                    {activityToShow.map(({ activity, createdBy, createdAt }) => {
                       const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
                       return (
                         fullname && (
                           <li key={createdAt}>
                             <div className="activity-main">
-                              <div className="activity-secondary flex">
+                              <div className="activity-secondary">
                                 <Avatar alt={fullname} src={imgUrl ? imgUrl : '/'} />
                                 <div className="activity-txt">
                                   <div>
