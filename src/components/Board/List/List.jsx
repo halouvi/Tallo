@@ -113,7 +113,7 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
         )}
         <div ref={drag} className={`list`}>
           <div className="container flex col">
-            <button className="delete-btn" onClick={() => removeList(_id)}>X</button>
+            <button className="delete-btn" onClick={() => removeList(_id)}>···</button>
             <input
               name="title"
               className="list-title fast"
