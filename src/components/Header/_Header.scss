@@ -1,28 +1,35 @@
 header {
-  height: 6vh;
+  // height: 6vh;
   background-color: rgba(0, 0, 0, 0.13);
   // border-bottom: 0.2px solid white;
   color: $white;
-  padding: 0.5rem;
+  padding: 7px 0.5rem;
 
   // .nav-container {
   
   // }
 
   nav {
-    width: 220px;
+    width: 200px;
     margin-inline-end: 10px;
+    
+    @include for-medium-layout {
+      width: 220px;
+    }
 
     .nav-item {
       border-radius: 3px;
       padding: 6px 8px;
-      // background-color:  rgba(173, 216, 230, 0.418);
+      font-size: 0.9rem;
       background-color: rgba(255, 255, 255, 0.226);
       font-weight: bold;
+      
+      @include for-medium-layout {
+        font-size: 1rem;
+      }
     }
 
     .active {
-      // background-color: rgba(173, 216, 230, 0.747);
       background-color: rgba(255, 255, 255, 0.555);
     }
 
@@ -47,30 +54,23 @@ header {
   }
   
   .nav-item.add-board-btn {
-  //   border: 1px solid white;
     padding: 6px 11px;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  //   text-align: center;
   }
 
   .user-container {
-    // padding: 5px 5px 5px 40px;
-    // border-radius: 30px;
-    // background-color: rgb(255, 255, 255);
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
-    // border: 1px solid white;
     background-color: rgb(204, 204, 204);
     border-radius: 50%;
+    @include for-medium-layout {
+      height: 40px;
+    width: 40px;
+    }
 
     img {
-      // height: 40px;
-      // width: 40px;
       height: 100%;
       width: 100%;
       border-radius: 50%;
@@ -82,7 +82,6 @@ header {
       border-radius: 50%;
       fill: white;
       stroke: white;
-      // border: 0.5px solid lightgray;
     }
   }
 }
