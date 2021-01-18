@@ -19,12 +19,12 @@ export const Members = ({ card: { members, _id: cardId }, setAnchorEl }) => {
   }, [searchTerm, members])
 
   const addMember = member => {
-    dispatch(UPDATE_CARD({ field: 'members', value: [...members, member], cardId }))
+    dispatch(UPDATE_CARD({ name: 'members', value: [...members, member], cardId }))
   }
 
   const removeMember = memberId => {
     const membersFiltered = members.filter(member => member !== memberId)
-    dispatch(UPDATE_CARD({ field: 'members', value: membersFiltered, cardId }))
+    dispatch(UPDATE_CARD({ name: 'members', value: membersFiltered, cardId }))
   }
 
   return (

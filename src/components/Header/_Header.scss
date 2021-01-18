@@ -1,21 +1,50 @@
 header {
-  height: 10vh;
-  background-color: $black;
+  height: 6vh;
+  background-color: rgba(0, 0, 0, 0.13);
+  // border-bottom: 0.2px solid white;
   color: $white;
   padding: 0.5rem;
+
   nav {
-    width: 200px;
-    .active {
-      color: green;
+    width: 220px;
+
+    .nav-item {
+      border-radius: 3px;
+      padding: 6px 8px;
+      background-color:  rgba(173, 216, 230, 0.418);
+      font-weight: bold;
     }
+
+    .active {
+      background-color: rgba(173, 216, 230, 0.747);
+    }
+
   }
 
-  // .add-board-btn {
+  .logo-container {
+    display: flex;
+    align-items: center;
+    
+    p {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 0;
+      font-style: italic;
+    }
+
+    svg {
+      height: 35px;
+      width: 35px;
+      margin: 0 3px 0 0;
+    }
+  }
+  
+  .nav-item.add-board-btn {
   //   border: 1px solid white;
-  //   padding: 0 5px;
+    padding: 6px 11px;
   //   display: flex;
   //   justify-content: center;
   //   align-items: center;
   //   text-align: center;
-  // }
+  }
 }

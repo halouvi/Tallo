@@ -13,7 +13,7 @@ export const CheckList = ({card: {_id: cardId, checklist: cardChecklist}, setAnc
 
   const onAddChecklist = (ev) => {
     ev.preventDefault();
-    dispatch(UPDATE_CARD({ field: 'checklist', value: [...cardChecklist, checklist], cardId }));
+    dispatch(UPDATE_CARD({ name: 'checklist', value: [...cardChecklist, checklist], cardId }));
   }
 
   const onHandleChange = (ev) => {
