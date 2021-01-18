@@ -5,8 +5,13 @@ header {
   color: $white;
   padding: 0.5rem;
 
+  // .nav-container {
+  
+  // }
+
   nav {
     width: 220px;
+    margin-inline-end: 10px;
 
     .nav-item {
       border-radius: 3px;
@@ -48,5 +53,36 @@ header {
   //   justify-content: center;
   //   align-items: center;
   //   text-align: center;
+  }
+
+  .user-container {
+    // padding: 5px 5px 5px 40px;
+    // border-radius: 30px;
+    // background-color: rgb(255, 255, 255);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // border: 1px solid white;
+    background-color: rgb(204, 204, 204);
+    border-radius: 50%;
+
+    img {
+      // height: 40px;
+      // width: 40px;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    svg {
+      height: 75%;
+      width: 75%;
+      border-radius: 50%;
+      fill: white;
+      stroke: white;
+      // border: 0.5px solid lightgray;
+    }
   }
 }
