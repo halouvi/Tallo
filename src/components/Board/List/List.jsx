@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
-export const List = ({ list, addCard, handleDrop, removeList}) => {
+export const List = ({ list, addCard, handleDrop, removeList }) => {
   const { _id, title, cards } = list
   const [isAddCard, setIsAddCard] = useState(false)
   const [placeholderPos, setPlaceholderPos] = useState(null)
@@ -19,12 +19,12 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
     desc: '',
     dueDate: '',
     labels: [],
-    members: [],
+    members: []
   })
 
   const [{ isDragging }, drag] = useDrag({
     collect: monitor => ({
-      isDragging: !!monitor.isDragging(),
+      isDragging: !!monitor.isDragging()
     }),
     item: { type: 'LIST' },
     begin: () => {
@@ -34,9 +34,9 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
         list,
         sourceListId: _id,
         width,
-        height,
+        height
       }
-    },
+    }
   })
 
   const [{ cardOver, listOver, hoverWidth, hoverHeight }, drop] = useDrop({
@@ -52,18 +52,14 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
       listOver:
         !!monitor.isOver() &&
         monitor.getItemType() === 'LIST' &&
-        monitor.getItem().sourceListId !== _id,
+        monitor.getItem().sourceListId !== _id
     }),
     drop: (item, monitor) => {
       if (!handleDrop) return
-      if (
-        (item.type === 'CARD' && !monitor.didDrop()) ||
-        item.type === 'LIST' ||
-        !cards.length
-      ) {
+      if ((item.type === 'CARD' && !monitor.didDrop()) || item.type === 'LIST' || !cards.length) {
         handleDrop({ item, targetListId: _id, placeholderPos })
       }
-    },
+    }
   })
 
   const handleDragOver = offsetX => {
@@ -83,6 +79,11 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
     if (key === 'Enter' || key === 'Escape') target.blur()
   }
 
+  const toggleIsAddCard = ev => {
+    ev.preventDefault()
+    setIsAddCard(!isAddCard)
+  }
+
   const onAddCard = ev => {
     ev.preventDefault()
     addCard(newCard, _id)
@@ -95,7 +96,7 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
       desc: '',
       dueDate: 0,
       labels: [],
-      members: [],
+      members: []
     })
   }
 
@@ -107,24 +108,29 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
             className="placeholder left"
             style={{
               width: `${hoverWidth}px`,
-              height: `${hoverHeight}px`,
+              height: `${hoverHeight}px`
             }}
           />
         )}
-        <div ref={drag} className={`list`}>
+        <div className={`list`}>
           <div className="container flex col">
-            <button className="delete-btn" onClick={() => removeList(_id)}>···</button>
-            <input
-              name="title"
-              className="list-title fast"
-              value={title}
-              onFocus={ev => ev.target.select()}
-              onChange={handleEdit}
-              onKeyUp={handleKeyUp}
-            />
+            <div className="list-header flex jb">
+              <input
+                ref={drag}
+                name="title"
+                className="list-title fast f-110"
+                value={title}
+                onFocus={ev => ev.target.select()}
+                onChange={handleEdit}
+                onKeyUp={handleKeyUp}
+              />
+              <button className="delete-btn" onClick={() => removeList(_id)}>
+                ···
+              </button>
+            </div>
             <div className="cards flex col">
               {cards.map(card => (
-                <Card key={card._id} card={card} listId={_id} handleDrop={handleDrop}  />
+                <Card key={card._id} card={card} listId={_id} handleDrop={handleDrop} />
               ))}
               {cardOver && (
                 <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />
@@ -133,27 +139,24 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
             {isAddCard && (
               <form action="" className="add-card-form" onSubmit={onAddCard}>
                 <input
+                  autoFocus
+                  autoComplete="off"
                   placeholder="Enter a title for this card..."
                   type="text"
                   name="title"
                   value={newCard.title}
                   onChange={handleInput}
                 />
-                <div className="add-card-btns">
+                <div className="add-card-btns flex jb">
                   <button className="add-card-btn">Add Card</button>
-                  <button
-                    onClick={ev => {
-                      ev.preventDefault()
-                      setIsAddCard(false)
-                    }}
-                    className="close-btn">
+                  <button onClick={toggleIsAddCard} className="close-btn">
                     X
                   </button>
                 </div>
               </form>
             )}
             {!isAddCard && (
-              <div className="add-card" onClick={() => setIsAddCard(true)}>
+              <div className="add-card" onClick={toggleIsAddCard}>
                 <span>+</span> Add another card
               </div>
             )}
@@ -164,7 +167,7 @@ export const List = ({ list, addCard, handleDrop, removeList}) => {
             className="placeholder right"
             style={{
               width: `${hoverWidth}px`,
-              height: `${hoverHeight}px`,
+              height: `${hoverHeight}px`
             }}
           />
         )}
