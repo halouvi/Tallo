@@ -12,7 +12,7 @@
     @include scrollBar(12px, whitesmoke);
   }
 
-  > .modal-section {
+  >.modal-section {
     min-height: 600px;
     width: 100vw;
     padding: 20px;
@@ -20,13 +20,16 @@
     border-radius: 5px;
     background-color: whitesmoke;
     margin: 10vh 0;
-    
+
     @include for-medium-layout {
       width: 800px;
     }
 
-    > .container {
+    >.container {
       height: 100%;
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr;
+
       .card-title {
         font-weight: bold;
         border-radius: 4px;
@@ -36,25 +39,38 @@
         padding: 6px;
         margin-left: -6px;
         cursor: pointer;
+
         &:focus {
           cursor: initial;
           background-color: white;
           border-color: rgb(66, 66, 66);
         }
       }
+
+      .modal-header {
+        grid-column: 1 / span 3;
+
+        input {
+          background-color: whitesmoke;
+        }
+      }
+
       .modal-btn {
         padding: 8px 12px;
         cursor: pointer;
         border-radius: 6px;
         background-color: rgba(173, 172, 172, 0.26);
+
         &:hover {
           background-color: rgba(173, 172, 172, 0.733);
         }
       }
+
       .exit-btn {
         width: 36px;
         height: 36px;
         border-radius: 100px;
+
         &:hover {
           background-color: rgba($color: gray, $alpha: 1);
         }
@@ -65,9 +81,16 @@
           text-decoration: underline;
         }
       }
+
       .content {
-        width: 75%;
+        // width: 75%;
         padding-right: 16px;
+        grid-column: 1 / span 3;
+        
+        @include for-medium-layout {
+          grid-column: 1 / span 2;
+        }
+
         .members-container {
           margin-bottom: 15px;
 
@@ -83,16 +106,22 @@
           gap: 8px;
           margin-bottom: 20px;
 
+          .attach-container {
+            >:not(:last-child) {
+              margin-inline-end: 5px;
+            }
+          }
+
           img {
-            width: 150px;
-            height: 200px;
+            width: 110px;
+            height: 160px;
             object-fit: cover;
           }
         }
 
         .desc-container {
           // h3 {
-            
+
           // }
           margin-bottom: 20px;
           display: flex;
@@ -110,6 +139,7 @@
             margin: 0;
             font-size: 0.9rem;
             cursor: pointer;
+
             &:focus {
               height: 100px;
               cursor: initial;
@@ -121,13 +151,16 @@
           .labels-container {
             padding: 10px 0;
           }
+
           .label {
             padding: 6px 10px;
             border-radius: 6px;
             color: whitesmoke;
+
             &:hover {
               filter: brightness(1.1);
             }
+
             &:not(:last-child) {
               margin-right: 6px;
             }
@@ -150,58 +183,60 @@
           }
         }
 
-          .activity-section {
-            > h3 {
-              margin-bottom: 10px;
+        .activity-section {
+          >h3 {
+            margin-bottom: 10px;
+          }
+
+          .activity-container {
+            li {
+              &:not(:last-child) {
+                margin-bottom: 12px;
+              }
+
+              .activity-main {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                h3 {
+                  font-size: 1rem;
+                }
+
+                p {
+                  margin: 0;
+                  font-size: 0.9rem;
+                  color: rgb(82, 81, 81);
+                }
+              }
+
+              >p {
+                font-size: 0.9rem;
+                color: rgb(105, 103, 103);
+              }
             }
 
-            .activity-container {
-              li {
-                &:not(:last-child) {
-                  margin-bottom: 12px;
-                }
+            .activity-secondary {
+              display: flex;
 
-                .activity-main {
-                  display: flex;
-                  align-items: center;
-                  gap: 8px;
-
-                  h3 {
-                    font-size: 1rem;
-                  }
-
-                  p {
-                    margin: 0;
-                    font-size: 0.9rem;
-                    color: rgb(82, 81, 81);
-                  }
-                }
-
-                > p {
-                  font-size: 0.9rem;
-                  color: rgb(105, 103, 103);
-                }
+              >:first-child {
+                margin-inline-end: 8px;
               }
 
-              .activity-secondary {
-                display: flex;
-                >:first-child {
-                  margin-inline-end: 8px;
-                }
+              >p {
+                font-size: 0.9rem;
+                color: rgb(105, 103, 103);
+              }
+            }
 
-                > p {
-                  font-size: 0.9rem;
-                  color: rgb(105, 103, 103);
-                }
-              }
-              .activity-txt {
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-              }
+            .activity-txt {
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
             }
           }
-        
+        }
+
       }
     }
   }

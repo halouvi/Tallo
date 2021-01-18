@@ -29,7 +29,7 @@ export const SideBar = ({ card }) => {
   return (
     <div className="side-bar flex col">
       <span className="title">Add To Card</span>
-      <div className="buttons flex col">
+      <div className="buttons">
         {Object.keys(cmpMap).map(cmp => (
           <span className="modal-btn fast" onClick={togglePopover} key={cmp}>
             {cmp.split(/(?=[A-Z])/).join(' ')}
