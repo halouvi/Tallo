@@ -8,14 +8,12 @@ export const boardTypes = {
   SET_BOARD: 'SET_BOARD',
   SET_USERS: 'SET_USERS',
   SET_CARD: 'SET_CARD',
-  SET_LIST: 'SET_LIST',
+  SET_LIST: 'SET_LIST'
 }
-
-
 
 export const ADD_BOARD = newBoard => async dispatch => {
   const { board, users, userBoards } = await boardService.add(newBoard)
-  console.log(board);
+  console.log(board)
   dispatch({ type: boardTypes.SET_BOARD, payload: board })
   dispatch({ type: boardTypes.SET_USERS, payload: users })
   dispatch(SET_BOARDS(userBoards))
@@ -33,14 +31,14 @@ export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
   return user
 }
 
-export const ADD_LIST = (list) => (dispatch, getState) => {
+export const ADD_LIST = list => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   list._id = utilService.makeId()
   nextBoard.lists.push(list)
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const REMOVE_LIST = (listId) => (dispatch, getState) => {
+export const REMOVE_LIST = listId => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   const listIdx = nextBoard.lists.findIndex(list => list._id === listId)
   nextBoard.lists.splice(listIdx, 1)
@@ -74,6 +72,27 @@ export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => 
   const { list } = nextBoard.lists.find(list => list._id === listId)
   list[name] = value
   dispatch(SAVE_BOARD(nextBoard))
+}
+
+export const HANDLE_DROP = ({ item, targetListId, targetCardId, placeholderPos = 0 }) => (
+  dispatch,
+  getState
+) => {
+  const { type, sourceListId, sourceCardId } = item
+  const nextLists = clone(getState().boardReducer.board.lists)
+
+  if (type === 'LIST') {
+    const sourceListIdx = nextLists.findIndex(list => list._id === sourceListId)
+    const [list] = nextLists.splice(sourceListIdx, 1)
+    const targetListIdx = nextLists.findIndex(list => list._id === targetListId)
+    nextLists.splice(targetListIdx + placeholderPos, 0, list)
+  } else if (type === 'CARD') {
+    const { cardIdx: sourceCardIdx, list: sourceList } = findItems(nextLists, sourceCardId)
+    const [card] = sourceList.cards.splice(sourceCardIdx, 1)
+    const { cardIdx: targetCardIdx, list: targetList } = findItems(nextLists, targetCardId)
+    targetList.cards.splice(targetCardIdx + placeholderPos, 0, card)
+  }
+  dispatch(UPDATE_BOARD({ name: 'lists', value: nextLists }))
 }
 
 export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {

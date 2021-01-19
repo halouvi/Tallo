@@ -178,7 +178,7 @@ export const CardModal = props => {
                   </ul>
                 </div>
               </div>
-              <SideBar card={card} />
+              <SideBar card={card} list={list}/>
             </div>
           </div>
         </ClickAwayListener>
