@@ -3,10 +3,12 @@ import { useDispatch } from 'react-redux';
 import { LOGIN, SIGNUP } from '../../store/user/UserActions';
 import { uploadImg } from '../../service/imgUploadService.js'
 import { useHistory } from 'react-router';
+import { useRef } from 'react';
 
 export const LoginSingup = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const outClick = useRef();
   const [user, setUser] = useState({
     email: '',
     password: ''
@@ -18,6 +20,20 @@ export const LoginSingup = () => {
     imgUrl: '',
     boards: []
   });
+
+  useEffect(() => {
+    document.addEventListener('keyup', closeModal)
+    document.getElementById('root').addEventListener('mouseup', closeModal)
+    return () => {
+      document.removeEventListener('keyup', closeModal)
+      document.getElementById('root').removeEventListener('mouseup', closeModal)
+    }
+  }, [])
+
+  const closeModal = ({ key, target, type }) => {
+    if (type === 'keyup' && key === 'Escape') history.goBack()
+    else if (type === 'mouseup' && !outClick.current.contains(target)) history.goBack()
+  }
 
   const onHandleChange = (ev, type) => {
     const field = ev.target.name;
@@ -46,7 +62,8 @@ export const LoginSingup = () => {
 
   return (
     <div className="login-signup-section">
-      <div className="login-signup-container">
+      <div className="login-signup-container" ref={outClick}>
+        <button className="exit-btn" onClick={history.goBack}>X</button>
         <h2>Login</h2>
         <form action="" className="login-form" onSubmit={login}>
           <label htmlFor="">Email:</label>

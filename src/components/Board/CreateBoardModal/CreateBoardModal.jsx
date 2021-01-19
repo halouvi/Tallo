@@ -43,7 +43,7 @@ export const CreateBoardModal = props => {
   return (
     <div className="create-board-section">
       <div className="create-board-container" ref={outClick}>
-        <button onClick={goBack}>X</button>
+        <button className="exit-btn" onClick={goBack}>X</button>
         <label htmlFor="">Board Title:</label>
         <input name="title" type="text" value={newBoard.title} onChange={onHandleChange} />
         <button onClick={addBoard}>Create Board</button>

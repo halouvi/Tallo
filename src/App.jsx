@@ -1,5 +1,5 @@
-import { HashRouter as Router, Route, Switch } from 'react-router-dom'
-import { Provider as ReduxProvider } from 'react-redux'
+import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+import { Provider as ReduxProvider, useSelector } from 'react-redux'
 import { store } from './store/Store'
 import { DndProvider } from 'react-dnd'
 import MouseBackEnd from 'react-dnd-mouse-backend'
@@ -13,6 +13,12 @@ import './styles/styles.scss'
 import { LoginSingup } from './components/LoginSignup/LoginSignup'
 
 export const App = () => {
+  // const { user } = useSelector(state => state.userReducer) || {}
+
+  // const PrivateRoute = (props) => {
+  //   return user?._id ? <Route {...props} /> : <Redirect to="/" />
+  // }
+
   return (
     <ReduxProvider store={store}>
       <DndProvider backend={MouseBackEnd}>

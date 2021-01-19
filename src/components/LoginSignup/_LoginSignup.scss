@@ -25,6 +25,19 @@
             width: 400px;
         }
 
+        button {
+            padding: 6px 12px;
+            border-radius: 3px;
+            background-color: royalblue;
+            color: white;
+            width: fit-content;
+
+            &.exit-btn {
+                padding: 4px 8px;
+                align-self: flex-end;
+            }
+        }
+
         h2 {
             font-weight: bold;
             margin-bottom: 5px;
@@ -39,15 +52,6 @@
             input {
                 max-width: 300px;
                 margin-bottom: 5px;
-            }
-
-            button {
-                padding: 6px 12px;
-                border-radius: 3px;
-                background-color: royalblue;
-                color: white;
-                width: fit-content;
-
             }
 
             &:not(:last-of-type) {
