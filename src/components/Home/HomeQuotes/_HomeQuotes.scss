@@ -1,0 +1,90 @@
+.quotes-section {
+  background-color: #004047;
+  grid-column: 1 / span 3;
+  height: 744px;
+  position: relative;
+  color: white;
+
+  .bgc-img-1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 147px;
+    height: 100px;
+  }
+
+  .bgc-img-2 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 201px;
+    height: 100px;
+  }
+
+  .quotes-container {
+    grid-column: 2 / span 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 140px;
+
+    h1 {
+      font-size: 2.75rem;
+      max-width: 883px;
+      text-align: center;
+
+      span {
+        color: #79c8c7;
+      }
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      
+      @include for-narrow-layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 310px;
+      position: relative;
+
+      p {
+        z-index: 1;
+      }
+
+      .item-avatar {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        h4 {
+          color: #79c8c7
+        }
+
+        img {
+          border-radius: 50%;
+          border: 2px solid #79c8c7;
+          height: 60px;
+          width: 60px;
+        }
+
+        svg {
+          position: absolute;
+          top: -35px;
+        }
+      }
+    }
+  }
+}

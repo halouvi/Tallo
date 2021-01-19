@@ -10,6 +10,7 @@ import { CardModal } from './components/Board/CardModal/CardModal'
 import { DragLayer } from './components/DragLayer/DragLayer'
 import { CreateBoardModal } from './components/Board/CreateBoardModal/CreateBoardModal'
 import './styles/styles.scss'
+import { LoginSingup } from './components/LoginSignup/LoginSignup'
 
 export const App = () => {
   return (
@@ -23,6 +24,7 @@ export const App = () => {
           </Switch>
           <Route path="/board/modal/:_id" component={CardModal} />
           <Route path="/create-modal" component={CreateBoardModal} />
+          <Route path="/login-signup" component={LoginSingup} />
         </Router>
         <DragLayer />
       </DndProvider>
