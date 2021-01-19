@@ -10,14 +10,10 @@ header {
   // }
 
   nav {
-    width: 200px;
-    margin-inline-end: 10px;
-
     @include for-medium-layout {
-      width: 220px;
     }
-
     .nav-item {
+      margin-right: 10px;
       border-radius: 3px;
       padding: 6px 8px;
       font-size: 0.9rem;

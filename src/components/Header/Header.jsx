@@ -16,7 +16,6 @@ export const Header = () => {
           <NavLink className="add-board-btn nav-item" to="/create-modal" exact>+</NavLink>
           <NavLink className="nav-item" to="/" exact>Home</NavLink>
           <NavLink className="nav-item" to="/board">Board</NavLink>
-          <NavLink className="nav-item" to="/stats">Stats</NavLink>
         </nav>
         <UserMenu user={user}></UserMenu>
       </div>

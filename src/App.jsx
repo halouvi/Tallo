@@ -8,10 +8,8 @@ import { Home } from './pages/Home/Home'
 import { Board } from './pages/Board/Board'
 import { CardModal } from './components/Board/CardModal/CardModal'
 import { DragLayer } from './components/DragLayer/DragLayer'
-import { socketService } from './service/socketService'
-import { useEffect } from 'react'
-import './styles/styles.scss'
 import { CreateBoardModal } from './components/Board/CreateBoardModal/CreateBoardModal'
+import './styles/styles.scss'
 
 export const App = () => {
   return (
@@ -20,9 +18,7 @@ export const App = () => {
         <Router>
           <Header />
           <Switch>
-            {/* <Route path="/contact/:id" component={ContactDetails} /> */}
             <Route path="/board" component={Board} />
-            {/* <Route path="/stats" component={Stats} /> */}
             <Route path="/" component={Home} />
           </Switch>
           <Route path="/board/modal/:_id" component={CardModal} />
