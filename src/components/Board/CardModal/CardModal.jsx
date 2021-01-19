@@ -146,7 +146,7 @@ export const CardModal = props => {
                   <div className="attachments-container">
                     <h3>Attachments</h3>
                     <div className="attach-container flex">
-                      {attachmentsToShow.map(attachment => <img src={attachment} alt="" />)}
+                      {attachmentsToShow.map((attachment, index) => <img key={index} src={attachment} alt="" />)}
                       {/* <img src={attachments[0]} alt="" /> */}
                     </div>
                   </div>

@@ -9,17 +9,21 @@
 
   .create-board-container {
     min-height: 250px;
-    width: 400px;
+    width: 100vw;
     background-color: whitesmoke;
     border: 1px solid gray;
     border-radius: 5px;
     position: absolute;
     top: 20%;
-    left: 25vw;
     z-index: 5;
     padding: 20px;
     display: flex;
     flex-direction: column;
+
+    @include for-medium-layout {
+      left: 25vw;
+      width: 400px;
+    }
 
     button {
       align-self: flex-start;
@@ -31,7 +35,11 @@
     }
 
     >*:not(:last-child) {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      
+      @include for-medium-layout {
+        margin-bottom: 10px;
+      }
     }
   }
 }
