@@ -25,10 +25,12 @@ footer {
       .logo-div {
         display: flex;
         align-items: center;
-        font-size: 2.5rem;
+        font-size: 2.4rem;
 
         p {
           margin: 0;
+          font-weight: bold;
+          font-style: italic;
         }
         
         svg {
