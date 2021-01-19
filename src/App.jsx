@@ -13,11 +13,11 @@ import './styles/styles.scss'
 import { LoginSingup } from './components/LoginSignup/LoginSignup'
 
 export const App = () => {
-  // const { user } = useSelector(state => state.userReducer) || {}
 
-  // const PrivateRoute = (props) => {
-  //   return user?._id ? <Route {...props} /> : <Redirect to="/" />
-  // }
+  const PrivateRoute = (props) => {
+    const { user } = useSelector(state => state.userReducer) || {}
+    return user?._id ? <Route {...props} /> : <Redirect to="/" />
+  }
 
   return (
     <ReduxProvider store={store}>
@@ -25,11 +25,11 @@ export const App = () => {
         <Router>
           <Header />
           <Switch>
-            <Route path="/board" component={Board} />
+            <PrivateRoute path="/board" component={Board} />
             <Route path="/" component={Home} />
           </Switch>
-          <Route path="/board/modal/:_id" component={CardModal} />
-          <Route path="/create-modal" component={CreateBoardModal} />
+          <PrivateRoute path="/board/modal/:_id" component={CardModal} />
+          <PrivateRoute path="/create-modal" component={CreateBoardModal} />
           <Route path="/login-signup" component={LoginSingup} />
         </Router>
         <DragLayer />
