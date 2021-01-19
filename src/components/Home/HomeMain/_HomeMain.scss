@@ -1,8 +1,8 @@
 .main-section {
   background-color: #012F34;
   grid-column: 1 / span 3;
-  padding: 110px 10px 0;
-  color: white;
+  padding: 110px 10px 40px;
+  color: $white;
   // height: 650px;
 
   @include for-narrow-layout {
@@ -34,7 +34,7 @@
     }
 
     h2 {
-      max-width: 225px;
+      max-width: 300px;
       font-size: 1.75rem;
       font-weight: bold;
 

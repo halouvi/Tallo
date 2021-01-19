@@ -1,9 +1,15 @@
 .quotes-section {
   background-color: #004047;
   grid-column: 1 / span 3;
-  height: 744px;
+  // height: 744px;
+  padding: 30px 10px;
   position: relative;
-  color: white;
+  color: $white;
+
+  @include for-narrow-layout {
+    height: 744px;
+    padding: 0;
+  }
 
   .bgc-img-1 {
     position: absolute;
@@ -27,12 +33,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 140px;
+    // gap: 140px;
 
     h1 {
       font-size: 2.75rem;
       max-width: 883px;
       text-align: center;
+      margin-top: 68px;
+      margin-bottom: 100px;
+
+      @include for-narrow-layout {
+        margin-top: 0;
+        margin-bottom: 140px;
+      }
 
       span {
         color: #79c8c7;
@@ -47,6 +60,15 @@
       @include for-narrow-layout {
         flex-direction: row;
         align-items: flex-start;
+      }
+
+      >* {
+        margin-bottom: 60px;
+        
+        @include for-narrow-layout {
+          margin-bottom: 0;
+          margin-inline-end: 30px;
+        }
       }
     }
 
