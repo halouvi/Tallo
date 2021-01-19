@@ -9,7 +9,8 @@ body {
 
 #root {
   color: $black;
-  background-color: rgb(0, 174, 204);
+  background: linear-gradient(rgb(0, 111, 131), rgb(0, 174, 204));
+  // background: linear-gradient(rgb(0, 174, 204));
   font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
   height: 100%;
