@@ -28,6 +28,10 @@ export default function UserMenu({ user }) {
     dispatch(LOGOUT());
     history.push('/');
   }
+  const onLogin =() => {
+    handleClose();
+    history.push('/login-signup');
+  }
 
   return (
     <div className="simple-menu-section">
@@ -46,7 +50,7 @@ export default function UserMenu({ user }) {
       >
         <MenuItem onClick={toHome}>Home</MenuItem>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={onLogout}>Logout</MenuItem>
+        {user?._id? <MenuItem onClick={onLogout}>Logout</MenuItem>: <MenuItem onClick={onLogin}>Login/Signup</MenuItem>}
       </Menu>
     </div>
   );

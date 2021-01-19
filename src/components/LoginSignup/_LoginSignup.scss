@@ -1,47 +1,73 @@
 .login-signup-section {
+    position: absolute;
+    z-index: 10;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.1);
 
-    h2 {
-        font-weight: bold;
-        margin-bottom: 5px;
-        text-decoration: underline;
-    }
-
-    .login-form,
-    .signup-form {
+    .login-signup-container {
+        min-height: 250px;
+        width: 100vw;
+        background-color: whitesmoke;
+        border: 1px solid gray;
+        border-radius: 5px;
+        position: absolute;
+        top: 20%;
+        z-index: 5;
+        padding: 20px;
         display: flex;
         flex-direction: column;
 
-        input {
-            max-width: 300px;
+        @include for-medium-layout {
+            left: 25vw;
+            width: 400px;
+        }
+
+        h2 {
+            font-weight: bold;
             margin-bottom: 5px;
+            text-decoration: underline;
         }
 
-        button {
-            padding: 6px 12px;
-            border-radius: 3px;
-            background-color: royalblue;
-            color: white;
-            width: fit-content;
+        .login-form,
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+
+            input {
+                max-width: 300px;
+                margin-bottom: 5px;
+            }
+
+            button {
+                padding: 6px 12px;
+                border-radius: 3px;
+                background-color: royalblue;
+                color: white;
+                width: fit-content;
+
+            }
+
+            &:not(:last-of-type) {
+                margin-bottom: 15px;
+            }
+
+            img {
+                width: 50px;
+                margin-bottom: 15px;
+                cursor: pointer;
+            }
+
+            .upload-img {
+                display: none;
+            }
 
         }
 
-        &:not(:last-of-type) {
+        .forms-seperator {
             margin-bottom: 15px;
         }
-
-        img {
-            width: 50px;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-
-        .upload-img {
-            display: none;
-        }
-
-    }
-
-    .forms-seperator {
-        margin-bottom: 15px;
     }
 }

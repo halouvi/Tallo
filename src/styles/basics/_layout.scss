@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns:
     minmax(0.5rem, 1fr)
-    minmax(auto, 1000px)
+    minmax(auto, 920px)
     minmax(0.5rem, 1fr);
   > .grid-col-c {
     grid-column: 2;
