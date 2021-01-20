@@ -11,7 +11,12 @@ export const boardTypes = {
   SET_LIST: 'SET_LIST',
 }
 
-
+export const CLEAN_BOARD_STORE = () => async dispatch => {
+  const board = null;
+  const users = null;
+  dispatch({ type: boardTypes.SET_BOARD, payload: board })
+  dispatch({ type: boardTypes.SET_USERS, payload: users })
+}
 
 export const ADD_BOARD = newBoard => async dispatch => {
   const { board, users, userBoards } = await boardService.add(newBoard)

@@ -1,4 +1,5 @@
 import userService from '../../service/userService.js'
+import { CLEAN_BOARD_STORE } from '../board/BoardActions.js';
 
 export const types = {
   GET_USER_BY_ID: 'GET_USER_BY_ID',
@@ -40,6 +41,9 @@ export const SIGNUP = ({fullname, email, password, imgUrl, boards}) => async dis
 export const LOGOUT = () => async dispatch => {
   await userService.logout();
   const user = {};
+  const userBoards = [];
   dispatch({ type: types.SET_LOGGED_USER, user })
+  dispatch({ type: types.SET_USER_BOARDS, userBoards })
+  dispatch(CLEAN_BOARD_STORE())
 }
 
