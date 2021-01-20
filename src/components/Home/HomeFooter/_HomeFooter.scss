@@ -1,34 +1,57 @@
 footer {
-  padding: 21px 20px;
-  height: 196px;
+  padding: 5px 0;
+  height: 370px;
   background-color: #002529;
   grid-column: 1 / span 3;
   z-index: 1;
-  color: white;
+  color: $white;
+  
+  @include for-narrow-layout {
+    padding: 21px 20px;
+    height: 196px;
+  }
   
   .footer-container {
     grid-column: 2 / span 1;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    color: white;
+    align-items: center;
+    
+    @include for-narrow-layout {
+      flex-direction: row;
+    }
   }
-
+  
   nav {
     display: flex;
-    gap: 90px;
+    flex-direction: column;
+    // gap: 90px;
 
+    @include for-narrow-layout {
+      flex-direction: row;
+    }
+    
     .logo-container {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      margin-bottom: 40px;
+
+      @include for-narrow-layout {
+        margin-bottom: 0;
+        margin-inline-end: 90px;
+      }
 
       .logo-div {
         display: flex;
         align-items: center;
-        font-size: 2.5rem;
+        font-size: 2.4rem;
+        margin-bottom: 15px;
 
         p {
           margin: 0;
+          font-weight: bold;
+          font-style: italic;
         }
         
         svg {
@@ -40,8 +63,12 @@ footer {
 
       .routes-container {
         display: flex;
-        gap: 40px;
+        // gap: 40px;
         font-size: 1.125rem;
+
+        >*:not(:last-child) {
+          margin-inline-end: 40px;
+        }
       }
     }
 
@@ -53,8 +80,11 @@ footer {
     .address {
       display: flex;
       flex-direction: column;
-      gap: 5px;
       font-size: 0.9rem;
+
+      >*:not(:last-child) {
+        margin-bottom: 5px;
+      }
 
       p {
         margin: 0;
@@ -65,14 +95,23 @@ footer {
   .right-footer-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 40px;
+    align-items: center;
+    // gap: 40px;
     font-size: 0.9rem;
+
+    @include for-narrow-layout {
+      align-items: flex-end;
+    }
   }
 
   .social-container {
     display: flex;
-    gap: 15px;
+    margin-bottom: 40px;
+    // gap: 15px;
+
+    >*:not(:last-child) {
+      margin-inline-end: 15px;
+    }
 
     img {
       width: 30px;

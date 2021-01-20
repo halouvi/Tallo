@@ -13,6 +13,7 @@ import {
 import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
+import { useHistory } from 'react-router'
 
 export const Board = () => {
   const { lists, title, _id, users } = useSelector(state => state.boardReducer.board) || {}
@@ -23,16 +24,20 @@ export const Board = () => {
     cards: []
   })
   const dispatch = useDispatch()
+  const history = useHistory();
 
   useEffect(() => {
-    if (!_id) dispatch(GET_BOARD_BY_ID('60006d95c1a9f1ce84d21c64'))
-    socketService.setup()
-    socketService.emit(socketTypes.JOIN_BOARD, _id)
-    socketService.on(socketTypes.BOARD_UPDATED, board =>
-      dispatch({ type: boardTypes.SET_BOARD, payload: board })
-    )
-    return () => {
-      socketService.terminate()
+    if (!userBoards[0]) history.replace('/create-modal');
+    else {
+      if (!_id) dispatch(GET_BOARD_BY_ID(userBoards[0]._id))
+      socketService.setup()
+      socketService.emit(socketTypes.JOIN_BOARD, _id)
+      socketService.on(socketTypes.BOARD_UPDATED, board =>
+        dispatch({ type: boardTypes.SET_BOARD, payload: board })
+      )
+      return () => {
+        socketService.terminate()
+      }
     }
   }, [])
 

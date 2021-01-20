@@ -32,6 +32,10 @@
       background-color: royalblue;
       color: white;
       width: fit-content;
+
+      &.exit-btn {
+        align-self: flex-end;
+      }
     }
 
     >*:not(:last-child) {

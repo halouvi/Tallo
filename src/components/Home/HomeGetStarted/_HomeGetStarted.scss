@@ -15,9 +15,14 @@
     img {
       position: absolute;
       bottom: -56px;
-      left: -97px;
+      left: -108px;
       width: 200px;
-      opacity: 0.8;
+      opacity: 0.7;
+      
+      @include for-narrow-layout {
+        opacity: 0.8;
+        left: -97px;
+      }
     }
 
     main {
@@ -28,17 +33,26 @@
       z-index: 1;
 
       h2 {
-        font-size: 2.75rem;
+        font-size: 2.5rem;
         font-weight: bold;
+        
+        @include for-narrow-layout {
+          font-size: 2.75rem;
+        }
       }
 
       button {
         border-radius: 30px;
+        width: 128px;
         background-color: transparent;
         padding: 0 20px;
         color: #012F34;
         border: 1.5px solid #012F34;
         height: 40px;
+
+        @include for-narrow-layout {
+          width: fit-content;
+        }
       }
     }
   }

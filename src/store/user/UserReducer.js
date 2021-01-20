@@ -1,7 +1,7 @@
 import { types } from './UserActions'
 
 const initState = {
-  user: {},
+  user: sessionStorage.loggedUser? JSON.parse(sessionStorage.loggedUser): {},
   userBoards: []
 }
 

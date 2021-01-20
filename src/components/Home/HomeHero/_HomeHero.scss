@@ -5,12 +5,13 @@
   text-align: center;
   gap: 10px;
   grid-column: 2 / span 1;
-  height: 450px;
+  height: 500px;
   padding: 0 10px;
-  color: white;
+  color: $white;
   position: relative;
-
+  
   @include for-narrow-layout {
+    height: 450px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -23,36 +24,41 @@
     width: 200px;
     position: absolute;
     left: -100px;
+    top: 10px;
     // display: none;
-    opacity: 0.8;
-
-    // @include for-narrow-layout {
-    //   display: initial;
-    // }
+    opacity: 0.5;
+    
+    @include for-narrow-layout {
+      opacity: 0.8;
+      top: unset;
+      // display: initial;
+    }
   }
 
   .right-img {
     width: 360px;
     position: absolute;
-    top: 212px;
+    top: 132px;
     right: 0;
-
+    opacity: 0.8;
+    
     @include for-narrow-layout {
       top: 212px;
+      opacity: 1;
     }
   }
 
   .hero-title {
-    max-width: 472px;
+    max-width: 490px;
     z-index: 1;
 
     h1 {
       font-weight: bold;
-      font-size: 5rem;
+      font-size: 3.5rem;
 
-      // @include for-narrow-layout {
-      //   font-size: 5.25rem;
-      // }
+      @include for-narrow-layout {
+        font-size: 4.5rem;
+      }
     }
 
     span {
@@ -64,8 +70,12 @@
     max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 70px;
+    gap: 40px;
     position: relative;
+    
+    @include for-narrow-layout {
+      gap: 70px;
+    }
 
     div {
       width: 60px;
