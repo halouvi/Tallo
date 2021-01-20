@@ -63,8 +63,12 @@ footer {
 
       .routes-container {
         display: flex;
-        gap: 40px;
+        // gap: 40px;
         font-size: 1.125rem;
+
+        >*:not(:last-child) {
+          margin-inline-end: 40px;
+        }
       }
     }
 
@@ -92,7 +96,7 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    // gap: 40px;
     font-size: 0.9rem;
 
     @include for-narrow-layout {
@@ -102,7 +106,12 @@ footer {
 
   .social-container {
     display: flex;
-    gap: 15px;
+    margin-bottom: 40px;
+    // gap: 15px;
+
+    >*:not(:last-child) {
+      margin-inline-end: 15px;
+    }
 
     img {
       width: 30px;

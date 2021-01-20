@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 30px;
+    // gap: 30px;
 
     @include for-narrow-layout {
       flex-direction: row;
@@ -31,14 +31,21 @@
       background-color: #f67e7e;
       position: absolute;
       top: -40px;
+      
+      @include for-narrow-layout {
+        top: 160px;
+      }
     }
 
     h2 {
       max-width: 300px;
       font-size: 1.75rem;
       font-weight: bold;
-
+      margin-bottom: 30px;
+      
       @include for-narrow-layout {
+        margin-bottom: 0;
+        margin-inline-end: 30px;
         max-width: 380px;
         font-size: 2.75rem;
       }
@@ -47,14 +54,27 @@
     .secondary-container {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      // gap: 10px;
+
+      >*:not(:last-child) {
+        margin-bottom: 10px;
+      }
 
       .item-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 10px;
+        // gap: 10px;
+ 
+      >*:not(:last-child) {
+        margin-bottom: 10px;
+
+        @include for-narrow-layout { 
+          margin-bottom: 0;
+          margin-inline-end: 10px;
+        }
+      }
 
         @include for-narrow-layout {
           flex-direction: row;
