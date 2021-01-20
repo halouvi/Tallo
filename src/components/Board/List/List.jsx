@@ -94,7 +94,7 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
       attachments: [],
       checklist: [],
       desc: '',
-      dueDate: 0,
+      dueDate: '',
       labels: [],
       members: []
     })

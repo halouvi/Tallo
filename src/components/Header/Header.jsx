@@ -13,7 +13,7 @@ export const Header = () => {
       </Link>
       <div className="nav-container flex">
         <nav className="flex jb">
-          <NavLink className="add-board-btn nav-item" to="/create-modal" exact>+</NavLink>
+          {user?._id && <NavLink className="add-board-btn nav-item" to="/create-modal" exact>+</NavLink>}
           <NavLink className="nav-item" to="/" exact>Home</NavLink>
           <NavLink className="nav-item" to="/board">Board</NavLink>
         </nav>
