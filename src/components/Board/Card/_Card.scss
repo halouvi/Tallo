@@ -1,4 +1,3 @@
-
 .card-drop-container {
   > .rect-ref {
     border-radius: $cardPadding;
@@ -38,11 +37,18 @@
         padding: 6px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+
+        >*:not(:last-child) {
+          margin-bottom: 8px;
+        }
 
         .card-title {
-          margin-bottom: 8px;
+          margin-bottom: 16px;
           color: rgb(50, 50, 50);
+        }
+
+        .card-desc {
+          margin-bottom: 24px;
         }
 
         .labels-section {
