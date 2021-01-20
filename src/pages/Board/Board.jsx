@@ -14,6 +14,7 @@ import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
 import { useHistory } from 'react-router'
+import { ClickAwayListener } from '@material-ui/core'
 
 export const Board = () => {
   const { lists, title, _id, users } = useSelector(state => state.boardReducer.board) || {}
@@ -84,26 +85,28 @@ export const Board = () => {
           />
         ))}
         {isAddList && (
-          <form action="" className="add-list-form" onSubmit={addList}>
-            <input
-              placeholder="Enter a title for this list..."
-              type="text"
-              name="title"
-              value={newList.title}
-              onChange={handleInput}
-            />
-            <div className="add-list-btns">
-              <button className="add-list-btn">Add list</button>
-              <button
-                onClick={ev => {
-                  ev.preventDefault()
-                  setIsAddList(false)
-                }}
-                className="close-btn">
-                X
-              </button>
-            </div>
-          </form>
+          <ClickAwayListener onClickAway={() => setIsAddList(false)}>
+            <form action="" className="add-list-form" onSubmit={addList}>
+              <input
+                placeholder="Enter a title for this list..."
+                type="text"
+                name="title"
+                value={newList.title}
+                onChange={handleInput}
+              />
+              <div className="add-list-btns">
+                <button className="add-list-btn">Add list</button>
+                <button
+                  onClick={ev => {
+                    ev.preventDefault()
+                    setIsAddList(false)
+                  }}
+                  className="close-btn">
+                  X
+                </button>
+              </div>
+            </form>
+          </ClickAwayListener>
         )}
         {!isAddList && (
           <div className="add-list-container" onClick={() => setIsAddList(true)}>

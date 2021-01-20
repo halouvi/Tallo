@@ -1,3 +1,4 @@
+import { ClickAwayListener } from '@material-ui/core'
 import { useState, useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
@@ -137,23 +138,25 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
               )}
             </div>
             {isAddCard && (
-              <form action="" className="add-card-form" onSubmit={onAddCard}>
-                <input
-                  autoFocus
-                  autoComplete="off"
-                  placeholder="Enter a title for this card..."
-                  type="text"
-                  name="title"
-                  value={newCard.title}
-                  onChange={handleInput}
-                />
-                <div className="add-card-btns flex jb">
-                  <button className="add-card-btn">Add Card</button>
-                  <button onClick={toggleIsAddCard} className="close-btn">
-                    X
-                  </button>
-                </div>
-              </form>
+              <ClickAwayListener onClickAway={() => setIsAddCard(false)}>
+                <form action="" className="add-card-form" onSubmit={onAddCard}>
+                  <input
+                    autoFocus
+                    autoComplete="off"
+                    placeholder="Enter a title for this card..."
+                    type="text"
+                    name="title"
+                    value={newCard.title}
+                    onChange={handleInput}
+                  />
+                  <div className="add-card-btns flex jb">
+                    <button className="add-card-btn">Add Card</button>
+                    <button onClick={toggleIsAddCard} className="close-btn">
+                      X
+                    </button>
+                  </div>
+                </form>
+              </ClickAwayListener>
             )}
             {!isAddCard && (
               <div className="add-card" onClick={toggleIsAddCard}>

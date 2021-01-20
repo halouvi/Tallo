@@ -2,7 +2,7 @@ import { types } from './UserActions'
 
 const initState = {
   user: sessionStorage.loggedUser? JSON.parse(sessionStorage.loggedUser): {},
-  userBoards: []
+  userBoards: sessionStorage.userBoards? JSON.parse(sessionStorage.userBoards): []
 }
 
 export const userReducer = (state = initState, { type, user, userBoards }) => {
