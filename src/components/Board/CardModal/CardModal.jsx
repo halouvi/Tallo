@@ -115,7 +115,10 @@ export const CardModal = props => {
                   </div>
                 )}
                 <div className="desc-container">
-                  <h3>Description</h3>
+                  <div className="desc-header">
+                    <img src={process.env.PUBLIC_URL + `/Description.png`} alt="" />
+                    <h3>Description</h3>
+                  </div>
                   <TextField
                     id="outlined-multiline-static"
                     multiline

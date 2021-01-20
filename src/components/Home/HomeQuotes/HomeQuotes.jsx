@@ -1,7 +1,5 @@
-import avatarKady from '../../../assets/avatar-kady.jpg';
 import patternOne from '../../../assets/bg-pattern-home-4-about-3.svg';
 import patternTwo from '../../../assets/bg-pattern-home-5.svg';
-import avatarAysha from '../../../assets/avatar-aiysha.jpg';
 
 
 export const HomeQuotes = () => {
