@@ -49,7 +49,7 @@
   }
 
   .hero-title {
-    max-width: 472px;
+    max-width: 490px;
     z-index: 1;
 
     h1 {
@@ -57,7 +57,7 @@
       font-size: 4rem;
 
       @include for-narrow-layout {
-        font-size: 5rem;
+        font-size: 4.5rem;
       }
     }
 

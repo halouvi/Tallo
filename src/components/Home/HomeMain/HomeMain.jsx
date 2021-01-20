@@ -9,27 +9,27 @@ export const HomeMain = () => {
     <div className="main-section main-grid">
       <section className="main-container">
         <div className="design-div"></div>
-        <h2>Build &amp; manage distributed teams like no one else.</h2>
+        <h2>Build &amp; manage your projects any time, anywhere.</h2>
         <div className="secondary-container">
           <div className="item-container">
             <img src={iconPerson} alt="" />
             <div className="item-txt">
-              <h4>Experienced Individuals</h4>
-              <p>Our network is made up of highly experienced professionals who are passionate about what they do.</p>
+              <h4>Work with any team</h4>
+              <p>Whether it’s for work, a side project or even the next family vacation, Tallo helps your team stay organized.</p>
             </div>
           </div>
           <div className="item-container">
             <img src={iconCog} alt="" />
             <div className="item-txt">
-              <h4>Easy to Implement</h4>
-              <p>Our processes have been refined over years of implementation meaning our teams always deliver.</p>
+              <h4>Always In Sync</h4>
+              <p>No matter where you are, Tallo stays in sync across all of your devices. Collaborate with your team anywhere.</p>
             </div>
           </div>
           <div className="item-container">
             <img src={iconChart} alt="" />
             <div className="item-txt">
-              <h4>Enhanced Productivity</h4>
-              <p>Our customized platform with in-built analytics helps you manage your distributed teams.</p>
+              <h4>Information at a glance</h4>
+              <p>Dive into the details by adding attachments, due dates, and more directly to Tallo cards. Collaborate on projects from beginning to end.</p>
             </div>
           </div>
         </div>
