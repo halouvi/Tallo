@@ -29,7 +29,7 @@ export const HomeMain = () => {
             <img src={iconChart} alt="" />
             <div className="item-txt">
               <h4>Information at a glance</h4>
-              <p>Dive into the details by adding attachments, due dates, and more directly to Tallo cards. Collaborate on projects from beginning to end.</p>
+              <p>Dive into the details by adding attachments, due dates, and more directly to Tallo cards.</p>
             </div>
           </div>
         </div>

@@ -90,7 +90,11 @@
         .item-txt {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          // gap: 20px;
+
+          >*:not(:last-child) {
+            margin-bottom: 15px;
+          }
         }
 
         h4 {
