@@ -20,8 +20,7 @@
         width: calc(100% - #{$listPadding} * 2);
         height: 100%;
         border-radius: inherit;
-        background-color: rgb(0, 174, 204);
-        filter: brightness(0.9);
+        background-color: rgba(0, 0, 0, 0.1);
       }
     }
 

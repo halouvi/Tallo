@@ -44,7 +44,7 @@ export default function UserMenu({ user }) {
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
-        keepMounted
+        // keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >

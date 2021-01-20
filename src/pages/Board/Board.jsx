@@ -6,7 +6,6 @@ import {
   ADD_CARD,
   GET_BOARD_BY_ID,
   HANDLE_DROP,
-  findItems,
   boardTypes,
   ADD_LIST,
   REMOVE_LIST
@@ -64,13 +63,11 @@ export const Board = () => {
     })
   })
 
-  const handleDrop = ({ item, targetListId, targetCardId, placeholderPos }) => {
-    dispatch(HANDLE_DROP({ item, targetListId, targetCardId, placeholderPos }))
-  }
+  const handleDrop = details => dispatch(HANDLE_DROP(details))
 
   return (
     <main ref={drop} className="board">
-      <BoardHeader boardTitle={title} boardMembers={users} userBoards={userBoards}></BoardHeader>
+      <BoardHeader boardTitle={title} boardMembers={users} userBoards={userBoards} />
       <section className="container flex">
         {lists?.map(list => (
           <List

@@ -7,7 +7,7 @@ import { Card } from '../Card/Card'
 export const List = ({ list, addCard, handleDrop, removeList }) => {
   const { _id, title, cards } = list
   const [isAddCard, setIsAddCard] = useState(false)
-  const [placeholderPos, setPlaceholderPos] = useState(null)
+  const [posOffset, setPosOffset] = useState(null)
   const rectRef = useRef(null)
   const dispatch = useDispatch()
 
@@ -55,16 +55,16 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
         monitor.getItem().sourceListId !== _id
     }),
     drop: (item, monitor) => {
-      if (!handleDrop) return
       if ((item.type === 'CARD' && !monitor.didDrop()) || item.type === 'LIST' || !cards.length) {
-        handleDrop({ item, targetListId: _id, placeholderPos })
+        // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
+        handleDrop && handleDrop({ ...item, targetListId: _id, posOffset })
       }
     }
   })
 
   const handleDragOver = offsetX => {
     const { left, width } = rectRef.current.getBoundingClientRect()
-    setPlaceholderPos(left + width / 2 > offsetX ? 0 : 1)
+    setPosOffset(left + width / 2 > offsetX ? 0 : 1)
   }
 
   const handleInput = ({ target: { name, value } }, item) => {
@@ -103,7 +103,7 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
   return (
     <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref flex">
-        {listOver && !placeholderPos && (
+        {listOver && !posOffset && (
           <div
             className="placeholder left"
             style={{
@@ -162,7 +162,7 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
             )}
           </div>
         </div>
-        {listOver && !!placeholderPos && (
+        {listOver && !!posOffset && (
           <div
             className="placeholder right"
             style={{

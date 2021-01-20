@@ -7,7 +7,7 @@ import { CardAvatars } from '../avatars/CardAvatars'
 export const Card = ({ card, listId, handleDrop }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const { _id, title, attachments, members, desc, dueDate, labels } = card || {}
-  const [placeholderPos, setPlaceholderPos] = useState(null)
+  const [posOffset, setPosOffset] = useState(null)
   const rectRef = useRef(null)
   const history = useHistory()
 
@@ -24,9 +24,9 @@ export const Card = ({ card, listId, handleDrop }) => {
         sourceCardId: _id,
         sourceListId: listId,
         height,
-        width,
+        width
       }
-    },
+    }
   })
 
   const [{ cardOver, hoverHeight }, drop] = useDrop({
@@ -34,22 +34,23 @@ export const Card = ({ card, listId, handleDrop }) => {
     hover: (item, monitor) => handleDragOver(monitor.getClientOffset().y),
     collect: monitor => ({
       cardOver: !!monitor.isOver() && monitor.getItem().sourceCardId !== _id,
-      hoverHeight: monitor.getItem()?.height,
+      hoverHeight: monitor.getItem()?.height
     }),
     drop: item => {
-      handleDrop && handleDrop({ item, targetCardId: _id, targetListId: listId, placeholderPos })
-    },
+      // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
+      handleDrop && handleDrop({ ...item, targetCardId: _id, targetListId: listId, posOffset })
+    }
   })
 
   const handleDragOver = offsetY => {
     const { top, height } = rectRef.current.getBoundingClientRect()
-    setPlaceholderPos(top + height / 2 > offsetY ? 0 : 1)
+    setPosOffset(top + height / 2 > offsetY ? 0 : 1)
   }
 
   return (
     <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref">
-        {cardOver && !placeholderPos && (
+        {cardOver && !posOffset && (
           <div className="placeholder top" style={{ height: `${hoverHeight}px` }} />
         )}
         <div ref={drag} className="card-preview fast">
@@ -67,7 +68,7 @@ export const Card = ({ card, listId, handleDrop }) => {
                 )}
             </div>
             <div className="bottom-section">
-              {dueDate && (
+              {!!dueDate && (
                 <div className="due-date">
                   <img
                     src="https://res.cloudinary.com/ariecloud/image/upload/v1610026807/tallo/clock-circular-outline_rdwoyz.svg"
@@ -76,12 +77,11 @@ export const Card = ({ card, listId, handleDrop }) => {
                   <p>{new Date(dueDate).toDateString()}</p>
                 </div>
               )}
-              {!dueDate && <div></div>}
               {members[0] && <CardAvatars members={members}></CardAvatars>}
             </div>
           </div>
         </div>
-        {cardOver && !!placeholderPos && (
+        {cardOver && !!posOffset && (
           <div className="placeholder bottom" style={{ height: `${hoverHeight}px` }} />
         )}
       </div>

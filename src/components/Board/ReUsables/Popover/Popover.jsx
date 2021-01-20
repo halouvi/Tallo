@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { ClickAwayListener, Popper } from '@material-ui/core'
 export const Popover = ({ children, anchorEl, setAnchorEl }) => {
   return (
@@ -8,6 +7,7 @@ export const Popover = ({ children, anchorEl, setAnchorEl }) => {
           open={!!anchorEl}
           anchorEl={anchorEl}
           disablePortal={true}
+          container={anchorEl}
           style={{ zIndex: 1000 }}
           onClose={() => setAnchorEl(null)}
           placement="bottom-start">

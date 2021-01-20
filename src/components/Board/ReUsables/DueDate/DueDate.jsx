@@ -21,6 +21,7 @@ export const DueDate = ({ card: { dueDate: prevDueDate, _id: cardId }, setAnchor
   const saveDueDate = (ev) => {
     ev.preventDefault();
     dispatch(UPDATE_CARD({ name: 'dueDate', value: dueDate, cardId }))
+    setAnchorEl(null)
   }
 
   const onHandleChange = ev => {

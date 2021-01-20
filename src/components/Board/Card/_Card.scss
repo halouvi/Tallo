@@ -1,6 +1,4 @@
-.is-dragging .card-preview {
-  box-shadow: 0 2px 12px 0 rgba($color: #5f5f5f, $alpha: 0.5) !important;
-}
+
 .card-drop-container {
   > .rect-ref {
     border-radius: $cardPadding;
@@ -21,8 +19,7 @@
         width: 100%;
         height: calc(100% - #{$cardPadding});
         border-radius: inherit;
-        background-color: #d5d6da;
-        filter: brightness(0.9);
+        background-color: rgba(0, 0, 0, 0.1);
       }
     }
 

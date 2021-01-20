@@ -67,6 +67,13 @@ export const UPDATE_CARD = ({ name, value, cardId }) => (dispatch, getState) => 
   dispatch(SAVE_BOARD(nextBoard))
 }
 
+export const DELETE_CARD = cardId => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  var { cardIdx, list } = findItems(nextBoard.lists, cardId)
+  list.cards.splice(cardIdx, 1)
+  dispatch(SAVE_BOARD(nextBoard))
+}
+
 export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   const { list } = nextBoard.lists.find(list => list._id === listId)
@@ -74,23 +81,36 @@ export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => 
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const HANDLE_DROP = ({ item, targetListId, targetCardId, placeholderPos = 0 }) => (
-  dispatch,
-  getState
-) => {
-  const { type, sourceListId, sourceCardId } = item
+export const HANDLE_DROP = ({
+  type,
+  sourceListId,
+  sourceCardId,
+  targetListId,
+  targetCardId,
+  posOffset = null
+}) => (dispatch, getState) => {
   const nextLists = clone(getState().boardReducer.board.lists)
 
   if (type === 'LIST') {
     const sourceListIdx = nextLists.findIndex(list => list._id === sourceListId)
     const [list] = nextLists.splice(sourceListIdx, 1)
     const targetListIdx = nextLists.findIndex(list => list._id === targetListId)
-    nextLists.splice(targetListIdx + placeholderPos, 0, list)
+    nextLists.splice(targetListIdx + posOffset, 0, list)
   } else if (type === 'CARD') {
-    const { cardIdx: sourceCardIdx, list: sourceList } = findItems(nextLists, sourceCardId)
+    const sourceList = nextLists.find(list => list._id === sourceListId)
+    const sourceCardIdx = sourceList.cards.findIndex(card => card._id === sourceCardId)
     const [card] = sourceList.cards.splice(sourceCardIdx, 1)
-    const { cardIdx: targetCardIdx, list: targetList } = findItems(nextLists, targetCardId)
-    targetList.cards.splice(targetCardIdx + placeholderPos, 0, card)
+    const targetList = nextLists.find(list => list._id === targetListId)
+    let targetCardIdx = targetList.cards.findIndex(card => card._id === targetCardId)
+    if (posOffset === null) {
+      //transfer card via menu and not DnD
+      if (sourceListId === targetListId && targetCardIdx >= sourceCardIdx) {
+        posOffset = 1
+      } else if (!targetCardId) {
+        targetCardIdx = targetList.cards.length
+      }
+    }
+    targetList.cards.splice(targetCardIdx + posOffset, 0, card)
   }
   dispatch(UPDATE_BOARD({ name: 'lists', value: nextLists }))
 }

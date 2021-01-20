@@ -25,8 +25,8 @@ export const CardModal = props => {
   const { goBack } = useHistory()
   const dispatch = useDispatch()
 
-  const activityToShow = activity?.slice(0, 5);
-  const attachmentsToShow = attachments?.slice(0, 3);
+  const activityToShow = activity?.slice(0, 5)
+  const attachmentsToShow = attachments?.slice(0, 3)
 
   useEffect(() => {
     if (!board) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
@@ -60,11 +60,7 @@ export const CardModal = props => {
     ev.stopPropagation()
     setAnchorEl(!anchorEl ? labelsRef.current : null)
   }
-
-  const dateConvert = time => {
-    return moment(time).fromNow()
-  }
-
+ 
   return (
     card &&
     users && (
@@ -146,7 +142,9 @@ export const CardModal = props => {
                   <div className="attachments-container">
                     <h3>Attachments</h3>
                     <div className="attach-container flex">
-                      {attachmentsToShow.map((attachment, index) => <img key={index} src={attachment} alt="" />)}
+                      {attachmentsToShow.map((attachment, index) => (
+                        <img key={index} src={attachment} alt="" />
+                      ))}
                       {/* <img src={attachments[0]} alt="" /> */}
                     </div>
                   </div>
@@ -167,7 +165,7 @@ export const CardModal = props => {
                                     <span className="bold">{fullname} </span>
                                     {activity}
                                   </div>
-                                  <p>{dateConvert(createdAt)}</p>
+                                  <p>{moment(createdAt).fromNow()}</p>
                                 </div>
                               </div>
                             </div>
@@ -178,7 +176,7 @@ export const CardModal = props => {
                   </ul>
                 </div>
               </div>
-              <SideBar card={card} list={list}/>
+              <SideBar card={card} list={list} />
             </div>
           </div>
         </ClickAwayListener>

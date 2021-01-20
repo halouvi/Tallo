@@ -1,0 +1,13 @@
+.drag-layer {
+  position: absolute;
+  z-index: 1000;
+  transition: transform 120ms, box-shadow 120ms;
+  &:hover {
+    transform: rotate(3deg);
+  }
+  &.CARD .card-preview,
+  &.LIST .list {
+    filter: brightness(0.93) !important;
+    box-shadow: 0 2px 10px 0 rgba($color: #5f5f5f, $alpha: 0.5) !important;
+  }
+}

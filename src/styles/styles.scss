@@ -23,11 +23,12 @@
 @import '../components/Board/BoardHeader/BoardHeader';
 @import '../components/Board/BoardHeader/BoardsSelect/BoardsSelect';
 @import '../components/Board/BoardHeader/Popover/Popover';
+@import '../components/DragLayer/DragLayer';
 
+@import '../components/Board/CardModal/SideBar/SideBar';
 @import '../components/Board/ReUsables/ReUsables';
 @import '../components/Board/ReUsables/Members/Members';
 @import '../components/Board/ReUsables/Labels/Labels';
-@import '../components/Board/CardModal/SideBar/SideBar';
 @import '../components/Board/ReUsables/Attachment/Attachment';
 @import '../components/Board/ReUsables/DueDate/DueDate';
 @import '../components/Board/ReUsables/CheckList/CheckList';
