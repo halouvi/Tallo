@@ -74,7 +74,7 @@ export const CardChecklists = ({ checklist, cardChecklists, cardId }) => {
         <div className="checklists-section">
             <div className="list-header">
                 <div className="header-main">
-                    <img src={process.env.PUBLIC_URL + `/Checklist.png`} alt="" />
+                    <img src={process.env.PUBLIC_URL + `/CheckList.png`} alt="" />
                     <h3>{checklist.title}</h3>
                 </div>
                 <button onClick={onRemoveList}>Delete</button>
