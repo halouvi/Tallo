@@ -1,7 +1,15 @@
+import { useHistory } from 'react-router';
 import patternThree from '../../../assets/bg-pattern-home-3.svg';
 
 
 export const HomeGetStarted = () => {
+  const history = useHistory();
+
+  const onLogin = () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    history.push('/login-signup');
+  }
 
   return (
     <div className="get-started-section main-grid">
@@ -9,7 +17,7 @@ export const HomeGetStarted = () => {
         <img src={patternThree} alt="" />
         <main>
           <h2>Ready to get started?</h2>
-          <button>contact us</button>
+          <button onClick={onLogin}>Login / Signup</button>
         </main>
       </div>
     </div>

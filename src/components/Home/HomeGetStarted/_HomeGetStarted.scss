@@ -33,7 +33,7 @@
       z-index: 1;
 
       h2 {
-        font-size: 2.5rem;
+        font-size: 2.4rem;
         font-weight: bold;
         
         @include for-narrow-layout {
@@ -43,15 +43,18 @@
 
       button {
         border-radius: 30px;
-        width: 128px;
+        width: 149px;
         background-color: transparent;
-        padding: 0 20px;
+        // padding: 0 8px;
         color: #012F34;
         border: 1.5px solid #012F34;
         height: 40px;
-
+        font-weight: bold;
+        font-size: 0.78rem;
+        
         @include for-narrow-layout {
           width: fit-content;
+          padding: 0 15px;
         }
       }
     }
