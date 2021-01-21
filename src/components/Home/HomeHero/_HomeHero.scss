@@ -10,7 +10,7 @@
   color: $white;
   position: relative;
   
-  @include for-narrow-layout {
+  @include for-medium-layout {
     height: 450px;
     flex-direction: row;
     justify-content: space-between;
@@ -28,7 +28,7 @@
     // display: none;
     opacity: 0.5;
     
-    @include for-narrow-layout {
+    @include for-medium-layout {
       opacity: 0.8;
       top: unset;
       // display: initial;
@@ -42,7 +42,7 @@
     right: 0;
     opacity: 0.8;
     
-    @include for-narrow-layout {
+    @include for-medium-layout {
       top: 212px;
       opacity: 1;
     }
@@ -51,12 +51,17 @@
   .hero-title {
     max-width: 490px;
     z-index: 1;
+    align-self: center;
+
+    @include for-medium-layout {
+      align-self: initial;
+    }
 
     h1 {
       font-weight: bold;
       font-size: 3.5rem;
 
-      @include for-narrow-layout {
+      @include for-medium-layout {
         font-size: 4.5rem;
       }
     }
@@ -72,8 +77,10 @@
     flex-direction: column;
     gap: 40px;
     position: relative;
+    align-self: center;
     
-    @include for-narrow-layout {
+    @include for-medium-layout {
+      align-self: initial;
       gap: 70px;
     }
 

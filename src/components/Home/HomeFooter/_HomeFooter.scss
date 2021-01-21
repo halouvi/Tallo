@@ -6,7 +6,7 @@ footer {
   z-index: 1;
   color: $white;
   
-  @include for-narrow-layout {
+  @include for-medium-layout {
     padding: 21px 20px;
     height: 196px;
   }
@@ -18,7 +18,7 @@ footer {
     justify-content: space-between;
     align-items: center;
     
-    @include for-narrow-layout {
+    @include for-medium-layout {
       flex-direction: row;
     }
   }
@@ -28,7 +28,7 @@ footer {
     flex-direction: column;
     // gap: 90px;
 
-    @include for-narrow-layout {
+    @include for-medium-layout {
       flex-direction: row;
     }
     
@@ -37,7 +37,7 @@ footer {
       flex-direction: column;
       margin-bottom: 40px;
 
-      @include for-narrow-layout {
+      @include for-medium-layout {
         margin-bottom: 0;
         margin-inline-end: 90px;
       }
@@ -99,7 +99,7 @@ footer {
     // gap: 40px;
     font-size: 0.9rem;
 
-    @include for-narrow-layout {
+    @include for-medium-layout {
       align-items: flex-end;
     }
   }
