@@ -69,14 +69,17 @@ export const CardModal = props => {
           <div className="modal-section">
             <div className="container wrap">
               <div className="modal-header fw flex wrap as jb">
-                <input
-                  className="card-title"
-                  autoComplete="off"
-                  name="title"
-                  value={title}
-                  onFocus={ev => ev.target.select()}
-                  onChange={handleInput}
-                />
+                <div className="title-header">
+                  <img src={process.env.PUBLIC_URL + `/Card.png`} alt="" />
+                  <input
+                    className="card-title"
+                    autoComplete="off"
+                    name="title"
+                    value={title}
+                    onFocus={ev => ev.target.select()}
+                    onChange={handleInput}
+                  />
+                </div>
                 <button className="exit-btn fast flex ac jc" onClick={goBack}>
                   X
                 </button>
@@ -143,7 +146,10 @@ export const CardModal = props => {
                 )}
                 {attachments[0] && (
                   <div className="attachments-container">
-                    <h3>Attachments</h3>
+                    <div className="attachments-header">
+                      <img src={process.env.PUBLIC_URL + `/Attachment.png`} alt="" />
+                      <h3>Attachments</h3>
+                    </div>
                     <div className="attach-container flex">
                       {attachmentsToShow.map((attachment, index) => (
                         <img key={index} src={attachment} alt="" />
@@ -153,7 +159,10 @@ export const CardModal = props => {
                   </div>
                 )}
                 <div className="activity-section">
-                  <h3>Activity</h3>
+                  <div className="activity-header">
+                    <img src={process.env.PUBLIC_URL + `/Activity.png`} alt="" />
+                    <h3>Activity</h3>
+                  </div>
                   <ul className="activity-container">
                     {activityToShow.map(({ activity, createdBy, createdAt }) => {
                       const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
