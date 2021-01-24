@@ -25,6 +25,15 @@
       object-fit: cover;
     }
 
+    .border {
+      // border: 2px solid red;
+      // background-color: rgb(68, 67, 67);
+      border: 1px solid #dadada;
+      outline: none;
+      border-color: #75d3f0;
+      box-shadow: 0 0 14px #71e0f3;
+    }
+
     svg {
       height: 75%;
       width: 75%;
@@ -34,4 +43,3 @@
     }
   }
 }
-  
