@@ -1,4 +1,3 @@
-
 .card-drop-container {
   > .rect-ref {
     border-radius: $cardPadding;
@@ -35,28 +34,28 @@
         filter: brightness(0.93);
       }
       > .container {
-        position: relative;
-        color: rgb(20, 20, 20);
-        // > .title {
-        // }
-        > .menu-btn {
-          position: absolute;
-          top: 0;
-          right: 0;
-          height: 25px;
-          width: 25px;
-          color: rgb(100, 100, 100);
-          font-size: 1.1rem;
-          font-weight: bold;
-          letter-spacing: 0;
-          &:hover {
-            border-radius: 3px;
-            background-color: rgba(0, 0, 0, 0.1);
-          }
+        height: 100%;
+        padding: 6px;
+        display: flex;
+        flex-direction: column;
+
+        >*:not(:last-child) {
+          margin-bottom: 8px;
         }
 
-        > .labels {
-          > .label {
+        .card-title {
+          margin-bottom: 16px;
+          color: rgb(50, 50, 50);
+        }
+
+        .card-desc {
+          margin-bottom: 24px;
+        }
+
+        .labels-section {
+          display: flex;
+
+          .label {
             width: 40px;
             height: 9px;
             border-radius: 5px;

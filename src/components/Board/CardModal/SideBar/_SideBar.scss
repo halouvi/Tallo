@@ -8,6 +8,8 @@
     margin-top: 0;
   }
 
+
+
   .buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -15,6 +17,18 @@
     
     @include for-medium-layout {
       grid-template-columns: 1fr;
+    }
+
+    .modal-btn {
+      display: flex;
+      align-items: center;
+      
+      img {
+        width: 13px;
+        height: 13px;
+        margin-inline-end: 10px;
+        // opacity: 0.9;
+      }
     }
   }
 

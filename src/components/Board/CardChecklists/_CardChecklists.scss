@@ -7,6 +7,17 @@
     align-items: center;
     padding: 10px 0;
 
+    .header-main {
+      display: flex;
+    }
+
+    img {
+      width: 25px;
+      height: 25px;
+      margin-inline-end: 10px;
+      opacity: 0.8;
+    }
+
     >button {
       align-self: flex-start;
       padding: 5px 8px;

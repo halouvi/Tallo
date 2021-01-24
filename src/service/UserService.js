@@ -8,9 +8,10 @@ export default {
     getById,
     remove,
     update,
-    unreadBooking,
-    resetUnreadBookings,
-    query
+    // unreadBooking,
+    // resetUnreadBookings,
+    query,
+    setUserBoards
 }
 
 function query(query) {
@@ -34,7 +35,7 @@ function update(user) {
 
 async function login(userCred) {
     var { user, userBoards } = await httpService.post('auth/login', userCred)
-    user = _handleLogin(user)
+    user = _handleLogin(user, userBoards)
     return { user, userBoards }
 }
 async function signup(userCred) {
@@ -46,18 +47,22 @@ async function logout() {
     sessionStorage.clear();
 }
 
-async function unreadBooking(user) {
-    const updatedUser = await httpService.put(`user/${user._id}`, user)
-    return _handleLogin(updatedUser);
+// async function unreadBooking(user) {
+//     const updatedUser = await httpService.put(`user/${user._id}`, user)
+//     return _handleLogin(updatedUser);
+// }
+
+// async function resetUnreadBookings(user) {
+//     const updatedUser = await httpService.put(`user/reset/${user._id}`, user)
+//     return _handleLogin(updatedUser);
+// }
+
+function setUserBoards(userBoards) {
+    sessionStorage.setItem('userBoards', JSON.stringify(userBoards))
 }
 
-async function resetUnreadBookings(user) {
-    const updatedUser = await httpService.put(`user/reset/${user._id}`, user)
-    return _handleLogin(updatedUser);
-}
-
-
-function _handleLogin(user) {
+function _handleLogin(user, userBoards) {
     sessionStorage.setItem('loggedUser', JSON.stringify(user))
+    sessionStorage.setItem('userBoards', JSON.stringify(userBoards))
     return user;
 }

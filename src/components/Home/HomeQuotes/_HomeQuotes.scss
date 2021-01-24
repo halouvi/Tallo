@@ -6,7 +6,7 @@
   position: relative;
   color: $white;
 
-  @include for-narrow-layout {
+  @include for-medium-layout {
     height: 744px;
     padding: 0;
   }
@@ -42,7 +42,7 @@
       margin-top: 75px;
       margin-bottom: 100px;
       
-      @include for-narrow-layout {
+      @include for-medium-layout {
         max-width: 883px;
         font-size: 2.75rem;
         margin-top: 0;
@@ -59,7 +59,7 @@
       flex-direction: column;
       gap: 30px;
       
-      @include for-narrow-layout {
+      @include for-medium-layout {
         flex-direction: row;
         align-items: flex-start;
       }
@@ -67,7 +67,7 @@
       >* {
         margin-bottom: 75px;
         
-        @include for-narrow-layout {
+        @include for-medium-layout {
           margin-bottom: 0;
           margin-inline-end: 30px;
         }

@@ -11,6 +11,7 @@ export const types = {
 export const SET_BOARDS = userBoards => dispatch => {
   // const users = await userService.query(q);
   // return users;
+  userService.setUserBoards(userBoards);
   console.log(userBoards);
   dispatch({ type: types.SET_USER_BOARDS, userBoards })
 }

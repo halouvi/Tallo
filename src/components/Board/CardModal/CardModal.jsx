@@ -69,14 +69,17 @@ export const CardModal = props => {
         <div className="modal-section" onClick={togglePopover}>
           <div className="container wrap">
             <div className="modal-header fw flex wrap as jb">
-              <input
-                className="card-title"
-                autoComplete="off"
-                name="title"
-                value={title}
-                onFocus={ev => ev.target.select()}
-                onChange={handleInput}
-              />
+              <div className="title-header">
+                <img src={process.env.PUBLIC_URL + `/Card.png`} alt="" />
+                <input
+                  className="card-title"
+                  autoComplete="off"
+                  name="title"
+                  value={title}
+                  onFocus={ev => ev.target.select()}
+                  onChange={handleInput}
+                />
+              </div>
               <button className="exit-btn fast flex ac jc" onClick={closeModal}>
                 X
               </button>
@@ -91,9 +94,9 @@ export const CardModal = props => {
                 </div>
               )}
               {labels[0] && (
-                <div className="labels-section wfc">
+                <div className="labels-section">
                   <h3>Labels</h3>
-                  <div className="labels-container flex" onClick={ev => togglePopover(ev, Labels)}>
+                  <div className="labels-container flex wfc" onClick={ev => togglePopover(ev, Labels)}>
                     {board.labels.map(
                       ({ _id: gLabelId, color, name }) =>
                         labels.some(labelId => labelId === gLabelId) && (
@@ -107,42 +110,39 @@ export const CardModal = props => {
                 </div>
               )}
               <div className="desc-container">
-                <h3>Description</h3>
+                <div className="desc-header">
+                  <img src={process.env.PUBLIC_URL + `/Description.png`} alt="" />
+                  <h3>Description</h3>
+                </div>
                 <TextField
                   id="outlined-multiline-static"
                   multiline
                   placeholder="Add a more detailed description..."
                   rows={4}
                   variant="outlined"
-                  value={desc}
                   name="desc"
+                  value={desc}
                   onChange={handleInput}
                 />
               </div>
-              {checklist[0] && (
-                <div className="checklists-container">
-                  {checklist.map((currChecklist, idx) => (
-                    <CardChecklists
-                      key={idx}
-                      cardChecklists={checklist}
-                      checklist={currChecklist}
-                      cardId={_id}></CardChecklists>
-                  ))}
-                </div>
-              )}
               {attachments[0] && (
                 <div className="attachments-container">
-                  <h3>Attachments</h3>
+                  <div className="attachments-header">
+                    <img src={process.env.PUBLIC_URL + `/Attachment.png`} alt="" />
+                    <h3>Attachments</h3>
+                  </div>
                   <div className="attach-container flex">
                     {attachmentsToShow.map((attachment, index) => (
                       <img key={index} src={attachment} alt="" />
                     ))}
-                    {/* <img src={attachments[0]} alt="" /> */}
                   </div>
                 </div>
               )}
               <div className="activity-section">
-                <h3>Activity</h3>
+                <div className="activity-header">
+                  <img src={process.env.PUBLIC_URL + `/Activity.png`} alt="" />
+                  <h3>Activity</h3>
+                </div>
                 <ul className="activity-container">
                   {activityToShow.map(({ activity, createdBy, createdAt }) => {
                     const { fullname, imgUrl } = users.find(user => user._id === createdBy) || {}
@@ -159,6 +159,7 @@ export const CardModal = props => {
                                 </div>
                                 <p>{moment(createdAt).fromNow()}</p>
                               </div>
+                              <p>{moment(createdAt).fromNow()}</p>
                             </div>
                           </div>
                         </li>
