@@ -146,7 +146,7 @@ export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
       if (cardId) dispatch(GET_CARD_BY_ID(cardId))
       console.error('Could not update board', error)
     }
-  }, 2000)
+  }, 1500)
 }
 
 export const findItems = (lists, cardId) => {
