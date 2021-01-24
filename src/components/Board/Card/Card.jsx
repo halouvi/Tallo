@@ -59,10 +59,12 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
         )}
         <div ref={drag} className="card-preview flex col fast m8 sbl">
           <div onClick={openModal} className={`container f-110 flex col m8 sbl`}>
-            <span className="title">{title}</span>
-            <button className="menu-btn" onClick={openMenu}>
-              ···
-            </button>
+            {/* <div className="flex jb"> */}
+              <span className="title">{title}</span>
+              <button className="menu-btn" onClick={openMenu}>
+                ···
+              </button>
+            {/* </div> */}
             <span className="desc fw">{desc}</span>
             {attachments[0] && (
               <div className="attachments">

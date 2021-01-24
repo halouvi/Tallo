@@ -1,6 +1,6 @@
-import { Avatar, Popper } from '@material-ui/core'
 import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { Avatar } from '@material-ui/core'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { GET_BOARD_BY_ID, GET_CARD_BY_ID, UPDATE_CARD } from '../../../store/board/BoardActions'
@@ -96,7 +96,9 @@ export const CardModal = props => {
               {labels[0] && (
                 <div className="labels-section">
                   <h3>Labels</h3>
-                  <div className="labels-container flex wfc" onClick={ev => togglePopover(ev, Labels)}>
+                  <div
+                    className="labels-container flex wfc"
+                    onClick={ev => togglePopover(ev, Labels)}>
                     {board.labels.map(
                       ({ _id: gLabelId, color, name }) =>
                         labels.some(labelId => labelId === gLabelId) && (
@@ -125,6 +127,18 @@ export const CardModal = props => {
                   onChange={handleInput}
                 />
               </div>
+              {checklist[0] && (
+                <div className="checklists-container">
+                  {checklist.map((currChecklist, idx) => (
+                    <CardChecklists
+                      key={idx}
+                      cardChecklists={checklist}
+                      checklist={currChecklist}
+                      cardId={_id}></CardChecklists>
+                  ))}
+                </div>
+              )}
+
               {attachments[0] && (
                 <div className="attachments-container">
                   <div className="attachments-header">

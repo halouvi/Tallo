@@ -34,12 +34,14 @@
         filter: brightness(0.93);
       }
       > .container {
+        position: relative;
+        color: rgb(20, 20, 20);
         height: 100%;
         padding: 6px;
         display: flex;
         flex-direction: column;
 
-        >*:not(:last-child) {
+        > *:not(:last-child) {
           margin-bottom: 8px;
         }
 
@@ -51,11 +53,24 @@
         .card-desc {
           margin-bottom: 24px;
         }
+        > .menu-btn {
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 25px;
+          width: 25px;
+          color: rgb(100, 100, 100);
+          font-size: 1.1rem;
+          font-weight: bold;
+          letter-spacing: 0;
+          &:hover {
+            border-radius: 3px;
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+        }
 
-        .labels-section {
-          display: flex;
-
-          .label {
+        > .labels {
+          > .label {
             width: 40px;
             height: 9px;
             border-radius: 5px;
@@ -66,7 +81,7 @@
           }
         }
 
-         .due-date {
+        .due-date {
           padding: 4px 5px;
           border-radius: 3px;
           background-color: royalblue;
