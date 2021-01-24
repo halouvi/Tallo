@@ -49,7 +49,7 @@ export default function UserMenu({ user }) {
         onClose={handleClose}
       >
         <MenuItem onClick={toHome}>Home</MenuItem>
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
         {user?._id? <MenuItem onClick={onLogout}>Logout</MenuItem>: <MenuItem onClick={onLogin}>Login/Signup</MenuItem>}
       </Menu>
     </div>
