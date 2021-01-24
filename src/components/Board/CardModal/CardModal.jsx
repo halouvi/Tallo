@@ -173,12 +173,10 @@ export const CardModal = props => {
                                 </div>
                                 <p>{moment(createdAt).fromNow()}</p>
                               </div>
-                              <p>{moment(createdAt).fromNow()}</p>
                             </div>
                           </div>
                         </li>
-                      )
-                    )
+                      ))
                   })}
                 </ul>
               </div>

@@ -85,7 +85,7 @@ export const DELETE_CARD = cardId => (dispatch, getState) => {
 
 export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
-  const { list } = nextBoard.lists.find(list => list._id === listId)
+  const list = nextBoard.lists.find(list => list._id === listId)
   list[name] = value
   dispatch(SAVE_BOARD(nextBoard))
 }
