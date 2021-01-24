@@ -1,15 +1,20 @@
 import moment from 'moment'
+import TextField from '@material-ui/core/TextField'
 import { Avatar } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { GET_BOARD_BY_ID, GET_CARD_BY_ID, UPDATE_CARD } from '../../../store/board/BoardActions'
-import TextField from '@material-ui/core/TextField'
 import { CardAvatars } from '../avatars/CardAvatars'
 import { CardChecklists } from '../CardChecklists/CardChecklists'
 import { SideBar } from './SideBar/SideBar'
 import { Labels } from '../ReUsables/Labels/Labels'
 import { Popover } from '../ReUsables/Popover/Popover'
+import {
+  GET_BOARD_BY_ID,
+  GET_CARD_BY_ID,
+  UPDATE_CARD,
+  CLEAR_CARD
+} from '../../../store/board/BoardActions'
 
 export const CardModal = props => {
   const { board, list, card, users } = useSelector(state => state.boardReducer) || {}
@@ -19,7 +24,7 @@ export const CardModal = props => {
   const [timer, setTimer] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
   const [DynCmp, setDynCmp] = useState(null)
-  const { _id } = useParams()
+  const { _id: cardId } = useParams()
   const { push } = useHistory()
   const dispatch = useDispatch()
 
@@ -28,32 +33,29 @@ export const CardModal = props => {
 
   useEffect(() => {
     if (!board) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
-    else dispatch(GET_CARD_BY_ID(_id))
-  }, [board, _id])
+    else {
+      dispatch(GET_CARD_BY_ID(cardId))
+      setEditables(null)
+    }
+    return () => dispatch(CLEAR_CARD())
+  }, [board, cardId])
 
-  useEffect(() => setEditables(null), [_id])
-
-  useEffect(() => !editables && setEditables({ title: card?.title, desc: card?.desc }), [card])
+  useEffect(() => {
+    if (card && !editables) setEditables({ title: card.title, desc: card.desc })
+  }, [card])
 
   useEffect(() => {
     document.addEventListener('keyup', closeModal)
-    return () => {
-      document.removeEventListener('keyup', closeModal)
-    }
+    return () => document.removeEventListener('keyup', closeModal)
   }, [])
 
   const closeModal = ({ type, key }) => {
     if (type === 'click' || key === 'Escape') push('/board')
   }
 
-  const handleInput = ({ target: { name, value } }) => {
+  const handleEdit = ({ target: { name, value } }) => {
     setEditables({ ...editables, [name]: value })
-    clearTimeout(timer)
-    setTimer(
-      setTimeout(() => {
-        dispatch(UPDATE_CARD({ name, value, cardId: _id }))
-      }, 1000)
-    )
+    dispatch(UPDATE_CARD({ name, value, cardId }))
   }
 
   const togglePopover = (ev, cmp) => {
@@ -77,7 +79,7 @@ export const CardModal = props => {
                   name="title"
                   value={title}
                   onFocus={ev => ev.target.select()}
-                  onChange={handleInput}
+                  onChange={handleEdit}
                 />
               </div>
               <button className="exit-btn fast flex ac jc" onClick={closeModal}>
@@ -124,7 +126,7 @@ export const CardModal = props => {
                   variant="outlined"
                   name="desc"
                   value={desc}
-                  onChange={handleInput}
+                  onChange={handleEdit}
                 />
               </div>
               {checklist[0] && (
@@ -134,7 +136,8 @@ export const CardModal = props => {
                       key={idx}
                       cardChecklists={checklist}
                       checklist={currChecklist}
-                      cardId={_id}></CardChecklists>
+                      cardId={cardId}
+                    />
                   ))}
                 </div>
               )}

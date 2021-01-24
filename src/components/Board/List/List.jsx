@@ -6,7 +6,9 @@ import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
 export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) => {
-  const { _id, title, cards } = list
+  const { _id: listId, cards } = list
+  const [editables, setEditables] = useState({ title: list.title })
+  const { title } = editables
   const [isAddCard, setIsAddCard] = useState(false)
   const [posOffset, setPosOffset] = useState(null)
   const rectRef = useRef(null)
@@ -33,7 +35,7 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
       return {
         type: 'LIST',
         list,
-        sourceListId: _id,
+        sourceListId: listId,
         width,
         height
       }
@@ -52,7 +54,7 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
       listOver:
         monitor.isOver() &&
         monitor.getItemType() === 'LIST' &&
-        monitor.getItem().sourceListId !== _id,
+        monitor.getItem().sourceListId !== listId,
       cardOver:
         monitor.isOver() &&
         monitor.getItemType() === 'CARD' &&
@@ -61,17 +63,18 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
     drop: (item, monitor) => {
       if ((item.type === 'CARD' && !monitor.didDrop()) || item.type === 'LIST' || !cards.length) {
         // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
-        handleDrop && handleDrop({ ...item, targetListId: _id, posOffset })
+        handleDrop && handleDrop({ ...item, targetListId: listId, posOffset })
       }
     }
   })
 
-  const handleInput = ({ target: { name, value } }, item) => {
+  const handleInput = ({ target: { name, value } }) => {
     setNewCard({ ...newCard, [name]: value })
   }
 
   const handleEdit = ({ target: { name, value } }) => {
-    dispatch(UPDATE_LIST({ name, value, listId: _id }))
+    setEditables({ ...editables, [name]: value })
+    dispatch(UPDATE_LIST({ name, value, listId }))
   }
 
   const handleKeyUp = ({ target, key }) => {
@@ -85,7 +88,7 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
 
   const onAddCard = ev => {
     ev.preventDefault()
-    addCard(newCard, _id)
+    addCard(newCard, listId)
     setIsAddCard(false)
     setNewCard({
       title: '',
@@ -117,13 +120,13 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
               <input
                 ref={drag}
                 name="title"
-                className="list-title fast f-110"
                 value={title}
+                className="list-title fast f-110"
                 onFocus={ev => ev.target.select()}
                 onChange={handleEdit}
                 onKeyUp={handleKeyUp}
               />
-              <button className="delete-btn" onClick={() => removeList(_id)}>
+              <button className="delete-btn" onClick={() => removeList(listId)}>
                 ···
               </button>
             </div>

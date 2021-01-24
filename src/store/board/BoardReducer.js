@@ -4,7 +4,7 @@ const initState = {
   board: null,
   users: null,
   list: null,
-  card: null,
+  card: null
 }
 
 export const boardReducer = (state = initState, { type, payload }) => {
@@ -12,22 +12,26 @@ export const boardReducer = (state = initState, { type, payload }) => {
     case boardTypes.SET_BOARD:
       return {
         ...state,
-        board: payload,
+        board: payload
       }
     case boardTypes.SET_USERS:
       return {
         ...state,
-        users: payload,
+        users: payload
       }
     case boardTypes.SET_LIST:
       return {
         ...state,
-        list: payload,
+        list: payload
       }
     case boardTypes.SET_CARD:
       return {
         ...state,
-        card: payload,
+        card: payload
+      }
+    case boardTypes.RESET_BOARD:
+      return {
+        ...initState
       }
     default:
       return state

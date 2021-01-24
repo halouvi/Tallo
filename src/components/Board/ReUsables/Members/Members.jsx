@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 
-export const Members = ({ card: { members, _id }, togglePopover }) => {
+export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
   const { users } = useSelector(state => state.boardReducer.board)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchRes, setSearchRes] = useState(null)
@@ -19,12 +19,12 @@ export const Members = ({ card: { members, _id }, togglePopover }) => {
   }, [searchTerm, members])
 
   const addMember = member => {
-    dispatch(UPDATE_CARD({ name: 'members', value: [...members, member], _id }))
+    dispatch(UPDATE_CARD({ name: 'members', value: [...members, member], cardId }))
   }
 
   const removeMember = memberId => {
     const membersFiltered = members.filter(member => member !== memberId)
-    dispatch(UPDATE_CARD({ name: 'members', value: membersFiltered, _id }))
+    dispatch(UPDATE_CARD({ name: 'members', value: membersFiltered, cardId }))
   }
 
   return (

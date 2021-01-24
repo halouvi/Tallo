@@ -47,9 +47,7 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
     }
   })
 
-  const openMenu = ev => {
-    togglePopover(ev, { cmp: CardMenu, cardId: _id, el: rectRef.current })
-  }
+  const openMenu = ev => togglePopover(ev, { cmp: CardMenu, cardId: _id, el: rectRef.current })
 
   return (
     <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
@@ -59,12 +57,10 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
         )}
         <div ref={drag} className="card-preview flex col fast m8 sbl">
           <div onClick={openModal} className={`container f-110 flex col m8 sbl`}>
-            {/* <div className="flex jb"> */}
-              <span className="title">{title}</span>
-              <button className="menu-btn" onClick={openMenu}>
-                ···
-              </button>
-            {/* </div> */}
+            <span className="title">{title}</span>
+            <button className="menu-btn" onClick={openMenu}>
+              ···
+            </button>
             <span className="desc fw">{desc}</span>
             {attachments[0] && (
               <div className="attachments">

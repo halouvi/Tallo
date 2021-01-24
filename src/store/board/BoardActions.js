@@ -8,14 +8,14 @@ export const boardTypes = {
   SET_BOARD: 'SET_BOARD',
   SET_USERS: 'SET_USERS',
   SET_CARD: 'SET_CARD',
-  SET_LIST: 'SET_LIST'
+  SET_LIST: 'SET_LIST',
+  RESET_BOARD: 'RESET_BOARD'
 }
 
-export const CLEAN_BOARD_STORE = () => async dispatch => {
-  const board = null
-  const users = null
-  dispatch({ type: boardTypes.SET_BOARD, payload: board })
-  dispatch({ type: boardTypes.SET_USERS, payload: users })
+var timer
+
+export const CLEAR_BOARD_STORE = () => dispatch => {
+  dispatch({ type: boardTypes.RESET_BOARD, payload: null })
 }
 
 export const ADD_BOARD = newBoard => async dispatch => {
@@ -68,12 +68,20 @@ export const GET_CARD_BY_ID = cardId => (dispatch, getState) => {
   dispatch({ type: boardTypes.SET_CARD, payload: card })
 }
 
+export const CLEAR_CARD = () => dispatch => {
+  dispatch({ type: boardTypes.SET_LIST, payload: null })
+  dispatch({ type: boardTypes.SET_CARD, payload: null })
+}
+
 export const UPDATE_CARD = ({ name, value, cardId }) => (dispatch, getState) => {
-  const nextBoard = clone(getState().boardReducer.board)
-  var { card } = findItems(nextBoard.lists, cardId)
-  card[name] = value
-  card = _activityLog(card, name)
-  dispatch(SAVE_BOARD(nextBoard))
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    const nextBoard = clone(getState().boardReducer.board)
+    var { card } = findItems(nextBoard.lists, cardId)
+    card[name] = value
+    card = _activityLog(card, name)
+    dispatch(SAVE_BOARD(nextBoard))
+  }, 500)
 }
 
 export const DELETE_CARD = cardId => (dispatch, getState) => {
@@ -84,10 +92,13 @@ export const DELETE_CARD = cardId => (dispatch, getState) => {
 }
 
 export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
-  const nextBoard = clone(getState().boardReducer.board)
-  const { list } = nextBoard.lists.find(list => list._id === listId)
-  list[name] = value
-  dispatch(SAVE_BOARD(nextBoard))
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    const nextBoard = clone(getState().boardReducer.board)
+    const list = nextBoard.lists.find(list => list._id === listId)
+    list[name] = value
+    dispatch(SAVE_BOARD(nextBoard))
+  }, 500)
 }
 
 export const HANDLE_DROP = ({
@@ -130,7 +141,6 @@ export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-var timer
 export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
   const prevBoard = clone(getState().boardReducer.board)
   dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
