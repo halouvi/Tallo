@@ -1,16 +1,15 @@
 import { ClickAwayListener, Popper } from '@material-ui/core'
-export const Popover = ({ children, anchorEl, setAnchorEl }) => {
+
+export const Popover = ({ anchorEl, pos, children, togglePopover}) => {
   return (
     anchorEl && (
-      <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+      <ClickAwayListener onClickAway={togglePopover}>
         <Popper
+          onClick={ev => ev.stopPropagation()}
           open={!!anchorEl}
           anchorEl={anchorEl}
-          disablePortal={true}
-          container={anchorEl}
-          style={{ zIndex: 1000 }}
-          onClose={() => setAnchorEl(null)}
-          placement="bottom-start">
+          style={{zIndex:100}}
+          placement={pos}>
           {children}
         </Popper>
       </ClickAwayListener>

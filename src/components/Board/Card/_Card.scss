@@ -23,32 +23,40 @@
       }
     }
 
-    .card-preview {
-      min-height: 100px;
+    > .card-preview {
+      min-height: 70px;
       width: 100%;
       box-shadow: 0 2px 2px 0 rgba($color: #5f5f5f, $alpha: 0.3);
       border-radius: inherit;
       background-color: #ffffff;
+      padding: 6px;
       cursor: grab;
       &:hover {
         filter: brightness(0.93);
       }
       > .container {
-        height: 100%;
-        padding: 6px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-
-        .card-title {
-          margin-bottom: 8px;
-          color: rgb(50, 50, 50);
+        position: relative;
+        color: rgb(20, 20, 20);
+        // > .title {
+        // }
+        > .menu-btn {
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 25px;
+          width: 25px;
+          color: rgb(100, 100, 100);
+          font-size: 1.1rem;
+          font-weight: bold;
+          letter-spacing: 0;
+          &:hover {
+            border-radius: 3px;
+            background-color: rgba(0, 0, 0, 0.1);
+          }
         }
 
-        .labels-section {
-          display: flex;
-
-          .label {
+        > .labels {
+          > .label {
             width: 40px;
             height: 9px;
             border-radius: 5px;
@@ -59,45 +67,36 @@
           }
         }
 
-        .due-date {
-          display: flex;
-          align-items: center;
+         .due-date {
           padding: 4px 5px;
           border-radius: 3px;
           background-color: royalblue;
           width: fit-content;
           max-height: 28px;
 
-          p {
+          > p {
             color: whitesmoke;
             font-size: 0.85rem;
             margin: 0;
-            padding-bottom: 2px;
           }
 
-          img {
+          > img {
             width: 16px;
             height: 16px;
             margin-inline-end: 5px;
           }
         }
 
-        .bottom-section {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-
-          .MuiAvatarGroup-avatar {
-            height: 30px;
-            width: 30px;
-            font-size: 1rem;
-          }
+        .MuiAvatarGroup-avatar {
+          height: 30px;
+          width: 30px;
+          font-size: 1rem;
         }
-      }
 
-      img {
-        width: 80%;
-        margin: 0 auto;
+        img {
+          width: 80%;
+          margin: 0 auto;
+        }
       }
     }
   }

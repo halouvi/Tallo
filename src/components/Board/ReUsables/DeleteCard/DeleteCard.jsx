@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import { DELETE_CARD } from '../../../../store/board/BoardActions'
 
-export const DeleteCard = ({ card, setAnchorEl }) => {
+export const DeleteCard = ({ card, togglePopover }) => {
   const dispatch = useDispatch()
   const { push } = useHistory()
 
@@ -18,7 +18,7 @@ export const DeleteCard = ({ card, setAnchorEl }) => {
         <button className="modal-btn" onClick={deleteCard}>
           Delete
         </button>
-        <button className="modal-btn" onClick={() => setAnchorEl(null)}>
+        <button className="modal-btn" onClick={togglePopover}>
           Cancel
         </button>
       </div>

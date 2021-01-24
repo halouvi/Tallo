@@ -9,12 +9,11 @@ import { Board } from './pages/Board/Board'
 import { CardModal } from './components/Board/CardModal/CardModal'
 import { DragLayer } from './components/DragLayer/DragLayer'
 import { CreateBoardModal } from './components/Board/CreateBoardModal/CreateBoardModal'
-import './styles/styles.scss'
 import { LoginSingup } from './components/LoginSignup/LoginSignup'
+import './styles/styles.scss'
 
 export const App = () => {
-
-  const PrivateRoute = (props) => {
+  const PrivateRoute = props => {
     const { user } = useSelector(state => state.userReducer) || {}
     return user?._id ? <Route {...props} /> : <Redirect to="/" />
   }

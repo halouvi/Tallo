@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 
-export const List = ({ list, addCard, handleDrop, removeList }) => {
+export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) => {
   const { _id, title, cards } = list
   const [isAddCard, setIsAddCard] = useState(false)
   const [posOffset, setPosOffset] = useState(null)
@@ -41,18 +41,21 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
 
   const [{ cardOver, listOver, hoverWidth, hoverHeight }, drop] = useDrop({
     accept: ['CARD', 'LIST'],
-    hover: (item, monitor) => handleDragOver(monitor.getClientOffset().x),
+    hover: (item, monitor) => {
+      const { left, width } = rectRef.current.getBoundingClientRect()
+      setPosOffset(left + width / 2 > monitor.getClientOffset().x ? 0 : 1)
+    },
     collect: monitor => ({
       hoverWidth: monitor.getItem()?.width,
       hoverHeight: monitor.getItem()?.height,
-      cardOver:
-        !!monitor.isOver() &&
-        monitor.getItemType() === 'CARD' &&
-        (!cards.length || (cards.length === 1 && monitor.getItem().sourceCardId === cards[0]._id)),
       listOver:
-        !!monitor.isOver() &&
+        monitor.isOver() &&
         monitor.getItemType() === 'LIST' &&
-        monitor.getItem().sourceListId !== _id
+        monitor.getItem().sourceListId !== _id,
+      cardOver:
+        monitor.isOver() &&
+        monitor.getItemType() === 'CARD' &&
+        (!cards.length || (cards.length === 1 && monitor.getItem().sourceCardId === cards[0]._id))
     }),
     drop: (item, monitor) => {
       if ((item.type === 'CARD' && !monitor.didDrop()) || item.type === 'LIST' || !cards.length) {
@@ -61,11 +64,6 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
       }
     }
   })
-
-  const handleDragOver = offsetX => {
-    const { left, width } = rectRef.current.getBoundingClientRect()
-    setPosOffset(left + width / 2 > offsetX ? 0 : 1)
-  }
 
   const handleInput = ({ target: { name, value } }, item) => {
     setNewCard({ ...newCard, [name]: value })
@@ -130,7 +128,13 @@ export const List = ({ list, addCard, handleDrop, removeList }) => {
             </div>
             <div className="cards flex col">
               {cards.map(card => (
-                <Card key={card._id} card={card} listId={_id} handleDrop={handleDrop} />
+                <Card
+                  key={card._id}
+                  card={card}
+                  list={list}
+                  handleDrop={handleDrop}
+                  togglePopover={togglePopover}
+                />
               ))}
               {cardOver && (
                 <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />

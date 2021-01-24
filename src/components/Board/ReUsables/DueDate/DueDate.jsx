@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 
-export const DueDate = ({ card: { dueDate: prevDueDate, _id: cardId }, setAnchorEl }) => {
+export const DueDate = ({ card: { dueDate: prevDueDate, _id: cardId }, togglePopover }) => {
   const [dateFormat, setDateFormat] = useState('')
   const [dueDate, setDueDate] = useState(Date.now())
   const dispatch = useDispatch()
@@ -21,7 +21,7 @@ export const DueDate = ({ card: { dueDate: prevDueDate, _id: cardId }, setAnchor
   const saveDueDate = (ev) => {
     ev.preventDefault();
     dispatch(UPDATE_CARD({ name: 'dueDate', value: dueDate, cardId }))
-    setAnchorEl(null)
+    togglePopover(ev)
   }
 
   const onHandleChange = ev => {
@@ -34,7 +34,7 @@ export const DueDate = ({ card: { dueDate: prevDueDate, _id: cardId }, setAnchor
 
   return (
     <div className="due-date-section reusable flex col">
-      <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
+      <button className="close-btn pos-tr" onClick={togglePopover}>
         X
       </button>
       <p className="title bold asc">Change Due Date</p>

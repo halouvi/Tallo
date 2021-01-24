@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { uploadImg } from '../../../../service/imgUploadService.js';
 import { UPDATE_CARD } from '../../../../store/board/BoardActions.js';
 
-export const Attachment = ({ card: { attachments, _id: cardId }, setAnchorEl }) => {
+export const Attachment = ({ card: { attachments, _id: cardId }, togglePopover }) => {
   const [attachmentUrl, setAttachmentUrl] = useState('');
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ export const Attachment = ({ card: { attachments, _id: cardId }, setAnchorEl }) 
 
   return (
     <div className="attachment-section reusable">
-      <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
+      <button className="close-btn pos-tr" onClick={togglePopover}>
         X
       </button>
       <p>Attachments</p>

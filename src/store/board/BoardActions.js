@@ -12,8 +12,8 @@ export const boardTypes = {
 }
 
 export const CLEAN_BOARD_STORE = () => async dispatch => {
-  const board = null;
-  const users = null;
+  const board = null
+  const users = null
   dispatch({ type: boardTypes.SET_BOARD, payload: board })
   dispatch({ type: boardTypes.SET_USERS, payload: users })
 }
@@ -63,7 +63,9 @@ export const ADD_CARD = (card, listId) => (dispatch, getState) => {
 
 export const GET_CARD_BY_ID = cardId => (dispatch, getState) => {
   const { lists } = getState().boardReducer.board
-  return findItems(lists, cardId)
+  const { list, card } = findItems(lists, cardId)
+  dispatch({ type: boardTypes.SET_LIST, payload: list })
+  dispatch({ type: boardTypes.SET_CARD, payload: card })
 }
 
 export const UPDATE_CARD = ({ name, value, cardId }) => (dispatch, getState) => {
@@ -128,16 +130,23 @@ export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const SAVE_BOARD = nextBoard => async (dispatch, getState) => {
+var timer
+export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
   const prevBoard = clone(getState().boardReducer.board)
   dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-  try {
-    await boardService.update(nextBoard)
-    socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
-  } catch (error) {
-    dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
-    console.error('Could not update board', error)
-  }
+  const cardId = getState().boardReducer.card?._id
+  if (cardId) dispatch(GET_CARD_BY_ID(cardId))
+  clearTimeout(timer)
+  timer = setTimeout(async () => {
+    try {
+      await boardService.update(nextBoard)
+      socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
+    } catch (error) {
+      dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
+      if (cardId) dispatch(GET_CARD_BY_ID(cardId))
+      console.error('Could not update board', error)
+    }
+  }, 2000)
 }
 
 export const findItems = (lists, cardId) => {

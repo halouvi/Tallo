@@ -9,20 +9,20 @@ import { GET_BOARD_USER_BY_ID } from '../../../store/board/BoardActions'
 const useStyles = makeStyles(theme => ({
   pink: {
     color: theme.palette.getContrastText(pink[500]),
-    backgroundColor: pink[500],
+    backgroundColor: pink[500]
   },
   green: {
     color: '#fff',
-    backgroundColor: green[500],
+    backgroundColor: green[500]
   },
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500],
+    backgroundColor: deepOrange[500]
   },
   blue: {
     color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: blue[500],
-  },
+    backgroundColor: blue[500]
+  }
 }))
 
 export const CardAvatars = ({ members }) => {
@@ -59,18 +59,20 @@ export const CardAvatars = ({ members }) => {
   }
 
   return (
-    users &&
-    members?.length && (
+    users && (
       <AvatarGroup max={4}>
         {members.map((member, idx) => {
-          const { fullname, imgUrl } = users.find(user => user._id === member) || {}
+          const { fullname, imgUrl } = users.find(user => user._id === member)
           return (
-            <Avatar
-              key={idx}
-              alt={fullname}
-              src={imgUrl ? imgUrl : '/'}
-              className={colorsPick(idx)}
-            />
+            fullname && (
+              <Avatar
+                key={member}
+                alt={fullname}
+                src={imgUrl ? imgUrl : '/'}
+                className={colorsPick(idx)}
+                // style={{zIndex:0}}
+              />
+            )
           )
         })}
       </AvatarGroup>

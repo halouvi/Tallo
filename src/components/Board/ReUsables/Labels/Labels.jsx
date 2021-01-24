@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { LabelEditor } from './LabelEditor'
 
-export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
+export const Labels = ({ card: { labels, _id: cardId }, togglePopover }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const [searchTerm, setSearchTerm] = useState('')
   const [labelToEdit, setLabelToEdit] = useState(null)
@@ -12,18 +12,23 @@ export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
   const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'black']
 
   const toggleLabel = gLabelId => {
-    if (labels.some(label => label === gLabelId)) {
-      const labelsFiltered = labels.filter(label => label !== gLabelId)
-      dispatch(UPDATE_CARD({ name: 'labels', value: labelsFiltered, cardId }))
-    } else dispatch(UPDATE_CARD({ name: 'labels', value: [...labels, gLabelId], cardId }))
+    dispatch(
+      UPDATE_CARD({
+        cardId,
+        name: 'labels',
+        value: labels.some(id => id === gLabelId)
+          ? labels.filter(id => id !== gLabelId)
+          : [...labels, gLabelId]
+      })
+    )
   }
 
   return (
     <div className="labels reusable flex col">
-      <button className="close-btn" onClick={() => setAnchorEl(null)}>
+      <button className="close-btn" onClick={togglePopover}>
         X
       </button>
-      {!labelToEdit ? (
+      {!labelToEdit && (
         <>
           <span className="title bold asc">Labels</span>
           <input
@@ -37,18 +42,21 @@ export const Labels = ({ card: { labels, _id: cardId }, setAnchorEl }) => {
               gLabel =>
                 gLabel.name.toLowerCase().includes(searchTerm) && (
                   <div className={`label fast flex jb pointer ${gLabel.color}`} key={gLabel._id}>
-                    <div className="fw" onClick={() => toggleLabel(gLabel._id)}>
+                    <div className="f-110" onClick={() => toggleLabel(gLabel._id)}>
                       {gLabel.name}
-                      {labels.some(label => label === gLabel._id) && <span> V</span>}
+                      {labels.some(labelId => labelId === gLabel._id) && <span> V</span>}
                     </div>
-                    <button onClick={() => setLabelToEdit(gLabel)}>edit</button>
+                    <button className="fast" onClick={() => setLabelToEdit(gLabel)}>
+                      edit
+                    </button>
                   </div>
                 )
             )}
           </div>
           <button onClick={() => setLabelToEdit(newLabel)}>Add Label</button>
         </>
-      ) : (
+      )}
+      {labelToEdit && (
         <LabelEditor labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} colors={colors} />
       )}
     </div>

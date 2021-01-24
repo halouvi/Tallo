@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { HANDLE_DROP } from '../../../../store/board/BoardActions'
 
-export const MoveCard = ({ card, list, setAnchorEl }) => {
+export const MoveCard = ({ card, list, togglePopover }) => {
   const dispatch = useDispatch()
   const { lists } = useSelector(state => state.boardReducer.board)
   const [targetList, setTargetList] = useState(lists.find(lst => lst._id === list._id))
@@ -22,16 +22,16 @@ export const MoveCard = ({ card, list, setAnchorEl }) => {
     } else setDetails({ ...details, [name]: value })
   }
 
-  const moveCard = () => {
+  const moveCard = (ev) => {
     if (details.targetCardId !== details.sourceCardId) {
       dispatch(HANDLE_DROP(details))
-      setAnchorEl(null)
+      togglePopover(ev)
     }
   }
 
   return (
     <div className="move-card reusable flex col">
-      <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
+      <button className="close-btn pos-tr" onClick={togglePopover}>
         X
       </button>
       <span className="title bold asc">Move Card</span>

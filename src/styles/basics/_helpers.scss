@@ -36,6 +36,37 @@
   &.jc {
     justify-content: center;
   }
+  &.m2 {
+    > *:not(:last-child) {
+      margin-bottom: 2px;
+    }
+  }
+  &.m4 {
+    > *:not(:last-child) {
+      margin-bottom: 4px;
+    }
+  }
+  &.m6 {
+    > * &:not(:last-child) {
+      margin-bottom: 6px;
+    }
+  }
+  &.m8 {
+    > *:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+  &.g10 {
+    > *:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+  &.sbl {
+    //Strech Before Last
+    > *:nth-last-child(2) {
+      flex-grow: 1;
+    }
+  }
 }
 
 .grid {
@@ -89,6 +120,10 @@
 }
 
 //Size
+.wfc {
+  width: fit-content;
+}
+
 .fw {
   width: 100%;
   max-width: 100%;
@@ -105,7 +140,7 @@
   margin: 0 calc(-50vw + 50%);
 }
 
-.f-110{
+.f-110 {
   flex: 1 1 0;
 }
 

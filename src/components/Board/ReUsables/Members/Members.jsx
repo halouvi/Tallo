@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 
-export const Members = ({ card: { members, _id: cardId }, setAnchorEl }) => {
+export const Members = ({ card: { members, _id }, togglePopover }) => {
   const { users } = useSelector(state => state.boardReducer.board)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchRes, setSearchRes] = useState(null)
@@ -19,17 +19,17 @@ export const Members = ({ card: { members, _id: cardId }, setAnchorEl }) => {
   }, [searchTerm, members])
 
   const addMember = member => {
-    dispatch(UPDATE_CARD({ name: 'members', value: [...members, member], cardId }))
+    dispatch(UPDATE_CARD({ name: 'members', value: [...members, member], _id }))
   }
 
   const removeMember = memberId => {
     const membersFiltered = members.filter(member => member !== memberId)
-    dispatch(UPDATE_CARD({ name: 'members', value: membersFiltered, cardId }))
+    dispatch(UPDATE_CARD({ name: 'members', value: membersFiltered, _id }))
   }
 
   return (
     <div className="members reusable flex col">
-      <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
+      <button className="close-btn pos-tr" onClick={togglePopover}>
         X
       </button>
       <span className="title bold asc">Members</span>

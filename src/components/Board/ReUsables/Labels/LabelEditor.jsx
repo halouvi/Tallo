@@ -4,7 +4,7 @@ import utilService from '../../../../service/utilService'
 import { cloneDeep as clone } from 'lodash'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 
-export const LabelEditor = ({ labelToEdit, setLabelToEdit, editMode, colors }) => {
+export const LabelEditor = ({ labelToEdit, setLabelToEdit, colors }) => {
   const dispatch = useDispatch()
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const [updatedLabel, setUpdatedLabel] = useState({ ...labelToEdit })
@@ -13,7 +13,7 @@ export const LabelEditor = ({ labelToEdit, setLabelToEdit, editMode, colors }) =
     setUpdatedLabel({ ...updatedLabel, [name]: value })
   }
 
-  const saveLabel = () => {
+  const saveLabel = ev => {
     const labelsClone = clone(gLabels)
     if (!updatedLabel._id) {
       updatedLabel._id = utilService.makeId()
@@ -26,7 +26,7 @@ export const LabelEditor = ({ labelToEdit, setLabelToEdit, editMode, colors }) =
     setLabelToEdit(null)
   }
 
-  const deleteLabel = () => {
+  const deleteLabel = ev => {
     const labelsClone = JSON.parse(JSON.stringify(gLabels))
     const labelsFiltered = labelsClone.filter(label => label._id !== labelToEdit._id)
     dispatch(UPDATE_BOARD({ name: 'labels', value: labelsFiltered }))

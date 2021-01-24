@@ -3,15 +3,17 @@ import { useDrag, useDrop } from 'react-dnd'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CardAvatars } from '../avatars/CardAvatars'
+import { CardMenu } from './CardMenu/CardMenu'
+import clock from '../../../assets/clock.svg'
 
-export const Card = ({ card, listId, handleDrop }) => {
+export const Card = ({ card, list, handleDrop, togglePopover }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const { _id, title, attachments, members, desc, dueDate, labels } = card || {}
   const [posOffset, setPosOffset] = useState(null)
   const rectRef = useRef(null)
   const history = useHistory()
 
-  const onOpenModal = () => history.push(`/board/modal/${_id}`)
+  const openModal = () => history.push(`/board/modal/${_id}`)
 
   const [{ isDragging }, drag] = useDrag({
     collect: monitor => ({ isDragging: !!monitor.isDragging() }),
@@ -22,7 +24,7 @@ export const Card = ({ card, listId, handleDrop }) => {
         type: 'CARD',
         card,
         sourceCardId: _id,
-        sourceListId: listId,
+        sourceListId: list._id,
         height,
         width
       }
@@ -31,20 +33,22 @@ export const Card = ({ card, listId, handleDrop }) => {
 
   const [{ cardOver, hoverHeight }, drop] = useDrop({
     accept: 'CARD',
-    hover: (item, monitor) => handleDragOver(monitor.getClientOffset().y),
+    hover: (item, monitor) => {
+      const { top, height } = rectRef.current.getBoundingClientRect()
+      setPosOffset(top + height / 2 > monitor.getClientOffset().y ? 0 : 1)
+    },
     collect: monitor => ({
-      cardOver: !!monitor.isOver() && monitor.getItem().sourceCardId !== _id,
+      cardOver: monitor.isOver() && monitor.getItem().sourceCardId !== _id,
       hoverHeight: monitor.getItem()?.height
     }),
     drop: item => {
       // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
-      handleDrop && handleDrop({ ...item, targetCardId: _id, targetListId: listId, posOffset })
+      handleDrop && handleDrop({ ...item, targetCardId: _id, targetListId: list._id, posOffset })
     }
   })
 
-  const handleDragOver = offsetY => {
-    const { top, height } = rectRef.current.getBoundingClientRect()
-    setPosOffset(top + height / 2 > offsetY ? 0 : 1)
+  const openMenu = ev => {
+    togglePopover(ev, { cmp: CardMenu, cardId: _id, el: rectRef.current })
   }
 
   return (
@@ -53,32 +57,40 @@ export const Card = ({ card, listId, handleDrop }) => {
         {cardOver && !posOffset && (
           <div className="placeholder top" style={{ height: `${hoverHeight}px` }} />
         )}
-        <div ref={drag} className="card-preview fast">
-          <div onClick={onOpenModal} className={`container`}>
-            <div className="card-title">{title}</div>
-            <div>{attachments[0] ? <img src={attachments[0]} alt="" /> : ''}</div>
-            <p className="card-desc">{desc}</p>
-            <div className="labels-section">
-              {labels[0] &&
-                gLabels.map(
+        <div ref={drag} className="card-preview flex col fast m8 sbl">
+          <div onClick={openModal} className={`container f-110 flex col m8 sbl`}>
+            <span className="title">{title}</span>
+            <button className="menu-btn" onClick={openMenu}>
+              ···
+            </button>
+            <span className="desc fw">{desc}</span>
+            {attachments[0] && (
+              <div className="attachments">
+                <img src={attachments[0]} alt="" />
+              </div>
+            )}
+            {labels[0] && (
+              <div className="labels flex">
+                {gLabels.map(
                   gLabel =>
                     labels.some(label => label === gLabel._id) && (
                       <div className={`label ${gLabel.color}`} key={gLabel._id}></div>
                     )
                 )}
-            </div>
-            <div className="bottom-section">
-              {!!dueDate && (
-                <div className="due-date">
-                  <img
-                    src="https://res.cloudinary.com/ariecloud/image/upload/v1610026807/tallo/clock-circular-outline_rdwoyz.svg"
-                    alt=""
-                  />
-                  <p>{new Date(dueDate).toDateString()}</p>
-                </div>
-              )}
-              {members[0] && <CardAvatars members={members}></CardAvatars>}
-            </div>
+              </div>
+            )}
+            {(!!dueDate || !!members[0]) && (
+              <div className="flex jb">
+                {!!dueDate && (
+                  <div className="due-date flex ac">
+                    <img src={clock} alt="" />
+                    <p>{new Date(dueDate).toDateString()}</p>
+                  </div>
+                )}
+                <div className="spacer" />
+                {members[0] && <CardAvatars members={members} />}
+              </div>
+            )}
           </div>
         </div>
         {cardOver && !!posOffset && (

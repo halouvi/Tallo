@@ -24,7 +24,7 @@
       }
     }
 
-    .list {
+    >.list {
       max-height: 100%;
       width: 272px;
       box-sizing: border-box;
@@ -35,7 +35,6 @@
         background-color: #d5d6da;
         max-height: 100%;
         padding: 0 6px 6px;
-        position: relative;
         > .list-header {
           margin: 6px 0;
           > .list-title {

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { UPDATE_CARD } from "../../../../store/board/BoardActions";
 import utilService from "../../../../service/utilService"
 
-export const CheckList = ({card: {_id: cardId, checklist: cardChecklist}, setAnchorEl}) => {
+export const CheckList = ({card: {_id: cardId, checklist: cardChecklist}, togglePopover}) => {
   const [checklist, setChecklist] = useState({
     _id: utilService.makeId(),
     title: '',
@@ -26,7 +26,7 @@ export const CheckList = ({card: {_id: cardId, checklist: cardChecklist}, setAnc
 
   return (
     <div className="checklist-section reusable flex col">
-      <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
+      <button className="close-btn pos-tr" onClick={togglePopover}>
         X
     </button>
       <p className="title bold asc">Add a Check List</p>
