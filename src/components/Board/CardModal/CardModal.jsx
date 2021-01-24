@@ -27,7 +27,7 @@ export const CardModal = props => {
   const attachmentsToShow = attachments?.slice(0, 3)
 
   useEffect(() => {
-    if (!board) dispatch(GET_BOARD_BY_ID('5fe4b65432d4a24dbcb7afa2'))
+    if (!board) dispatch(GET_BOARD_BY_ID(sessionStorage.boardId))
     else dispatch(GET_CARD_BY_ID(_id))
   }, [board, _id])
 

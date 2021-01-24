@@ -34,7 +34,10 @@ export const Board = () => {
   useEffect(() => {
     if (!userBoards[0]) history.replace('/create-modal')
     else {
-      if (!_id) dispatch(GET_BOARD_BY_ID(userBoards[0]._id))
+      if (!_id) {
+        if (sessionStorage.boardId) dispatch(GET_BOARD_BY_ID(sessionStorage.boardId));
+        else dispatch(GET_BOARD_BY_ID(userBoards[0]._id));
+      }
       socketService.setup()
       socketService.emit(socketTypes.JOIN_BOARD, _id)
       socketService.on(socketTypes.BOARD_UPDATED, nextBoard =>
