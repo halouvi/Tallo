@@ -12,9 +12,17 @@
         }
 
         img {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             margin-inline-end: 8px;
+            
         }
+    }
+
+    .MuiButton-root {
+        padding: 6px 8px;
+        @include for-narrow-layout {
+            padding: 6px 16px;
+          }
     }
 }
