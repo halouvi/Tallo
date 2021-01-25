@@ -14,10 +14,8 @@ export const BoardMembers = ({ boardMembers, setAnchorEl }) => {
   const onHandleChange = async (ev) => {
     const value = ev.target.value;
     if(value) {
-      // const res = dispatch(GET_USERS(value));
       dispatch(GET_USERS(value)).then(res => setUsers(res));
     } else setUsers([])
-    console.log(users);
   }
 
   const addMember = member => {
