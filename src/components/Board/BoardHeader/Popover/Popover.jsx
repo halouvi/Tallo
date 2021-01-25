@@ -29,7 +29,8 @@ export default function SimplePopover({ boardMembers }) {
   return (
     <div className="board-members-section">
       <Button className="board-members-btn" aria-describedby={id} variant="contained" onClick={handleClick}>
-        Board Members ▼
+        <img src={process.env.PUBLIC_URL + `/User.png`} alt="" />
+        <div>Board Members ▼</div>
       </Button>
       <Popover
         id={id}

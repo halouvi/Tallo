@@ -48,6 +48,15 @@ header {
 
   .nav-item.add-board-btn {
     padding: 6px 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      height: 17px;
+      width: 17px;
+      fill: $white;
+    }
   }
 
   .user-container {

@@ -13,7 +13,9 @@ export const Header = () => {
       </Link>
       <div className="nav-container flex">
         <nav className="flex jb">
-          {user?._id && <NavLink className="add-board-btn nav-item" to="/create-modal" exact>+</NavLink>}
+          {user?._id && <NavLink className="add-board-btn nav-item" to="/create-modal" exact>
+          <svg  width="512" height="512" viewBox="0 0 448 448" ><g><path d="m408 184H272c-4.417969.0-8-3.582031-8-8V40c0-22.089844-17.910156-40-40-40s-40 17.910156-40 40v136c0 4.417969-3.582031 8-8 8H40c-22.089844.0-40 17.910156-40 40s17.910156 40 40 40h136c4.417969.0 8 3.582031 8 8v136c0 22.089844 17.910156 40 40 40s40-17.910156 40-40V272c0-4.417969 3.582031-8 8-8h136c22.089844.0 40-17.910156 40-40s-17.910156-40-40-40zm0 0" fill="#fff" data-original="#000000"/></g></svg>
+            </NavLink>}
           <NavLink className="nav-item" to="/" exact>Home</NavLink>
           <NavLink className="nav-item" to="/board">Board</NavLink>
         </nav>
