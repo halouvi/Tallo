@@ -16,11 +16,12 @@ import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
 import { useHistory } from 'react-router'
 import { ClickAwayListener } from '@material-ui/core'
 import { Popover } from '../../components/Board/ReUsables/Popover/Popover'
+import { TOKEN_LOGIN } from '../../store/user/UserActions'
 
 export const Board = () => {
   const { board, list, card } = useSelector(state => state.boardReducer) || {}
   const { lists, title, _id, users } = board || {}
-  const { userBoards } = useSelector(state => state.userReducer) || {}
+  const { user, userBoards } = useSelector(state => state.userReducer) || {}
   const [isAddList, setIsAddList] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const [DynCmp, setDynCmp] = useState(null)
@@ -30,7 +31,6 @@ export const Board = () => {
   })
   const dispatch = useDispatch()
   const history = useHistory()
-
   useEffect(() => {
     if (!userBoards[0]) history.replace('/create-modal')
     else {
@@ -42,7 +42,7 @@ export const Board = () => {
       })
       return () => socketService.terminate
     }
-  }, [])
+  }, [user])
 
   const addCard = (card, listId) => {
     dispatch(ADD_CARD(card, listId))

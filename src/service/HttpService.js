@@ -1,7 +1,7 @@
 import Axios from 'axios'
 const BASE_URL = process.env.NODE_ENV !== 'development' ? '/api/' : '//localhost:3030/api/'
 var axios = Axios.create({
-  withCredentials: true,
+  withCredentials: true
 })
 
 export const httpService = {
@@ -16,7 +16,7 @@ export const httpService = {
   },
   delete(endpoint, data) {
     return ajax(endpoint, 'DELETE', data)
-  },
+  }
 }
 
 async function ajax(endpoint, method = 'get', data = null) {
@@ -24,7 +24,7 @@ async function ajax(endpoint, method = 'get', data = null) {
     const res = await axios({
       url: `${BASE_URL}${endpoint}`,
       method,
-      data,
+      data
     })
     return res.data
   } catch (err) {
@@ -32,6 +32,6 @@ async function ajax(endpoint, method = 'get', data = null) {
       // router.push('/')
     }
     console.log(`Had issues ${method}ing to server`, err)
-    throw err
+    throw new Error(err)
   }
 }
