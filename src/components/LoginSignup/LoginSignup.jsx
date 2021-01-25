@@ -85,7 +85,7 @@ export const LoginSingup = () => {
           <input type="text" name="password" value={userCred.password} onChange={(event) => onHandleChange(event, 'signup')} id="" />
           <label htmlFor="imgUrl">
             <p>Upload a Profile Picture:</p>
-            <img src="https://cdn.onlinewebfonts.com/svg/img_192880.png" alt=""/>
+            <img src="https://res.cloudinary.com/ariecloud/image/upload/v1611571897/tallo/PinClipart.com_button-clipart_321890_rkdp7l.png" alt=""/>
           </label>
           <input className="upload-img" type="file" name="imgUrl" onChange={onUploadImg} id="imgUrl" />
           <button>Signup</button>

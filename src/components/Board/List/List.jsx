@@ -4,6 +4,8 @@ import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
+import { ListMenu } from './ListMenu/ListMenu'
+import { ListPopover } from './ListMenu/ListPopover'
 
 export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) => {
   const { _id: listId, cards } = list
@@ -108,6 +110,8 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
     })
   }
 
+  const openMenu = ev => togglePopover(ev, { cmp: ListMenu, listId: listId, el: rectRef.current })
+
   return (
     <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref flex">
@@ -132,9 +136,11 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
                 onChange={handleEdit}
                 onKeyUp={handleKeyUp}
               />
-              <button className="delete-btn" onClick={() => removeList(listId)}>
+              {/* <button className="delete-btn" onClick={() => removeList(listId)}> */}
+              <ListPopover className="delete-btn" listId={listId} removeList={removeList}></ListPopover>
+              {/* <button className="delete-btn" onClick={openMenu}>
                 ···
-              </button>
+              </button> */}
             </div>
             <div className="cards flex col">
               {cards.map(card => (

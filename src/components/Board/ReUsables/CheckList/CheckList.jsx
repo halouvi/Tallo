@@ -31,7 +31,7 @@ export const CheckList = ({card: {_id: cardId, checklist: cardChecklist}, toggle
     </button>
       <p className="title bold asc">Add a Check List</p>
       <form action="" className="flex col" onSubmit={onAddChecklist}>
-        <label htmlFor="checklist-title">Title</label>
+        <label htmlFor="checklist-title">Title:</label>
         <input autoFocus id="checklist-title" value={checklist.title} onChange={onHandleChange} name="title" type="text" placeholder="Insert a title..."/>
         <button>Add</button>
       </form>

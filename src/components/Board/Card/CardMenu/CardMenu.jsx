@@ -14,6 +14,7 @@ export const CardMenu = ({ togglePopover, anchorEl }) => {
           className="modal-btn fast"
           onClick={ev => togglePopover(ev, { cmp, el: anchorEl })}
           key={name}>
+          <img src={process.env.PUBLIC_URL + `/${name}.png`} alt="" />
           {name.split(/(?=[A-Z])/).join(' ')}
         </span>
       ))}

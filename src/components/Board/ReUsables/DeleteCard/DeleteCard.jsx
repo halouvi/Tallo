@@ -12,7 +12,7 @@ export const DeleteCard = ({ card, togglePopover }) => {
   }
   
   return (
-    <div className="reusable flex col">
+    <div className="reusable delete-card-section flex col">
       <span className="title asc">Delete Card?</span>
       <div className="flex">
         <button className="modal-btn" onClick={deleteCard}>
