@@ -37,13 +37,16 @@ export const CreateBoardModal = props => {
 
   const addBoard = async () => {
     await dispatch(ADD_BOARD(newBoard));
-    history.push('/board'); //need to check how to run it only after board is set..
+    history.push('/board');
   }
 
   return (
     <div className="create-board-section">
       <div className="create-board-container" ref={outClick}>
-        <button className="exit-btn" onClick={goBack}>X</button>
+        <div className="title-container">
+          <h2>Add a Board</h2>
+          <button className="exit-btn" onClick={goBack}>X</button>
+        </div>
         <label htmlFor="">Board Title:</label>
         <input name="title" type="text" value={newBoard.title} onChange={onHandleChange} />
         <button onClick={addBoard}>Create Board</button>

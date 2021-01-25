@@ -18,12 +18,14 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
     )
   }, [searchTerm, members])
 
-  const addMember = member => {
-    dispatch(UPDATE_CARD({ name: 'members', value: [...members, member], cardId }))
+  const handleInput = ({ target: { value } }) => setSearchTerm(value)
+
+  const addMember = ({ target: { value: userId } }) => {
+    dispatch(UPDATE_CARD({ name: 'members', value: [...members, userId], cardId }))
   }
 
-  const removeMember = memberId => {
-    const membersFiltered = members.filter(member => member !== memberId)
+  const removeMember = ({ target: { value: userId } }) => {
+    const membersFiltered = members.filter(member => member !== userId)
     dispatch(UPDATE_CARD({ name: 'members', value: membersFiltered, cardId }))
   }
 
@@ -37,7 +39,7 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
         type="text"
         placeholder="Search Members"
         value={searchTerm}
-        onChange={ev => setSearchTerm(ev.target.value)}
+        onChange={handleInput}
       />
       <div className="list flex col">
         {users.map(
@@ -45,7 +47,9 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
             members.some(member => member === user._id) && (
               <div className="flex jb" key={user._id}>
                 <span>{user.fullname}</span>
-                <button onClick={() => removeMember(user._id)}>X</button>
+                <button value={user._id} onClick={removeMember}>
+                  X
+                </button>
               </div>
             )
         )}
@@ -56,7 +60,9 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
           {searchRes.map(user => (
             <div className="flex jb" key={user._id}>
               <span>{user.fullname}</span>
-              <button onClick={() => addMember(user._id)}>+</button>
+              <button value={user._id} onClick={addMember}>
+                +
+              </button>
             </div>
           ))}
         </div>

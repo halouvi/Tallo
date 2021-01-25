@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const CardAvatars = ({ members }) => {
-  const { users } = useSelector(state => state.boardReducer)
+  const { users } = useSelector(state => state.boardReducer);
 
   // const [members, setMembers] = useState([])
   // const dispatch = useDispatch();
@@ -62,7 +62,7 @@ export const CardAvatars = ({ members }) => {
     users && (
       <AvatarGroup max={4}>
         {members.map((member, idx) => {
-          const { fullname, imgUrl } = users.find(user => user._id === member)
+          const { fullname, imgUrl } = users.find(user => user._id === member) || {}
           return (
             fullname && (
               <Avatar

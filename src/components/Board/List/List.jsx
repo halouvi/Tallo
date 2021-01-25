@@ -11,6 +11,7 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
   const { title } = editables
   const [isAddCard, setIsAddCard] = useState(false)
   const [posOffset, setPosOffset] = useState(null)
+  const [timer, setTimer] = useState(null)
   const rectRef = useRef(null)
   const dispatch = useDispatch()
 
@@ -74,7 +75,12 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
 
   const handleEdit = ({ target: { name, value } }) => {
     setEditables({ ...editables, [name]: value })
-    dispatch(UPDATE_LIST({ name, value, listId }))
+    clearTimeout(timer)
+    setTimer(
+      setTimeout(() => {
+        dispatch(UPDATE_LIST({ name, value, listId }))
+      }, 500) 
+    )
   }
 
   const handleKeyUp = ({ target, key }) => {

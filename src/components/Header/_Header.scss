@@ -1,13 +1,10 @@
 header {
-  // height: 6vh;
   background-color: rgba(0, 0, 0, 0.13);
-  // border-bottom: 0.2px solid white;
   color: $white;
   padding: 7px 0.5rem;
-
-  // .nav-container {
-
-  // }
+  position: sticky;
+  top: 0;
+  z-index: 5;
 
   nav {
     @include for-medium-layout {

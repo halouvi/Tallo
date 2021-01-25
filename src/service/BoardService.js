@@ -3,6 +3,7 @@ import { httpService } from './httpService'
 
 export const boardService = {
   getById: async id => {
+    sessionStorage.setItem('boardId', id)
     return httpService.get(`board/${id}`)
   },
   update(board) {

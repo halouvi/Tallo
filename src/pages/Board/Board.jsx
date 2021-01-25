@@ -19,7 +19,7 @@ import { Popover } from '../../components/Board/ReUsables/Popover/Popover'
 
 export const Board = () => {
   const { board, list, card } = useSelector(state => state.boardReducer) || {}
-  const { lists, title, _id, users } = useSelector(state => state.boardReducer.board) || {}
+  const { lists, title, _id, users } = board || {}
   const { userBoards } = useSelector(state => state.userReducer) || {}
   const [isAddList, setIsAddList] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -34,7 +34,9 @@ export const Board = () => {
   useEffect(() => {
     if (!userBoards[0]) history.replace('/create-modal')
     else {
-      if (!_id) dispatch(GET_BOARD_BY_ID(userBoards[0]._id))
+      if (!_id) {
+        dispatch(GET_BOARD_BY_ID(sessionStorage.boardId || userBoards[0]._id))
+      }
       socketService.setup()
       socketService.emit(socketTypes.JOIN_BOARD, _id)
       socketService.on(socketTypes.BOARD_UPDATED, nextBoard =>

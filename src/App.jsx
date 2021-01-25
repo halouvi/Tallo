@@ -27,7 +27,7 @@ export const App = () => {
             <PrivateRoute path="/board" component={Board} />
             <Route path="/" component={Home} />
           </Switch>
-          <PrivateRoute path="/board/modal/:_id" component={CardModal} />
+          <PrivateRoute path="/board/modal/:cardId" component={CardModal} />
           <PrivateRoute path="/create-modal" component={CreateBoardModal} />
           <Route path="/login-signup" component={LoginSingup} />
         </Router>
