@@ -9,12 +9,7 @@ import { CardChecklists } from '../CardChecklists/CardChecklists'
 import { SideBar } from './SideBar/SideBar'
 import { Labels } from '../ReUsables/Labels/Labels'
 import { Popover } from '../ReUsables/Popover/Popover'
-import {
-  GET_BOARD_BY_ID,
-  GET_CARD_BY_ID,
-  UPDATE_CARD,
-  CLEAR_CARD
-} from '../../../store/board/BoardActions'
+import { GET_CARD_BY_ID, UPDATE_CARD, CLEAR_CARD } from '../../../store/board/BoardActions'
 
 export const CardModal = () => {
   const { board, list, card, users } = useSelector(state => state.boardReducer) || {}
@@ -55,7 +50,7 @@ export const CardModal = () => {
     const nextCardId = cardIdx > -1 && list.cards[cardIdx + +ev.target.value]?._id
     if (nextCardId) history.push(nextCardId)
   }
-  
+
   const handleEdit = ({ target: { name, value } }) => {
     setEditables({ ...editables, [name]: value })
     clearTimeout(timer)
