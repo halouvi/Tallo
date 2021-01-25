@@ -56,8 +56,7 @@ export const Board = () => {
   }
 
   const removeList = listId => {
-    const isSure = window.confirm('Are you sure?')
-    if (isSure) dispatch(REMOVE_LIST(listId))
+    dispatch(REMOVE_LIST(listId))
   }
 
   const handleInput = ({ target: { name, value } }, item) => {

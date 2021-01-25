@@ -8,10 +8,19 @@
 
   h2 {
     font-weight: bold;
+    font-size: 1.05rem;
+
+    @include for-narrow-layout {
+      font-size: 1.5rem;
+    }
   }
 
   >*:not(:last-child) {
-    margin-inline-end: 10px;
+    margin-inline-end: 8px;
+    
+    @include for-narrow-layout {
+      margin-inline-end: 10px;
+    }
   }
 }
 

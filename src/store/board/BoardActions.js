@@ -1,4 +1,4 @@
-import { boardService } from '../../service/BoardService'
+import { boardService } from '../../service/boardService'
 import utilService from '../../service/utilService'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { cloneDeep as clone } from 'lodash'

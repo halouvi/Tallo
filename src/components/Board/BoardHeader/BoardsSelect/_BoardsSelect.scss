@@ -1,5 +1,5 @@
 .boards-select-section {
-    
+
     .boards-select-btn {
         // background-color: rgba(173, 216, 230, 0.418);
         background-color: rgba(255, 255, 255, 0.349);
@@ -17,18 +17,27 @@
         }
     }
 
-    
+    .MuiButton-root {
+        padding: 6px 8px;
+
+        @include for-narrow-layout {
+            padding: 6px 16px;
+        }
+    }
+
+
     .boards-select-item {
-        
+
         &:hover {
             background-color: rgba(173, 216, 230, 0.603);
         }
-        
+
         li:focus {
             background-color: unset;
         }
     }
 }
+
 .MuiPaper-root {
     color: #323232 !important;
 }

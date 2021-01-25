@@ -27,7 +27,7 @@ export const Attachment = ({ card: { attachments, _id: cardId }, togglePopover }
       <form action="" onSubmit={saveAttachment} className="attachment-form">
         <label htmlFor="imgUrl">
           <p>Upload an attachment:</p>
-          <img src="https://cdn.onlinewebfonts.com/svg/img_192880.png" alt="" />
+          <img src="https://res.cloudinary.com/ariecloud/image/upload/v1611571897/tallo/PinClipart.com_button-clipart_321890_rkdp7l.png" alt="" />
         </label>
         <input className="upload-img" type="file" name="imgUrl" onChange={onUploadImg} id="imgUrl" />
         <button>Save</button>
