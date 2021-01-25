@@ -1,4 +1,4 @@
-import { boardService } from '../../service/boardService'
+import { boardService } from '../../service/BoardService'
 import utilService from '../../service/utilService'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { cloneDeep as clone } from 'lodash'
@@ -8,14 +8,19 @@ export const boardTypes = {
   SET_BOARD: 'SET_BOARD',
   SET_USERS: 'SET_USERS',
   SET_CARD: 'SET_CARD',
-  SET_LIST: 'SET_LIST'
+  SET_LIST: 'SET_LIST',
+  RESET_BOARD: 'RESET_BOARD'
 }
 
-export const CLEAN_BOARD_STORE = () => async dispatch => {
-  const board = null
-  const users = null
-  dispatch({ type: boardTypes.SET_BOARD, payload: board })
-  dispatch({ type: boardTypes.SET_USERS, payload: users })
+var timer
+
+export const CLEAR_BOARD_STORE = () => dispatch => {
+  dispatch({ type: boardTypes.RESET_BOARD, payload: null })
+}
+
+export const CLEAR_CARD = () => dispatch => {
+  dispatch({ type: boardTypes.SET_LIST, payload: null })
+  dispatch({ type: boardTypes.SET_CARD, payload: null })
 }
 
 export const ADD_BOARD = newBoard => async dispatch => {
@@ -52,27 +57,27 @@ export const REMOVE_LIST = listId => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
+export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  const list = nextBoard.lists.find(list => list._id === listId)
+  list[name] = value
+  dispatch(SAVE_BOARD(nextBoard))
+}
+
+export const GET_CARD_BY_ID = cardId => (dispatch, getState) => {
+  const { lists } = getState().boardReducer.board || {}
+  if (lists) {
+    const { list, card } = findItems(lists, cardId)
+    dispatch({ type: boardTypes.SET_LIST, payload: list })
+    dispatch({ type: boardTypes.SET_CARD, payload: card })
+  }
+}
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   card._id = utilService.makeId()
   card = _activityLog(card, 'card')
   var listIdx = nextBoard.lists.findIndex(list => list._id === listId)
   nextBoard.lists[listIdx].cards.push(card)
-  dispatch(SAVE_BOARD(nextBoard))
-}
-
-export const GET_CARD_BY_ID = cardId => (dispatch, getState) => {
-  const { lists } = getState().boardReducer.board
-  const { list, card } = findItems(lists, cardId)
-  dispatch({ type: boardTypes.SET_LIST, payload: list })
-  dispatch({ type: boardTypes.SET_CARD, payload: card })
-}
-
-export const UPDATE_CARD = ({ name, value, cardId }) => (dispatch, getState) => {
-  const nextBoard = clone(getState().boardReducer.board)
-  var { card } = findItems(nextBoard.lists, cardId)
-  card[name] = value
-  card = _activityLog(card, name)
   dispatch(SAVE_BOARD(nextBoard))
 }
 
@@ -83,10 +88,11 @@ export const DELETE_CARD = cardId => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
+export const UPDATE_CARD = ({ name, value, cardId }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
-  const list = nextBoard.lists.find(list => list._id === listId)
-  list[name] = value
+  var { card } = findItems(nextBoard.lists, cardId)
+  card[name] = value
+  card = _activityLog(card, name)
   dispatch(SAVE_BOARD(nextBoard))
 }
 
@@ -130,12 +136,11 @@ export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-var timer
 export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
   const prevBoard = clone(getState().boardReducer.board)
+  // const cardId = getState().boardReducer.card._id
   dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-  const cardId = getState().boardReducer.card?._id
-  if (cardId) dispatch(GET_CARD_BY_ID(cardId))
+  // if (cardId) dispatch(GET_CARD_BY_ID(cardId))
   clearTimeout(timer)
   timer = setTimeout(async () => {
     try {
@@ -143,7 +148,7 @@ export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
       socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
     } catch (error) {
       dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
-      if (cardId) dispatch(GET_CARD_BY_ID(cardId))
+      // dispatch(GET_CARD_BY_ID(cardId))
       console.error('Could not update board', error)
     }
   }, 1500)

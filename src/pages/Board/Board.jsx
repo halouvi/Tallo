@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { ADD_CARD, GET_BOARD_BY_ID, HANDLE_DROP, boardTypes, ADD_LIST, REMOVE_LIST, GET_CARD_BY_ID } from '../../store/board/BoardActions'
+import {
+  ADD_CARD,
+  GET_BOARD_BY_ID,
+  HANDLE_DROP,
+  boardTypes,
+  ADD_LIST,
+  REMOVE_LIST,
+  GET_CARD_BY_ID
+} from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
@@ -11,7 +19,7 @@ import { Popover } from '../../components/Board/ReUsables/Popover/Popover'
 
 export const Board = () => {
   const { board, list, card } = useSelector(state => state.boardReducer) || {}
-  const { lists, title, _id, users } = useSelector(state => state.boardReducer.board) || {}
+  const { lists, title, _id, users } = board || {}
   const { userBoards } = useSelector(state => state.userReducer) || {}
   const [isAddList, setIsAddList] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -26,18 +34,13 @@ export const Board = () => {
   useEffect(() => {
     if (!userBoards[0]) history.replace('/create-modal')
     else {
-      if (!_id) {
-        if (sessionStorage.boardId) dispatch(GET_BOARD_BY_ID(sessionStorage.boardId));
-        else dispatch(GET_BOARD_BY_ID(userBoards[0]._id));
-      }
+      dispatch(GET_BOARD_BY_ID(sessionStorage.boardId || userBoards[0]._id))
       socketService.setup()
       socketService.emit(socketTypes.JOIN_BOARD, _id)
-      socketService.on(socketTypes.BOARD_UPDATED, nextBoard =>
+      socketService.on(socketTypes.BOARD_UPDATED, nextBoard => {
         dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-      )
-      return () => {
-        socketService.terminate()
-      }
+      })
+      return () => socketService.terminate
     }
   }, [])
 
