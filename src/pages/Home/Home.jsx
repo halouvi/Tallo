@@ -15,6 +15,8 @@ export const Home = props => {
 
   useEffect(() => {
     dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
+    var root = document.getElementById('root')
+    if (root.style.background !== 'linear-gradient(#006f83, #00aecc)') root.style.background = 'linear-gradient(#006f83, #00aecc)'
   }, [])
 
   return (
