@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 export const ColorPicker = ({ boardMembers }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const colors = ['red', 'orange', 'gold', 'green', 'gradient', 'purple', 'pink', 'darkgray']
+  const colors = ['red', 'orange', 'gold', 'green', 'gradient', 'purple', 'pink', 'gray']
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
