@@ -41,6 +41,7 @@
             width: 75px;
             cursor: pointer;
             border-radius: 3px;
+            transition: 0.3s;
 
             &:hover {
                 filter: brightness(1.1);
