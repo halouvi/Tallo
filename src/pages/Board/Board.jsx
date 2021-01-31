@@ -1,14 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  boardTypes,
-  HANDLE_DROP,
-  ADD_CARD,
-  ADD_LIST,
-  REMOVE_LIST,
-  GET_CARD_BY_ID
-} from '../../store/board/BoardActions'
+import { boardTypes, HANDLE_DROP, ADD_CARD, ADD_LIST, REMOVE_LIST, GET_CARD_BY_ID} from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
 import { socketService, socketTypes, socket } from '../../service/socketService.js'
 import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
