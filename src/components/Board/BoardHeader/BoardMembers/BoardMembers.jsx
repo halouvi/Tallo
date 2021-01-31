@@ -7,8 +7,6 @@ export const BoardMembers = ({ users, setAnchorEl }) => {
   const [searchRes, setSearchRes] = useState([])
   const dispatch = useDispatch()
 
-  // useEffect(() => console.log(searchRes), [searchRes])
-
   const handleInput = async ({ target: { value } }) => {
     if (value) dispatch(GET_USERS(value)).then(res => setSearchRes(res))
     else setSearchRes([])

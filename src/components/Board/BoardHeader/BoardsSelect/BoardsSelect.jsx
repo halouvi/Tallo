@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useDispatch } from 'react-redux';
 import { GET_BOARD_BY_ID } from '../../../../store/board/BoardActions';
@@ -27,17 +26,6 @@ const StyledMenu = withStyles({
     {...props}
   />
 ));
-
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      // backgroundColor: theme.palette.primary.main,
-      // '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-      //   color: theme.palette.common.white,
-      // },
-    },
-  },
-}))(MenuItem);
 
 export default function CustomizedMenus({ boards }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -77,9 +65,9 @@ export default function CustomizedMenus({ boards }) {
         onClose={handleClose}
       >
         {boards?.map(board => (
-          <StyledMenuItem onClick={() => onSelectBoard(board._id)} className="boards-select-item" key={board._id}>
+          <MenuItem onClick={() => onSelectBoard(board._id)} className="boards-select-item" key={board._id}>
             <ListItemText primary={board.title} />
-          </StyledMenuItem>
+          </MenuItem>
         ))}
       </StyledMenu>
     </div>
