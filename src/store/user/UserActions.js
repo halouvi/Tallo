@@ -27,7 +27,10 @@ export const LOGIN = creds => async dispatch => {
     const { user, board } = await userService.login(creds)
     dispatch({ type: userTypes.SET_LOGGED_USER, payload: user })
     dispatch({ type: boardTypes.SET_BOARD, payload: board })
-  } catch (err) {}
+  } catch (err) {
+  } finally {
+    dispatch({ type: userTypes.SET_IS_LOADING, payload: false })
+  }
 }
 
 export const SIGNUP = creds => async dispatch => {

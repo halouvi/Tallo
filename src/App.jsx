@@ -8,7 +8,7 @@ import { CardModal } from './components/Board/CardModal/CardModal'
 import { DragLayer } from './components/DragLayer/DragLayer'
 import { LoginSingup } from './components/LoginSignup/LoginSignup'
 import { socketService } from './service/socketService'
-import { TOKEN_LOGIN } from './store/user/UserActions'
+import { TOKEN_LOGIN, LOGIN } from './store/user/UserActions'
 import './styles/styles.scss'
 
 export const App = () => {
@@ -20,7 +20,8 @@ export const App = () => {
   }
 
   useEffect(() => {
-    dispatch(TOKEN_LOGIN())
+    dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
+    // dispatch(TOKEN_LOGIN())
     socketService.setup()
     window.onbeforeunload = () => {
       socketService.terminate()
