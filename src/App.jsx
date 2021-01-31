@@ -29,17 +29,26 @@ export const App = () => {
   }, [])
 
   return isLoading ? (
-    <div className="fp flex ac jc">Loading...</div>
+    <div className="fp flex ac jc">
+      <div className="sk-chase">
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+      </div>
+    </div>
   ) : (
-    <>
-      <Header />
-      <Switch>
-        <PrivateRoute path="/board" component={Board} />
-        <Route path="/" component={Home} />
-      </Switch>
-      <PrivateRoute path="/board/modal/:cardId" component={CardModal} />
-      <Route path="/login-signup" component={LoginSingup} />
-      <DragLayer />
-    </>
-  )
+      <>
+        <Header />
+        <Switch>
+          <PrivateRoute path="/board" component={Board} />
+          <Route path="/" component={Home} />
+        </Switch>
+        <PrivateRoute path="/board/modal/:cardId" component={CardModal} />
+        <Route path="/login-signup" component={LoginSingup} />
+        <DragLayer />
+      </>
+    )
 }

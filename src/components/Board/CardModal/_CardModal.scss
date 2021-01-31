@@ -134,12 +134,12 @@
           flex-direction: column;
           gap: 8px;
           margin-bottom: 20px;
-
+          
           .attachments-header {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
-
+  
             img {
               width: 20px;
               height: 20px;
@@ -233,6 +233,28 @@
               height: 40px;
               border-radius: 5px;
             }
+          }
+        }
+
+        .video-section {
+          margin-bottom: 15px;
+
+          .video-header{
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+  
+            img {
+              width: 26px;
+              height: 26px;
+              margin-inline-end: 10px;
+            }
+          }
+          
+          .card-video {
+            width: 320px;
+            height: auto;
+            border-radius: 3px;
           }
         }
 

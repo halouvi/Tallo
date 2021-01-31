@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSetState } from 'react-use'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -26,7 +27,7 @@ export const Board = () => {
   const [isAddList, setIsAddList] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const [DynCmp, setDynCmp] = useState(null)
-  const [newList, setNewList] = useState({
+  const [newList, setNewList] = useSetState({
     title: '',
     cards: []
   })
@@ -58,13 +59,9 @@ export const Board = () => {
     setNewList({ title: '', cards: [] })
   }
 
-  const removeList = listId => {
-    dispatch(REMOVE_LIST(listId))
-  }
+  const removeList = listId => dispatch(REMOVE_LIST(listId))
 
-  const handleInput = ({ target: { name, value } }, item) => {
-    setNewList({ ...newList, [name]: value })
-  }
+  const handleInput = ({ target: { name, value } }) => setNewList({ [name]: value })
 
   const [{ isOver }, drop] = useDrop({
     accept: 'LIST',

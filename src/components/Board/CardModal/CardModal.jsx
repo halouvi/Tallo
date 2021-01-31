@@ -17,7 +17,7 @@ export const CardModal = () => {
   const dispatch = useDispatch()
   const { board, list, card } = useSelector(state => state.boardReducer) || {}
   const { users } = board || {}
-  const { activity, attachments, members, labels, checklist } = card || {}
+  const { activity, attachments, members, labels, checklist, cardVideo } = card || {}
   const [{ title, desc }, setEditables] = useSetState({ title: '', desc: '' })
   const { cardId } = useParams()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -119,6 +119,15 @@ export const CardModal = () => {
                     </div>
                   </div>
                 )}
+                {cardVideo && <div className="video-section">
+                  <div className="video-header">
+                    <img src={process.env.PUBLIC_URL + `/AddVideo.png`} alt="" />
+                    <h3>Card Video</h3>
+                  </div>
+                  <video className="card-video" controls>
+                    <source src={cardVideo} />
+                  </video>
+                </div>}
                 <div className="desc-container">
                   <div className="desc-header">
                     <img src={process.env.PUBLIC_URL + `/Description.png`} alt="" />

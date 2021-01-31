@@ -9,7 +9,7 @@ import { userTypes } from '../../../store/user/UserActions'
 
 export const Card = ({ card, list, handleDrop, togglePopover }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
-  const { _id, title, attachments, members, desc, dueDate, labels } = card || {}
+  const { _id, title, attachments, members, desc, dueDate, labels, cardVideo } = card || {}
   const [posOffset, setPosOffset] = useState(null)
   const rectRef = useRef(null)
   const history = useHistory()
@@ -66,6 +66,11 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
               ···
             </button>
             <span className="desc fw">{desc}</span>
+            {cardVideo && !attachments[0] && (
+                <video  controls>
+                  <source src={cardVideo} />
+                </video>
+            )}
             {attachments[0] && (
               <div className="attachments">
                 <img src={attachments[0]} alt="" />
