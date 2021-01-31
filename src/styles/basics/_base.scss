@@ -14,6 +14,7 @@ body {
   font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
   height: 100%;
+  transition: 1.5s;
   .loading-screen {
     position: absolute;
     top: 0;
@@ -25,7 +26,6 @@ body {
     background: linear-gradient(rgb(0, 111, 131), rgb(0, 174, 204));
   }
 }
-
 
 h1,
 h2,

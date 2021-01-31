@@ -19,3 +19,5 @@ render(
   </StrictMode>,
   document.getElementById('root')
 )
+
+navigator.serviceWorker.register('./serviceWorker.js');

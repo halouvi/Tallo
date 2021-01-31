@@ -25,7 +25,7 @@ export const BoardMembers = ({ users, setAnchorEl }) => {
   }
 
   return (
-    <div className="members reusable flex col">
+    <div className="members reusable board-members flex col">
       <button className="close-btn pos-tr" onClick={() => setAnchorEl(null)}>
         X
       </button>

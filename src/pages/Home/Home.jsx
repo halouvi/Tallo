@@ -8,14 +8,12 @@ import { HomeQuotes } from '../../components/Home/HomeQuotes/HomeQuotes'
 import { LOGIN } from '../../store/user/UserActions'
 
 export const Home = props => {
-  // const dispatch = useDispatch()
-  // const user = useSelector(state => state.userReducer.user)
+  const dispatch = useDispatch()
 
-  // useEffect(() => !user && dispatch(LOGIN()), [])
-
-  // useEffect(() => {
-  //   dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
-  // }, [])
+  useEffect(() => {
+    var root = document.getElementById('root')
+    if (root.style.background !== 'linear-gradient(#006f83, #00aecc)') root.style.background = 'linear-gradient(#006f83, #00aecc)'
+  }, [])
 
   return (
     <main className="home main-grid">
