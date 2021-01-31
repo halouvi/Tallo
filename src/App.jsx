@@ -30,13 +30,13 @@ export const App = () => {
 
   return isLoading ? (
     <div className="fp flex ac jc">
-      <div class="sk-chase">
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
-        <div class="sk-chase-dot"></div>
+      <div className="sk-chase">
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
+        <div className="sk-chase-dot"></div>
       </div>
     </div>
   ) : (
