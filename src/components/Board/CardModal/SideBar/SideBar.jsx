@@ -5,6 +5,7 @@ import { DueDate } from '../../ReUsables/DueDate/DueDate'
 import { Attachment } from '../../ReUsables/Attachment/Attachment'
 import { MoveCard } from '../../ReUsables/MoveCard/MoveCard'
 import { DeleteCard } from '../../ReUsables/DeleteCard/DeleteCard'
+import { AddVideo } from '../../ReUsables/AddVideo/AddVideo'
 
 export const SideBar = ({ togglePopover }) => {
   const cmpMap = {
@@ -13,7 +14,8 @@ export const SideBar = ({ togglePopover }) => {
       Labels,
       CheckList,
       DueDate,
-      Attachment
+      Attachment,
+      AddVideo
     },
     Actions: {
       MoveCard,
