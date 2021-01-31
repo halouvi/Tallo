@@ -39,13 +39,13 @@ async function ajax(endpoint, method = 'get', data = null) {
   }
 }
 
-function newTokensNeeded(endpoint) {
+export function newTokensNeeded(endpoint = '') {
   if (endpoint.includes('logout') || endpoint.includes('login')) return false
   const { exp } = jwtDecode(accessToken)
   return Date.now() >= exp * 1000 ? true : false
 }
 
-async function getNewTokens() {
+export async function getNewTokens() {
   try {
     const res = await axios.post(`${BASE_URL}auth/refresh_token`)
     accessToken = res.data.accessToken
