@@ -7,20 +7,19 @@ export const BoardMembers = ({ users, setAnchorEl }) => {
   const [searchRes, setSearchRes] = useState([])
   const dispatch = useDispatch()
 
-  // useEffect(() => console.log(searchRes), [searchRes])
+  useEffect(() => console.log(searchRes), [searchRes])
 
   const handleInput = async ({ target: { value } }) => {
     if (value) dispatch(GET_USERS(value)).then(res => setSearchRes(res))
     else setSearchRes([])
   }
 
-  const addUser = ({ target: { value: userId } }) => {
-    console.log(userId)
-    dispatch(UPDATE_BOARD({ name: 'users', value: [...users, userId] }))
+  const addUser = user => {
+    dispatch(UPDATE_BOARD({ name: 'users', value: [...users, user] }))
   }
 
-  const removeUser = ({ target: { value: userId } }) => {
-    const usersFiltered = users.filter(user => user._id !== userId)
+  const removeUser = user => {
+    const usersFiltered = users.filter(usr => usr._id !== user._id)
     dispatch(UPDATE_BOARD({ name: 'users', value: usersFiltered }))
   }
 
@@ -34,12 +33,12 @@ export const BoardMembers = ({ users, setAnchorEl }) => {
       <div className="list flex col">
         {users[0] &&
           users.map(
-            ({ _id, fullname }) => (
+            user => (
               // users.some(member => member._id === _id) && (
-              <button className="flex jb" key={_id} value={_id} onClick={removeUser}>
-                <span>{fullname}</span>
-                <span>X</span>
-              </button>
+              <div className="flex jb" key={user._id} onClick={() => removeUser(user)}>
+                <span>{user.fullname}</span>
+                <button>X</button>
+              </div>
             )
             // )
           )}
@@ -48,14 +47,13 @@ export const BoardMembers = ({ users, setAnchorEl }) => {
         <div className="list flex col">
           <span className="bold">Users</span>
           {searchRes?.map(
-            res => (
-              // users.every(user => user._id !== res._id) && (
-              <button className="flex ac jb" key={res._id} value={res._id} onClick={addUser}>
-                <span>{res.fullname}</span>
-                <span>+</span>
-              </button>
-            )
-            // )
+            user =>
+              users.every(usr => usr._id !== user._id) && (
+                <div className="flex ac jb" key={user._id} onClick={() => addUser(user)}>
+                  <span>{user.fullname}</span>
+                  <button>+</button>
+                </div>
+              )
           )}
           {/* <pre>{searchRes[0]?._id}</pre> */}
         </div>
