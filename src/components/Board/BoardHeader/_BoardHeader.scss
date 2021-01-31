@@ -9,6 +9,7 @@
   h2 {
     font-weight: bold;
     font-size: 1.05rem;
+    min-width: fit-content;
 
     @include for-narrow-layout {
       font-size: 1.5rem;
