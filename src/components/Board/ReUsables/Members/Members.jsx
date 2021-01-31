@@ -7,7 +7,9 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchRes, setSearchRes] = useState(null)
   const dispatch = useDispatch()
-
+  
+  const handleInput = ({ target: { value } }) => setSearchTerm(value)
+  
   useEffect(() => {
     setSearchRes(
       users.filter(
@@ -18,7 +20,6 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
     )
   }, [searchTerm, members])
 
-  const handleInput = ({ target: { value } }) => setSearchTerm(value)
 
   const addMember = ({ target: { value: userId } }) => {
     dispatch(UPDATE_CARD({ name: 'members', value: [...members, userId], cardId }))
@@ -35,35 +36,26 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
         X
       </button>
       <span className="title bold asc">Members</span>
-      <input
-        type="text"
-        placeholder="Search Members"
-        value={searchTerm}
-        onChange={handleInput}
-      />
+      <input type="text" placeholder="Search Members" value={searchTerm} onChange={handleInput} />
       <div className="list flex col">
-        {users.map(
-          user =>
-            members.some(member => member === user._id) && (
-              <div className="flex jb" key={user._id}>
-                <span>{user.fullname}</span>
-                <button value={user._id} onClick={removeMember}>
-                  X
-                </button>
-              </div>
+        {users?.map(
+          ({ _id, fullname }) =>
+            members.some(memberId => memberId === _id) && (
+              <button className="flex jb" key={_id} value={_id} onClick={removeMember}>
+                <span>{fullname}</span>
+                <span>X</span>
+              </button>
             )
         )}
       </div>
       {searchTerm && (
         <div className="list flex col">
           <span className="bold">Board Members</span>
-          {searchRes.map(user => (
-            <div className="flex jb" key={user._id}>
-              <span>{user.fullname}</span>
-              <button value={user._id} onClick={addMember}>
-                +
-              </button>
-            </div>
+          {searchRes.map(({ _id, fullname }) => (
+            <button className="flex ac jb" key={_id} value={_id} onClick={addMember}>
+              <span>{fullname}</span>
+              <span>+</span>
+            </button>
           ))}
         </div>
       )}

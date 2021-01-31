@@ -1,17 +1,13 @@
-import { useHistory } from 'react-router-dom'
 import CustomizedMenus from './BoardsSelect/BoardsSelect'
 import SimplePopover from './Popover/Popover'
 
-export const BoardHeader = ({ userBoards, boardTitle, boardMembers }) => {
-
-  const history = useHistory()
-
+export const BoardHeader = ({ boards, title, users }) => {
 
   return (
     <div className="board-header-section">
-      <CustomizedMenus userBoards={userBoards}></CustomizedMenus>
-      <h2>{boardTitle}</h2>
-      <SimplePopover boardMembers={boardMembers}></SimplePopover>
+      <CustomizedMenus boards={boards}></CustomizedMenus>
+      <SimplePopover users={users}></SimplePopover>
+      <h2>{title}</h2>
     </div>
   )
 }

@@ -5,17 +5,17 @@ import { HomeGetStarted } from '../../components/Home/HomeGetStarted/HomeGetStar
 import { HomeHero } from '../../components/Home/HomeHero/HomeHero'
 import { HomeMain } from '../../components/Home/HomeMain/HomeMain'
 import { HomeQuotes } from '../../components/Home/HomeQuotes/HomeQuotes'
-import { LOGIN, TOKEN_LOGIN } from '../../store/user/UserActions'
+import { LOGIN } from '../../store/user/UserActions'
 
 export const Home = props => {
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.userReducer.user)
+  // const dispatch = useDispatch()
+  // const user = useSelector(state => state.userReducer.user)
 
-  // useEffect(() => !user && dispatch(TOKEN_LOGIN()), [])
+  // useEffect(() => !user && dispatch(LOGIN()), [])
 
-  useEffect(() => {
-    dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
-  }, [])
+  // useEffect(() => {
+  //   dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
+  // }, [])
 
   return (
     <main className="home main-grid">

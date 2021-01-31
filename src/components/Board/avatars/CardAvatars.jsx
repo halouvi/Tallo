@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import { makeStyles } from '@material-ui/core'
 import { blue, deepOrange, green, pink } from '@material-ui/core/colors'
-import { useDispatch, useSelector } from 'react-redux'
-import { GET_BOARD_USER_BY_ID } from '../../../store/board/BoardActions'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   pink: {
@@ -26,21 +24,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const CardAvatars = ({ members }) => {
-  const { users } = useSelector(state => state.boardReducer);
-
-  // const [members, setMembers] = useState([])
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const members = card.members.map(member => {
-  //     return getMember(member)
-  //   })
-  //   setMembers(members);
-  // }, [])
-
-  // const getMember = (memberId) => {
-  //   return dispatch(GET_BOARD_USER_BY_ID(memberId))
-  // }
+  const { users } = useSelector(state => state.boardReducer.board)
 
   const classes = useStyles()
   const colorsPick = idx => {
@@ -59,9 +43,9 @@ export const CardAvatars = ({ members }) => {
   }
 
   return (
-    users && (
+    users[0] && (
       <AvatarGroup max={4}>
-        {members.map((member, idx) => {
+        {members?.map((member, idx) => {
           const { fullname, imgUrl } = users.find(user => user._id === member) || {}
           return (
             fullname && (

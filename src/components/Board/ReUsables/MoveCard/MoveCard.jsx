@@ -1,28 +1,32 @@
-import { MenuItem, Select } from '@material-ui/core'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { useUpdateEffect } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
 import { HANDLE_DROP } from '../../../../store/board/BoardActions'
 
 export const MoveCard = ({ card, list, togglePopover }) => {
   const dispatch = useDispatch()
   const { lists } = useSelector(state => state.boardReducer.board)
-  const [targetList, setTargetList] = useState(lists.find(lst => lst._id === list._id))
+  const [targetList, setTargetList] = useState(list)
   const [details, setDetails] = useState({
-    targetListId: list._id,
-    targetCardId: card._id,
     type: 'CARD',
+    posOffset: null,
     sourceListId: list._id,
-    sourceCardId: card._id
+    sourceCardId: card._id,
+    targetListId: list._id,
+    targetCardId: card._id
   })
 
-  const handleInput = ({ target: { name, value } }) => {
-    if (name === 'targetListId') {
-      setDetails({ ...details, [name]: value, targetCardId: '' })
-      setTargetList(lists.find(lst => lst._id === value))
-    } else setDetails({ ...details, [name]: value })
-  }
+  const handleInput = ({ target: { name, value } }) => setDetails({ ...details, [name]: value })
 
-  const moveCard = (ev) => {
+  useUpdateEffect(() => {
+    setTargetList(lists.find(({ _id }) => _id === details.targetListId))
+  }, [details.targetListId])
+
+  useUpdateEffect(() => {
+    setDetails({ ...details, targetCardId: targetList._id !== list._id ? '' : card._id })
+  }, [targetList])
+
+  const moveCard = ev => {
     if (details.targetCardId !== details.sourceCardId) {
       dispatch(HANDLE_DROP(details))
       togglePopover(ev)

@@ -1,31 +1,27 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 import { GET_USERS } from '../../../../store/user/UserActions'
 
-export const BoardMembers = ({ boardMembers, setAnchorEl }) => {
-  const [users, setUsers] = useState([])
+export const BoardMembers = ({ users, setAnchorEl }) => {
+  const [searchRes, setSearchRes] = useState([])
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    console.log(boardMembers)
-  }, [])
+  // useEffect(() => console.log(searchRes), [searchRes])
 
-  const onHandleChange = async (ev) => {
-    const value = ev.target.value;
-    if(value) {
-      dispatch(GET_USERS(value)).then(res => setUsers(res));
-    } else setUsers([])
+  const handleInput = async ({ target: { value } }) => {
+    if (value) dispatch(GET_USERS(value)).then(res => setSearchRes(res))
+    else setSearchRes([])
   }
 
-  const addMember = member => {
-    console.log('adding user...', member);
-    dispatch(UPDATE_BOARD({ name: 'users', value: [...boardMembers, member] }))
+  const addUser = ({ target: { value: userId } }) => {
+    console.log(userId)
+    dispatch(UPDATE_BOARD({ name: 'users', value: [...users, userId] }))
   }
 
-  const removeMember = memberId => {
-    const membersFiltered = boardMembers.filter(member => member._id !== memberId)
-    dispatch(UPDATE_BOARD({ name: 'users', value: membersFiltered }))
+  const removeUser = ({ target: { value: userId } }) => {
+    const usersFiltered = users.filter(user => user._id !== userId)
+    dispatch(UPDATE_BOARD({ name: 'users', value: usersFiltered }))
   }
 
   return (
@@ -34,32 +30,34 @@ export const BoardMembers = ({ boardMembers, setAnchorEl }) => {
         X
       </button>
       <span className="title bold asc">Members</span>
-      <input
-        type="text"
-        placeholder="Search Members"
-        onChange={onHandleChange}
-      />
+      <input type="text" placeholder="Search Members" onChange={handleInput} />
       <div className="list flex col">
-        {users && users[0] && users?.map(
-          user =>
-          boardMembers.some(member => member._id === user._id) && (
-              <div className="flex jb" key={user._id}>
-                <span>{user.fullname}</span>
-                <button onClick={() => removeMember(user._id)}>X</button>
-              </div>
+        {users[0] &&
+          users.map(
+            ({ _id, fullname }) => (
+              // users.some(member => member._id === _id) && (
+              <button className="flex jb" key={_id} value={_id} onClick={removeUser}>
+                <span>{fullname}</span>
+                <span>X</span>
+              </button>
             )
-        )}
+            // )
+          )}
       </div>
-      {users && users[0] && (
+      {searchRes[0] && (
         <div className="list flex col">
           <span className="bold">Users</span>
-          {users.map(user =>
-          boardMembers.every(member => member._id !== user._id) && (
-            <div className="flex jb" key={user._id}>
-              <span>{user.fullname}</span>
-              <button onClick={() => addMember(user)}>+</button>
-            </div>
-          ))}
+          {searchRes?.map(
+            res => (
+              // users.every(user => user._id !== res._id) && (
+              <button className="flex ac jb" key={res._id} value={res._id} onClick={addUser}>
+                <span>{res.fullname}</span>
+                <span>+</span>
+              </button>
+            )
+            // )
+          )}
+          {/* <pre>{searchRes[0]?._id}</pre> */}
         </div>
       )}
     </div>

@@ -6,18 +6,17 @@ import { UPDATE_LIST } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
 import { ListMenu } from './ListMenu/ListMenu'
 import { ListPopover } from './ListMenu/ListPopover'
+import { useToggle, useSetState, useUpdateEffect } from 'react-use'
 
 export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) => {
-  const { _id: listId, cards } = list
-  const [editables, setEditables] = useState({ title: list.title })
-  const { title } = editables
-  const [isAddCard, setIsAddCard] = useState(false)
-  const [posOffset, setPosOffset] = useState(null)
-  const [timer, setTimer] = useState(null)
   const rectRef = useRef(null)
   const dispatch = useDispatch()
-
-  const [newCard, setNewCard] = useState({
+  const { _id: listId, cards } = list
+  const [{ title }, setEditables] = useSetState({ title: list.title })
+  const [isAddCard, toggleAddCard] = useToggle(false)
+  const [posOffset, setPosOffset] = useState(null)
+  const [timer, setTimer] = useState(null)
+  const [newCard, setNewCard] = useSetState({
     title: '',
     activity: [],
     attachments: [],
@@ -71,33 +70,26 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
     }
   })
 
-  const handleInput = ({ target: { name, value } }) => {
-    setNewCard({ ...newCard, [name]: value })
-  }
+  const handleInput = ({ target: { name, value } }) => setNewCard({ [name]: value })
 
   const handleEdit = ({ target: { name, value } }) => {
-    setEditables({ ...editables, [name]: value })
+    setEditables({ [name]: value })
     clearTimeout(timer)
     setTimer(
       setTimeout(() => {
         dispatch(UPDATE_LIST({ name, value, listId }))
-      }, 500) 
+      }, 500)
     )
   }
 
-  const handleKeyUp = ({ target, key }) => {
+  const blurTitle = ({ target, key }) => {
     if (key === 'Enter' || key === 'Escape') target.blur()
-  }
-
-  const toggleIsAddCard = ev => {
-    ev.preventDefault()
-    setIsAddCard(!isAddCard)
   }
 
   const onAddCard = ev => {
     ev.preventDefault()
     addCard(newCard, listId)
-    setIsAddCard(false)
+    toggleAddCard(false)
     setNewCard({
       title: '',
       activity: [],
@@ -124,65 +116,60 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
             }}
           />
         )}
-        <div className={`list`}>
-          <div className="container flex col">
-            <div className="list-header flex jb">
-              <input
-                ref={drag}
-                name="title"
-                value={title}
-                className="list-title fast f-110"
-                onFocus={ev => ev.target.select()}
-                onChange={handleEdit}
-                onKeyUp={handleKeyUp}
+        <div ref={drag} className={`list flex col`}>
+          <div className="list-header flex jb pointer">
+            <input
+              name="title"
+              value={title}
+              className="list-title fast f-110"
+              onMouseDown={ev => ev.preventDefault()}
+              onMouseUp={ev => ev.target.focus()}
+              onFocus={ev => ev.target.select()}
+              onChange={handleEdit}
+              onKeyUp={blurTitle}
+            />
+            <ListPopover className="delete-btn" listId={listId} removeList={removeList} />
+          </div>
+          <div className="cards flex col">
+            {cards.map(card => (
+              <Card
+                key={card._id}
+                card={card}
+                list={list}
+                handleDrop={handleDrop}
+                togglePopover={togglePopover}
               />
-              {/* <button className="delete-btn" onClick={() => removeList(listId)}> */}
-              <ListPopover className="delete-btn" listId={listId} removeList={removeList}></ListPopover>
-              {/* <button className="delete-btn" onClick={openMenu}>
-                ···
-              </button> */}
-            </div>
-            <div className="cards flex col">
-              {cards.map(card => (
-                <Card
-                  key={card._id}
-                  card={card}
-                  list={list}
-                  handleDrop={handleDrop}
-                  togglePopover={togglePopover}
-                />
-              ))}
-              {cardOver && (
-                <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />
-              )}
-            </div>
-            {isAddCard && (
-              <ClickAwayListener onClickAway={() => setIsAddCard(false)}>
-                <form action="" className="add-card-form" onSubmit={onAddCard}>
-                  <input
-                    autoFocus
-                    autoComplete="off"
-                    placeholder="Enter a title for this card..."
-                    type="text"
-                    name="title"
-                    value={newCard.title}
-                    onChange={handleInput}
-                  />
-                  <div className="add-card-btns flex jb">
-                    <button className="add-card-btn">Add Card</button>
-                    <button onClick={toggleIsAddCard} className="close-btn">
-                      X
-                    </button>
-                  </div>
-                </form>
-              </ClickAwayListener>
-            )}
-            {!isAddCard && (
-              <div className="add-card" onClick={toggleIsAddCard}>
-                <span>+</span> Add another card
-              </div>
+            ))}
+            {cardOver && (
+              <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />
             )}
           </div>
+          {isAddCard && (
+            <ClickAwayListener onClickAway={() => toggleAddCard(false)}>
+              <form action="" className="add-card-form" onSubmit={onAddCard}>
+                <input
+                  autoFocus
+                  autoComplete="off"
+                  placeholder="Enter a title for this card..."
+                  type="text"
+                  name="title"
+                  value={newCard.title}
+                  onChange={handleInput}
+                />
+                <div className="add-card-btns flex jb">
+                  <button className="add-card-btn">Add Card</button>
+                  <button onClick={toggleAddCard} className="close-btn">
+                    X
+                  </button>
+                </div>
+              </form>
+            </ClickAwayListener>
+          )}
+          {!isAddCard && (
+            <div className="add-card" onClick={toggleAddCard}>
+              <span>+</span> Add another card
+            </div>
+          )}
         </div>
         {listOver && !!posOffset && (
           <div

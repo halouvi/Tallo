@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CardAvatars } from '../avatars/CardAvatars'
 import { CardMenu } from './CardMenu/CardMenu'
 import clock from '../../../assets/clock.svg'
+import { userTypes } from '../../../store/user/UserActions'
 
 export const Card = ({ card, list, handleDrop, togglePopover }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
@@ -24,7 +25,7 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
         type: 'CARD',
         card,
         sourceCardId: _id,
-        sourceListId: list._id,
+        // sourceListId: list._id,
         height,
         width
       }
@@ -43,11 +44,14 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
     }),
     drop: item => {
       // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
-      handleDrop && handleDrop({ ...item, targetCardId: _id, targetListId: list._id, posOffset })
+      handleDrop && handleDrop({ ...item, targetCardId: _id,  posOffset })
     }
   })
 
   const openMenu = ev => togglePopover(ev, { cmp: CardMenu, cardId: _id, el: rectRef.current })
+
+  const dispatch = useDispatch()
+  const setIsLoading = () => dispatch({ type: userTypes.SET_IS_LOADING, payload: false })
 
   return (
     <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
