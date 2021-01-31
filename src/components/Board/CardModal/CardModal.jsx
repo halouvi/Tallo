@@ -9,39 +9,42 @@ import { CardChecklists } from '../CardChecklists/CardChecklists'
 import { SideBar } from './SideBar/SideBar'
 import { Labels } from '../ReUsables/Labels/Labels'
 import { Popover } from '../ReUsables/Popover/Popover'
+import { useKey, useSetState, useUpdateEffect } from 'react-use'
 import { GET_CARD_BY_ID, UPDATE_CARD, CLEAR_CARD } from '../../../store/board/BoardActions'
 
 export const CardModal = () => {
-  const { board, list, card, users } = useSelector(state => state.boardReducer) || {}
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const { board, list, card } = useSelector(state => state.boardReducer) || {}
+  const { users } = board || {}
   const { activity, attachments, members, labels, checklist } = card || {}
-  const [editables, setEditables] = useState(null)
-  const { title, desc } = editables || {}
+  const [{ title, desc }, setEditables] = useSetState({ title: '', desc: '' })
   const { cardId } = useParams()
   const [anchorEl, setAnchorEl] = useState(null)
   const [DynCmp, setDynCmp] = useState(null)
   const [timer, setTimer] = useState(null)
-  const history = useHistory()
-  const dispatch = useDispatch()
 
   const activityToShow = activity?.slice(0, 5)
   const attachmentsToShow = attachments?.slice(0, 3)
 
-  useEffect(() => setEditables(null), [cardId])
   useEffect(() => dispatch(GET_CARD_BY_ID(cardId)), [board, cardId])
-  useEffect(() => {
-    if (!editables && card) setEditables({ title: card.title, desc: card.desc })
-  }, [card])
+  useUpdateEffect(() => setEditables({ title: card.title, desc: card.desc }), [card?._id])
 
-  useEffect(() => {
-    document.addEventListener('keyup', closeModal)
-    return () => document.removeEventListener('keyup', closeModal)
-  }, [])
+  const closeModal = () => {
+    history.push('/board')
+    dispatch(CLEAR_CARD())
+  }
 
-  const closeModal = ({ type, key }) => {
-    if (type === 'click' || key === 'Escape') {
-      history.push('/board')
-      dispatch(CLEAR_CARD())
-    }
+  useKey('Escape', closeModal)
+
+  const handleEdit = ({ target: { name, value } }) => {
+    setEditables({ [name]: value })
+    clearTimeout(timer)
+    setTimer(
+      setTimeout(() => {
+        dispatch(UPDATE_CARD({ name, value, cardId }))
+      }, 500)
+    )
   }
 
   const cycleCards = ev => {
@@ -49,16 +52,6 @@ export const CardModal = () => {
     const cardIdx = list.cards.findIndex(crd => crd._id === cardId)
     const nextCardId = cardIdx > -1 && list.cards[cardIdx + +ev.target.value]?._id
     if (nextCardId) history.push(nextCardId)
-  }
-
-  const handleEdit = ({ target: { name, value } }) => {
-    setEditables({ ...editables, [name]: value })
-    clearTimeout(timer)
-    setTimer(
-      setTimeout(() => {
-        dispatch(UPDATE_CARD({ name, value, cardId }))
-      }, 500)
-    )
   }
 
   const togglePopover = (ev, cmp) => {
@@ -79,7 +72,7 @@ export const CardModal = () => {
       </nav>
       <div className="modal-section" onClick={togglePopover}>
         <div className="container">
-          {card && users && editables && (
+          {card && (
             <>
               <div className="modal-header fw flex col as">
                 <div className="title-header flex fw jb">

@@ -39,7 +39,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function CustomizedMenus({ userBoards }) {
+export default function CustomizedMenus({ boards }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch()
 
@@ -76,7 +76,7 @@ export default function CustomizedMenus({ userBoards }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {userBoards?.map(board => (
+        {boards?.map(board => (
           <StyledMenuItem onClick={() => onSelectBoard(board._id)} className="boards-select-item" key={board._id}>
             <ListItemText primary={board.title} />
           </StyledMenuItem>

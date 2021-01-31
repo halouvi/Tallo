@@ -5,7 +5,7 @@
   overflow: auto;
   z-index: 10;
   top: 0;
-  right: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.5);
   
   @include for-medium-layout {
@@ -34,10 +34,10 @@
   > .modal-section {
     width: 100vw;
     padding: 20px;
+    margin: 0;
     border: 1px solid gray;
     border-radius: 0;
     background-color: whitesmoke;
-    margin: 0;
     @include for-medium-layout {
       border-radius: 5px; 
       margin: 10vh 0;

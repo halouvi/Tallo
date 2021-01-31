@@ -1,56 +1,45 @@
 import userService from '../../service/userService.js'
-import { CLEAR_BOARD_STORE } from '../board/BoardActions.js'
+import { boardTypes, CLEAR_BOARD } from '../board/BoardActions.js'
 
-export const types = {
-  GET_USER_BY_ID: 'GET_USER_BY_ID',
+export const userTypes = {
   SET_LOGGED_USER: 'SET_LOGGED_USER',
+  SET_NEW_USER_BOARD: 'SET_NEW_USER_BOARD',
+  SET_IS_LOADING: 'SET_IS_LOADING',
+  SET_ACCESS_TOKEN: 'SET_ACCESS_TOKEN',
   SET_USER_BOARDS: 'SET_USER_BOARDS'
 }
 
-export const SET_BOARDS = userBoards => dispatch => {
-  // const users = await userService.query(q);
-  // return users;
-  userService.setUserBoards(userBoards)
-  console.log(userBoards)
-  dispatch({ type: types.SET_USER_BOARDS, userBoards })
-}
-
-export const GET_USERS = q => async dispatch => {
-  const users = await userService.query(q)
-  return users
-  // dispatch({ type: types.GET_USER_BY_ID, payload: user })
-}
-
-export const GET_USER_BY_ID = id => async dispatch => {
-  const user = await userService.getById(id)
-  return user
-  // dispatch({ type: types.GET_USER_BY_ID, payload: user })
-}
-
-export const LOGIN = ({ email, password }) => async dispatch => {
-  const { user, userBoards } = await userService.login({ email, password })
-  dispatch({ type: types.SET_LOGGED_USER, user })
-  dispatch({ type: types.SET_USER_BOARDS, userBoards })
-}
+export const GET_USERS = query => async () => await userService.query(query)
 
 export const TOKEN_LOGIN = () => async dispatch => {
   try {
-    const { user, userBoards } = await userService.login()
-    dispatch({ type: types.SET_LOGGED_USER, user })
-    dispatch({ type: types.SET_USER_BOARDS, userBoards })
-  } catch (error) {}
+    const { user, board } = await userService.tokenLogin()
+    dispatch({ type: userTypes.SET_LOGGED_USER, payload: user })
+    dispatch({ type: boardTypes.SET_BOARD, payload: board })
+  } catch (err) {
+  } finally {
+    dispatch({ type: userTypes.SET_IS_LOADING, payload: false })
+  }
 }
 
-export const SIGNUP = ({ fullname, email, password, imgUrl, boards }) => async dispatch => {
-  const user = await userService.signup({ fullname, email, password, imgUrl, boards })
-  dispatch({ type: types.SET_LOGGED_USER, user })
+export const LOGIN = creds => async dispatch => {
+  try {
+    const { user, board } = await userService.login(creds)
+    dispatch({ type: userTypes.SET_LOGGED_USER, payload: user })
+    dispatch({ type: boardTypes.SET_BOARD, payload: board })
+  } catch (err) {
+  } finally {
+    dispatch({ type: userTypes.SET_IS_LOADING, payload: false })
+  }
+}
+
+export const SIGNUP = creds => async dispatch => {
+  const user = await userService.signup(creds)
+  dispatch({ type: userTypes.SET_LOGGED_USER, payload: user })
 }
 
 export const LOGOUT = () => async dispatch => {
   await userService.logout()
-  const user = {}
-  const userBoards = []
-  dispatch({ type: types.SET_LOGGED_USER, user })
-  dispatch({ type: types.SET_USER_BOARDS, userBoards })
-  dispatch(CLEAR_BOARD_STORE())
+  dispatch({ type: userTypes.SET_LOGGED_USER, payload: null })
+  dispatch(CLEAR_BOARD())
 }

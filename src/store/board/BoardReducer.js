@@ -2,7 +2,6 @@ import { boardTypes } from './BoardActions'
 
 const initState = {
   board: null,
-  users: null,
   list: null,
   card: null
 }
@@ -13,11 +12,6 @@ export const boardReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         board: payload
-      }
-    case boardTypes.SET_USERS:
-      return {
-        ...state,
-        users: payload
       }
     case boardTypes.SET_LIST:
       return {

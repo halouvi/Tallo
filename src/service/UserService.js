@@ -1,68 +1,36 @@
 import { httpService } from './httpService.js'
 
 export default {
-    login,
-    logout,
-    signup,
-    getUsers,
-    getById,
-    remove,
-    update,
-    // unreadBooking,
-    // resetUnreadBookings,
-    query,
-    setUserBoards
-}
+  query: query => httpService.get(`user/users/${query}`),
 
-function query(query) {
-    return httpService.get(`user/users/${query}`)
+  tokenLogin: async () => {
+    try {
+      const res = await httpService.post(`auth/refresh_token/login`)
+      sessionStorage.loggedUser = JSON.stringify(res.user)
+      return res
+    } catch (err) {
+      throw err
+    }
+  },
 
-}
+  login: async creds => {
+    try {
+      const res = await httpService.post(`auth/login`, creds)
+      sessionStorage.loggedUser = JSON.stringify(res.user)
+      return res
+    } catch (err) {
+      throw err
+    }
+  },
 
-function getUsers(usersIds) {
-    return httpService.get(`user/${usersIds}`)
-}
-function getById(userId) {
-    return httpService.get(`user/${userId}`)
-}
-function remove(userId) {
-    return httpService.delete(`user/${userId}`)
-}
+  signup: async creds => {
+    const { user } = await httpService.post('auth/signup', creds)
+    sessionStorage.loggedUser = JSON.stringify(user)
+    return user
+  },
 
-function update(user) {
-    return httpService.put(`user/${user._id}`, user)
-}
-
-async function login(userCred) {
-    var { user, userBoards } = await httpService.post('auth/login', userCred)
-    user = _handleLogin(user, userBoards)
-    return { user, userBoards }
-}
-async function signup(userCred) {
-    const user = await httpService.post('auth/signup', userCred)
-    return _handleLogin(user)
-}
-async function logout() {
-    await httpService.post('auth/logout');
-    sessionStorage.clear();
-}
-
-// async function unreadBooking(user) {
-//     const updatedUser = await httpService.put(`user/${user._id}`, user)
-//     return _handleLogin(updatedUser);
-// }
-
-// async function resetUnreadBookings(user) {
-//     const updatedUser = await httpService.put(`user/reset/${user._id}`, user)
-//     return _handleLogin(updatedUser);
-// }
-
-function setUserBoards(userBoards) {
-    sessionStorage.setItem('userBoards', JSON.stringify(userBoards))
-}
-
-function _handleLogin(user, userBoards) {
-    sessionStorage.setItem('loggedUser', JSON.stringify(user))
-    sessionStorage.setItem('userBoards', JSON.stringify(userBoards))
-    return user;
+  logout: async () => {
+    await httpService.post('auth/logout')
+    sessionStorage.clear()
+  }
 }

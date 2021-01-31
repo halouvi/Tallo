@@ -2,7 +2,7 @@ import { boardService } from '../../service/boardService'
 import utilService from '../../service/utilService'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { cloneDeep as clone } from 'lodash'
-import { SET_BOARDS } from '../user/UserActions'
+import { userTypes } from '../user/UserActions'
 
 export const boardTypes = {
   SET_BOARD: 'SET_BOARD',
@@ -14,7 +14,7 @@ export const boardTypes = {
 
 var timer
 
-export const CLEAR_BOARD_STORE = () => dispatch => {
+export const CLEAR_BOARD = () => dispatch => {
   dispatch({ type: boardTypes.RESET_BOARD, payload: null })
 }
 
@@ -23,24 +23,24 @@ export const CLEAR_CARD = () => dispatch => {
   dispatch({ type: boardTypes.SET_CARD, payload: null })
 }
 
-export const ADD_BOARD = newBoard => async dispatch => {
-  const { board, users, userBoards } = await boardService.add(newBoard)
-  console.log(board)
-  dispatch({ type: boardTypes.SET_BOARD, payload: board })
-  dispatch({ type: boardTypes.SET_USERS, payload: users })
-  dispatch(SET_BOARDS(userBoards))
+export const ADD_BOARD = board => async (dispatch, getState) => {
+  const prevBoard = clone(getState().boardReducer.board)
+  const prevUserBoards = clone(getState().userReducer.user.boards)
+  try {
+    const { boardId } = await boardService.add(board)
+    dispatch({ type: boardTypes.SET_BOARD, payload: { _id: boardId, ...board } })
+    dispatch({ type: userTypes.SET_NEW_USER_BOARD, payload: { _id: boardId, title: board.title } })
+  } catch (error) {
+    dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
+    dispatch({ type: userTypes.SET_USER_BOARDS, payload: prevUserBoards })
+  }
 }
 
 export const GET_BOARD_BY_ID = id => async dispatch => {
-  const { board, users } = await boardService.getById(id)
-  dispatch({ type: boardTypes.SET_BOARD, payload: board })
-  dispatch({ type: boardTypes.SET_USERS, payload: users })
-}
-
-export const GET_BOARD_USER_BY_ID = id => (dispatch, getState) => {
-  const users = getState().boardReducer.users
-  const user = users.find(user => user._id === id)
-  return user
+  try {
+    const board = await boardService.getById(id)
+    dispatch({ type: boardTypes.SET_BOARD, payload: board })
+  } catch (error) {}
 }
 
 export const ADD_LIST = list => (dispatch, getState) => {
@@ -64,14 +64,6 @@ export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => 
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const GET_CARD_BY_ID = cardId => (dispatch, getState) => {
-  const { lists } = getState().boardReducer.board || {}
-  if (lists) {
-    const { list, card } = findItems(lists, cardId)
-    dispatch({ type: boardTypes.SET_LIST, payload: list })
-    dispatch({ type: boardTypes.SET_CARD, payload: card })
-  }
-}
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   card._id = utilService.makeId()
@@ -79,6 +71,15 @@ export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   var listIdx = nextBoard.lists.findIndex(list => list._id === listId)
   nextBoard.lists[listIdx].cards.push(card)
   dispatch(SAVE_BOARD(nextBoard))
+}
+
+export const GET_CARD_BY_ID = cardId => (dispatch, getState) => {
+  const { lists } = getState().boardReducer.board || {}
+  if (lists) {
+    const { list, card } = findItems(lists, cardId)
+    dispatch({ type: boardTypes.SET_LIST, payload: list })
+    dispatch({ type: boardTypes.SET_CARD, payload: card })
+  }
 }
 
 export const DELETE_CARD = cardId => (dispatch, getState) => {
@@ -102,32 +103,30 @@ export const HANDLE_DROP = ({
   sourceCardId,
   targetListId,
   targetCardId,
-  posOffset = null
+  posOffset
 }) => (dispatch, getState) => {
-  const nextLists = clone(getState().boardReducer.board.lists)
+  const nextBoard = clone(getState().boardReducer.board)
+  const { lists } = nextBoard
 
   if (type === 'LIST') {
-    const sourceListIdx = nextLists.findIndex(list => list._id === sourceListId)
-    const [list] = nextLists.splice(sourceListIdx, 1)
-    const targetListIdx = nextLists.findIndex(list => list._id === targetListId)
-    nextLists.splice(targetListIdx + posOffset, 0, list)
+    const sourceListIdx = lists.findIndex(list => list._id === sourceListId)
+    const [list] = lists.splice(sourceListIdx, 1)
+    const targetListIdx = lists.findIndex(list => list._id === targetListId)
+    lists.splice(targetListIdx + posOffset, 0, list)
   } else if (type === 'CARD') {
-    const sourceList = nextLists.find(list => list._id === sourceListId)
+    const sourceList = lists.find(list => list._id === sourceListId)
     const sourceCardIdx = sourceList.cards.findIndex(card => card._id === sourceCardId)
     const [card] = sourceList.cards.splice(sourceCardIdx, 1)
-    const targetList = nextLists.find(list => list._id === targetListId)
-    let targetCardIdx = targetList.cards.findIndex(card => card._id === targetCardId)
+    const targetList = lists.find(list => list._id === targetListId)
+    let targetCardIdx = targetList.cards.findIndex(card => card._id === targetCardId || 0)
     if (posOffset === null) {
-      //transfer card via menu and not DnD
-      if (sourceListId === targetListId && targetCardIdx >= sourceCardIdx) {
-        posOffset = 1
-      } else if (!targetCardId) {
-        targetCardIdx = targetList.cards.length
-      }
+      //when transfering card via menu and not DnD
+      posOffset = sourceListId === targetListId && targetCardIdx >= sourceCardIdx ? 1 : 0
+      if (!targetCardId) targetCardIdx = targetList.cards.length
     }
     targetList.cards.splice(targetCardIdx + posOffset, 0, card)
   }
-  dispatch(UPDATE_BOARD({ name: 'lists', value: nextLists }))
+  dispatch(SAVE_BOARD(nextBoard))
 }
 
 export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
@@ -138,9 +137,7 @@ export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
 
 export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
   const prevBoard = clone(getState().boardReducer.board)
-  // const cardId = getState().boardReducer.card._id
   dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-  // if (cardId) dispatch(GET_CARD_BY_ID(cardId))
   clearTimeout(timer)
   timer = setTimeout(async () => {
     try {
@@ -148,7 +145,6 @@ export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
       socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
     } catch (error) {
       dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
-      // dispatch(GET_CARD_BY_ID(cardId))
       console.error('Could not update board', error)
     }
   }, 1500)
@@ -172,7 +168,7 @@ export const findItems = (lists, cardId) => {
 }
 
 const _activityLog = (card, field) => {
-  const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'))
+  const loggedUser = JSON.parse(sessionStorage.loggedUser)
   var activity
   switch (field) {
     case 'card':

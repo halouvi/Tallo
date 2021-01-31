@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  ADD_CARD,
-  GET_BOARD_BY_ID,
-  HANDLE_DROP,
   boardTypes,
+  HANDLE_DROP,
+  ADD_CARD,
   ADD_LIST,
   REMOVE_LIST,
   GET_CARD_BY_ID
 } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
-import { socketService, socketTypes } from '../../service/socketService.js'
+import { socketService, socketTypes, socket } from '../../service/socketService.js'
 import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
 import { useHistory } from 'react-router'
 import { ClickAwayListener } from '@material-ui/core'
 import { Popover } from '../../components/Board/ReUsables/Popover/Popover'
-import { TOKEN_LOGIN } from '../../store/user/UserActions'
 
 export const Board = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
   const { board, list, card } = useSelector(state => state.boardReducer) || {}
   const { lists, title, _id, users } = board || {}
-  const { user, userBoards } = useSelector(state => state.userReducer) || {}
+  const { user } = useSelector(state => state.userReducer) || {}
+  const { boards } = user || {}
   const [isAddList, setIsAddList] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const [DynCmp, setDynCmp] = useState(null)
@@ -29,20 +30,22 @@ export const Board = () => {
     title: '',
     cards: []
   })
-  const dispatch = useDispatch()
-  const history = useHistory()
+
   useEffect(() => {
-    if (!userBoards[0]) history.replace('/create-modal')
+    if (!boards[0]) history.replace('/create-modal')
     else {
-      dispatch(GET_BOARD_BY_ID(sessionStorage.boardId || userBoards[0]._id))
-      socketService.setup()
-      socketService.emit(socketTypes.JOIN_BOARD, _id)
-      socketService.on(socketTypes.BOARD_UPDATED, nextBoard => {
-        dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-      })
-      return () => socketService.terminate
+      if (socket) {
+        socketService.emit(socketTypes.JOIN_BOARD, _id)
+        socketService.on(socketTypes.BOARD_UPDATED, nextBoard => {
+          dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
+        })
+      }
     }
-  }, [user])
+    return () => {
+      socketService.emit(socketTypes.LEAVE_BOARD, _id)
+      socketService.off(socketTypes.BOARD_UPDATED)
+    }
+  }, [])
 
   const addCard = (card, listId) => {
     dispatch(ADD_CARD(card, listId))
@@ -81,50 +84,52 @@ export const Board = () => {
 
   return (
     <main ref={drop} className="board">
-      <BoardHeader boardTitle={title} boardMembers={users} userBoards={userBoards} />
-      <section className="container flex">
-        {lists?.map(list => (
-          <List
-            list={list}
-            key={list._id}
-            removeList={removeList}
-            addCard={addCard}
-            handleDrop={handleDrop}
-            togglePopover={togglePopover}
-          />
-        ))}
-        {isAddList && (
-          <ClickAwayListener onClickAway={() => setIsAddList(false)}>
-            <form action="" className="add-list-form" onSubmit={addList}>
-              <input
-                placeholder="Enter a title for this list..."
-                type="text"
-                name="title"
-                value={newList.title}
-                onChange={handleInput}
-              />
-              <div className="add-list-btns">
-                <button className="add-list-btn">Add list</button>
-                <button
-                  onClick={ev => {
-                    ev.preventDefault()
-                    setIsAddList(false)
-                  }}
-                  className="close-btn">
-                  X
-                </button>
-              </div>
-            </form>
-          </ClickAwayListener>
-        )}
-        {!isAddList && (
-          <div className="add-list-container" onClick={() => setIsAddList(true)}>
-            <p>
-              <span>+</span> Add another list
-            </p>
-          </div>
-        )}
-      </section>
+      <BoardHeader title={title} users={users} boards={boards} />
+      {board && (
+        <section className="container flex">
+          {lists?.map(list => (
+            <List
+              list={list}
+              key={list._id}
+              removeList={removeList}
+              addCard={addCard}
+              handleDrop={handleDrop}
+              togglePopover={togglePopover}
+            />
+          ))}
+          {isAddList && (
+            <ClickAwayListener onClickAway={() => setIsAddList(false)}>
+              <form action="" className="add-list-form" onSubmit={addList}>
+                <input
+                  placeholder="Enter a title for this list..."
+                  type="text"
+                  name="title"
+                  value={newList.title}
+                  onChange={handleInput}
+                />
+                <div className="add-list-btns">
+                  <button className="add-list-btn">Add list</button>
+                  <button
+                    onClick={ev => {
+                      ev.preventDefault()
+                      setIsAddList(false)
+                    }}
+                    className="close-btn">
+                    X
+                  </button>
+                </div>
+              </form>
+            </ClickAwayListener>
+          )}
+          {!isAddList && (
+            <div className="add-list-container" onClick={() => setIsAddList(true)}>
+              <p>
+                <span>+</span> Add another list
+              </p>
+            </div>
+          )}
+        </section>
+      )}
       <Popover anchorEl={anchorEl} togglePopover={togglePopover} pos="right-start">
         {DynCmp && (
           <DynCmp anchorEl={anchorEl} togglePopover={togglePopover} list={list} card={card} />

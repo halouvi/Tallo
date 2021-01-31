@@ -1,21 +1,31 @@
-import { types } from './UserActions'
+import { userTypes } from './UserActions'
 
 const initState = {
-  user: sessionStorage.loggedUser? JSON.parse(sessionStorage.loggedUser): null,
-  userBoards: sessionStorage.userBoards? JSON.parse(sessionStorage.userBoards): []
+  isLoading: true,
+  user: sessionStorage.loggedUser ? JSON.parse(sessionStorage.loggedUser) : null
 }
 
-export const userReducer = (state = initState, { type, user, userBoards }) => {
+export const userReducer = (state = initState, { type, payload }) => {
   switch (type) {
-    case types.SET_LOGGED_USER:
+    case userTypes.SET_LOGGED_USER:
       return {
         ...state,
-        user: user,
+        user: payload
       }
-    case types.SET_USER_BOARDS:
+    case userTypes.SET_USER_BOARDS:
       return {
         ...state,
-        userBoards: userBoards,
+        user: { ...state.user, boards: payload }
+      }
+    case userTypes.SET_NEW_USER_BOARD:
+      return {
+        ...state,
+        user: { ...state.user, boards: [...state.user.boards, payload] }
+      }
+    case userTypes.SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: payload
       }
     default:
       return state
