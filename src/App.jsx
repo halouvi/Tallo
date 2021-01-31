@@ -20,8 +20,8 @@ export const App = () => {
   }
 
   useEffect(() => {
-    dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
-    // dispatch(TOKEN_LOGIN())
+    // dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
+    dispatch(TOKEN_LOGIN())
     socketService.setup()
     window.onbeforeunload = () => {
       socketService.terminate()
@@ -29,17 +29,26 @@ export const App = () => {
   }, [])
 
   return isLoading ? (
-    <div className="fp flex ac jc">Loading...</div>
+    <div className="fp flex ac jc">
+      <div class="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+      </div>
+    </div>
   ) : (
-    <>
-      <Header />
-      <Switch>
-        <PrivateRoute path="/board" component={Board} />
-        <Route path="/" component={Home} />
-      </Switch>
-      <PrivateRoute path="/board/modal/:cardId" component={CardModal} />
-      <Route path="/login-signup" component={LoginSingup} />
-      <DragLayer />
-    </>
-  )
+      <>
+        <Header />
+        <Switch>
+          <PrivateRoute path="/board" component={Board} />
+          <Route path="/" component={Home} />
+        </Switch>
+        <PrivateRoute path="/board/modal/:cardId" component={CardModal} />
+        <Route path="/login-signup" component={LoginSingup} />
+        <DragLayer />
+      </>
+    )
 }
