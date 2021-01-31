@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useUpdateEffect } from 'react-use'
+import { useUpdateEffect, useSetState } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
 import { HANDLE_DROP } from '../../../../store/board/BoardActions'
 
@@ -7,7 +7,7 @@ export const MoveCard = ({ card, list, togglePopover }) => {
   const dispatch = useDispatch()
   const { lists } = useSelector(state => state.boardReducer.board)
   const [targetList, setTargetList] = useState(list)
-  const [details, setDetails] = useState({
+  const [details, setDetails] = useSetState({
     type: 'CARD',
     posOffset: null,
     sourceListId: list._id,
@@ -16,21 +16,17 @@ export const MoveCard = ({ card, list, togglePopover }) => {
     targetCardId: card._id
   })
 
-  const handleInput = ({ target: { name, value } }) => setDetails({ ...details, [name]: value })
+  const handleInput = ({ target: { name, value } }) => setDetails({ [name]: value })
 
   useUpdateEffect(() => {
     setTargetList(lists.find(({ _id }) => _id === details.targetListId))
+    setDetails({ targetCardId: details.targetListId !== list._id ? '' : card._id })
   }, [details.targetListId])
 
-  useUpdateEffect(() => {
-    setDetails({ ...details, targetCardId: targetList._id !== list._id ? '' : card._id })
-  }, [targetList])
-
   const moveCard = ev => {
-    if (details.targetCardId !== details.sourceCardId) {
-      dispatch(HANDLE_DROP(details))
-      togglePopover(ev)
-    }
+    if (details.targetCardId === details.sourceCardId) return
+    dispatch(HANDLE_DROP(details))
+    togglePopover(ev)
   }
 
   return (

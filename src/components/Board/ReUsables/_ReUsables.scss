@@ -22,8 +22,13 @@
   > .list {
     > * {
       border-radius: 6px;
-      // padding:  6px;
       margin: 6px 0 0 0;
     }
   }
+  .logged-user{
+    cursor: not-allowed;
+    order: -1;
+  }
 }
+
+

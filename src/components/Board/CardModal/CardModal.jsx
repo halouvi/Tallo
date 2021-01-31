@@ -98,7 +98,7 @@ export const CardModal = () => {
               <div className="content sbl">
                 {members[0] && (
                   <div className="members-container">
-                    <CardAvatars className="card-avatars" members={members}></CardAvatars>
+                    <CardAvatars className="card-avatars" members={members}/>
                   </div>
                 )}
                 {labels[0] && (

@@ -25,7 +25,7 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
         type: 'CARD',
         card,
         sourceCardId: _id,
-        // sourceListId: list._id,
+        sourceListId: list._id,
         height,
         width
       }
@@ -44,7 +44,7 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
     }),
     drop: item => {
       // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
-      handleDrop && handleDrop({ ...item, targetCardId: _id,  posOffset })
+      handleDrop && handleDrop({ ...item, targetCardId: _id, targetListId: list._id, posOffset })
     }
   })
 

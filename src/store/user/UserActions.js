@@ -9,7 +9,9 @@ export const userTypes = {
   SET_USER_BOARDS: 'SET_USER_BOARDS'
 }
 
-export const GET_USERS = query => async () => await userService.query(query)
+export const GET_USERS = query => async (dispatch, getState) => {
+  return await userService.query(query)
+}
 
 export const TOKEN_LOGIN = () => async dispatch => {
   try {
