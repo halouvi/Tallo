@@ -81,7 +81,6 @@ export default function CustomizedMenus({ boards }) {
             <ListItemText primary={board.title} />
           </StyledMenuItem>
         ))}
-
       </StyledMenu>
     </div>
   );
