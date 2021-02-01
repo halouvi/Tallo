@@ -6,7 +6,7 @@ var axios = Axios.create({
 })
 
 let accessToken = null
-
+ 
 export const httpService = {
   get: (endpoint, data) => {
     return ajax(endpoint, 'GET', data)

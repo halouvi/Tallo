@@ -12,7 +12,7 @@ export const Attachment = ({ card: { attachments, _id: cardId }, togglePopover }
     ev.preventDefault();
     if (attachmentUrl) dispatch(UPDATE_CARD({ name: 'attachments', value: [...attachments, attachmentUrl], cardId }))
   }
-
+ 
   const onUploadImg = async (ev) => {
     setIsUploaded(false);
     const res = await uploadImg(ev);

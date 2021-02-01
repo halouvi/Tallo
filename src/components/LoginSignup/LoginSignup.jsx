@@ -4,7 +4,7 @@ import { LOGIN, SIGNUP } from '../../store/user/UserActions';
 import { uploadImg } from '../../service/imgUploadService.js'
 import { useHistory } from 'react-router';
 import { useRef } from 'react';
-
+ 
 export const LoginSingup = () => {
   const dispatch = useDispatch();
   const history = useHistory();

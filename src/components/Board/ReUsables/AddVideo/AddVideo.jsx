@@ -12,7 +12,7 @@ export const AddVideo = ({ card: { _id: cardId }, togglePopover }) => {
     ev.preventDefault();
     if(videoUrl) dispatch(UPDATE_CARD({ name: 'cardVideo', value: videoUrl, cardId }))
   }
-
+ 
   const onUploadVideo = async (ev) => {
     setIsUploaded(false);
     const res = await uploadVideo(ev);
