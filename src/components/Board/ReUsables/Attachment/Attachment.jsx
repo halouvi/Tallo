@@ -16,9 +16,8 @@ export const Attachment = ({ card: { attachments, _id: cardId }, togglePopover }
   const onUploadImg = async (ev) => {
     setIsUploaded(false);
     const res = await uploadImg(ev);
-    console.log(res.url);
     setIsUploaded(true);
-    setAttachmentUrl(res.url)
+    setAttachmentUrl(res.secure_url)
   }
 
   return (

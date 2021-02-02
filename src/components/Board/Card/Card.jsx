@@ -1,20 +1,17 @@
 import { useRef, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CardAvatars } from '../avatars/CardAvatars'
 import { CardMenu } from './CardMenu/CardMenu'
 import clock from '../../../assets/clock.svg'
-import { userTypes } from '../../../store/user/UserActions'
 
 export const Card = ({ card, list, handleDrop, togglePopover }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
-  const { _id, title, attachments, members, desc, dueDate, labels, cardVideo } = card || {}
-  const [posOffset, setPosOffset] = useState(null)
+  const { _id: cardId, title, attachments, members, desc, dueDate, labels, cardVideo } = card || {}
+  const [posOffset, setPosOffset] = useState(0)
   const rectRef = useRef(null)
   const history = useHistory()
-
-  const openModal = () => history.push(`/board/modal/${_id}`)
 
   const [{ isDragging }, drag] = useDrag({
     collect: monitor => ({ isDragging: !!monitor.isDragging() }),
@@ -24,7 +21,7 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
       return {
         type: 'CARD',
         card,
-        sourceCardId: _id,
+        sourceCardId: cardId,
         sourceListId: list._id,
         height,
         width
@@ -39,19 +36,18 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
       setPosOffset(top + height / 2 > monitor.getClientOffset().y ? 0 : 1)
     },
     collect: monitor => ({
-      cardOver: monitor.isOver() && monitor.getItem().sourceCardId !== _id,
+      cardOver: monitor.isOver() && monitor.getItem().sourceCardId !== cardId,
       hoverHeight: monitor.getItem()?.height
     }),
     drop: item => {
       // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
-      handleDrop && handleDrop({ ...item, targetCardId: _id, targetListId: list._id, posOffset })
+      handleDrop && handleDrop({ ...item, targetCardId: cardId, targetListId: list._id, posOffset })
     }
   })
 
-  const openMenu = ev => togglePopover(ev, { cmp: CardMenu, cardId: _id, el: rectRef.current })
+  const openModal = () => history.push(`/board/modal/${cardId}`)
 
-  const dispatch = useDispatch()
-  const setIsLoading = () => dispatch({ type: userTypes.SET_IS_LOADING, payload: false })
+  const openMenu = ev => togglePopover(ev, CardMenu, cardId, rectRef.current)
 
   return (
     <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
@@ -67,9 +63,9 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
             </button>
             <span className="desc fw">{desc}</span>
             {cardVideo && !attachments[0] && (
-                <video  controls>
-                  <source src={cardVideo} />
-                </video>
+              <video controls>
+                <source src={cardVideo} />
+              </video>
             )}
             {attachments[0] && (
               <div className="attachments">

@@ -1,7 +1,7 @@
 .drag-layer {
   position: absolute;
   z-index: 1000;
-  transition: transform 120ms, box-shadow 120ms;
+  transition: transform 150ms, box-shadow 150ms;
   &:hover {
     transform: rotate(3deg);
   }

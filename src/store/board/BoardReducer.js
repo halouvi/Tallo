@@ -23,10 +23,6 @@ export const boardReducer = (state = initState, { type, payload }) => {
         ...state,
         card: payload
       }
-    case boardTypes.RESET_BOARD:
-      return {
-        ...initState
-      }
     default:
       return state
   }

@@ -3,6 +3,7 @@ import { useUpdateEffect } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 import { GET_USERS } from '../../../../store/user/UserActions'
+import userService from '../../../../service/userService'
 
 export const BoardMembers = ({ setAnchorEl }) => {
   const dispatch = useDispatch()
@@ -11,14 +12,13 @@ export const BoardMembers = ({ setAnchorEl }) => {
   const [searchRes, setSearchRes] = useState([])
   const [filteredRes, setFilteredRes] = useState([])
 
+  const handleInput = async ({ target: { value } }) => {
+    setSearchRes(value ? await userService.query(value) : [])
+  }
+
   useUpdateEffect(() => {
     setFilteredRes(searchRes.filter(res => !users.some(user => user._id === res._id)))
   }, [searchRes, users])
-
-  const handleInput = ({ target: { value } }) => {
-    if (value) dispatch(GET_USERS(value)).then(res => setSearchRes(res))
-    else setSearchRes([])
-  }
 
   const addUser = ({ currentTarget: { value } }) => {
     const user = searchRes.find(user => user._id === value)

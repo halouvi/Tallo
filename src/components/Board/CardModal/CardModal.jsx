@@ -98,7 +98,7 @@ export const CardModal = () => {
               <div className="content sbl">
                 {members[0] && (
                   <div className="members-container">
-                    <CardAvatars className="card-avatars" members={members}/>
+                    <CardAvatars className="card-avatars" members={members} />
                   </div>
                 )}
                 {labels[0] && (
@@ -119,15 +119,17 @@ export const CardModal = () => {
                     </div>
                   </div>
                 )}
-                {cardVideo && <div className="video-section">
-                  <div className="video-header">
-                    <img src={process.env.PUBLIC_URL + `/AddVideo.png`} alt="" />
-                    <h3>Card Video</h3>
+                {cardVideo && (
+                  <div className="video-section">
+                    <div className="video-header">
+                      <img src={process.env.PUBLIC_URL + `/AddVideo.png`} alt="" />
+                      <h3>Card Video</h3>
+                    </div>
+                    <video className="card-video" controls>
+                      <source src={cardVideo} />
+                    </video>
                   </div>
-                  <video className="card-video" controls>
-                    <source src={cardVideo} />
-                  </video>
-                </div>}
+                )}
                 <div className="desc-container">
                   <div className="desc-header">
                     <img src={process.env.PUBLIC_URL + `/Description.png`} alt="" />

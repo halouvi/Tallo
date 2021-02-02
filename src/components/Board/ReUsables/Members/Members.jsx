@@ -21,12 +21,12 @@ export const Members = ({ card: { members, _id: cardId }, togglePopover }) => {
   }, [searchTerm, members])
 
 
-  const addMember = ({ target: { value: userId } }) => {
+  const addMember = ({ currentTarget: { value: userId } }) => {
     dispatch(UPDATE_CARD({ name: 'members', value: [...members, userId], cardId }))
   }
 
-  const removeMember = ({ target: { value: userId } }) => {
-    const membersFiltered = members.filter(member => member !== userId)
+  const removeMember = ({ currentTarget: { value: userId } }) => {
+    const membersFiltered = members.filter(memberId => memberId !== userId)
     dispatch(UPDATE_CARD({ name: 'members', value: membersFiltered, cardId }))
   }
 
