@@ -20,8 +20,8 @@ export const App = () => {
   }
 
   useEffect(() => {
-    // dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
-    dispatch(TOKEN_LOGIN())
+    dispatch(LOGIN({ email: 'deni@avdija.com', password: '123' }))
+    // dispatch(TOKEN_LOGIN())
     socketService.setup()
     window.onbeforeunload = () => {
       socketService.terminate()
