@@ -24,6 +24,12 @@ function getDropTargetElementsAtPoint(x, y, dropTargets) {
 
 const backendOptions = {
   getDropTargetElementsAtPoint: !hasNative && getDropTargetElementsAtPoint,
+  delayTouchStart: 3,
+  // scrollAngleRanges: [
+  //   { start: 30, end: 150 },
+  //   { start: 210, end: 330 },
+  //   { start: 300 }, { end: 60 }, { start: 120, end: 240 }
+  // ]
 }
 
 // const windowSize = () => {
@@ -38,7 +44,7 @@ const backendOptions = {
 render(
   <StrictMode>
     <ReduxProvider store={store}>
-      <DndProvider backend={window.innerWidth > 600 ? MouseBackEnd: TouchBackend} delayTouchStart={3} options={backendOptions}>
+      <DndProvider backend={window.innerWidth > 600 ? MouseBackEnd: TouchBackend}  options={backendOptions}>
         <RouterProvider>
           <App />
         </RouterProvider>
