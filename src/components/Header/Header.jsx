@@ -1,12 +1,12 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
+import { useToggle } from 'react-use'
 import { CreateBoardModal } from '../Board/CreateBoardModal/CreateBoardModal'
 import UserMenu from './UserMenu/UserMenu'
 
 export const Header = () => {
   const { user } = useSelector(state => state.userReducer) || {}
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, toggleModal] = useToggle(false)
 
   return (
     <>
@@ -24,7 +24,7 @@ export const Header = () => {
         <div className="nav-container flex">
           <nav className="flex jb">
             {user?._id && (
-              <button className="add-board-btn nav-item" onClick={() => setIsModalOpen(true)}>
+              <button className="add-board-btn nav-item" onClick={toggleModal}>
                 <svg width="512" height="512" viewBox="0 0 448 448">
                   <g>
                     <path
@@ -46,7 +46,7 @@ export const Header = () => {
           <UserMenu user={user}></UserMenu>
         </div>
       </header>
-      {isModalOpen && <CreateBoardModal setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && <CreateBoardModal toggleModal={toggleModal} />}
     </>
   )
 }

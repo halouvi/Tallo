@@ -1,7 +1,6 @@
 import { userTypes } from './UserActions'
 
 const initState = {
-  isLoading: true,
   user: sessionStorage.loggedUser ? JSON.parse(sessionStorage.loggedUser) : null
 }
 
@@ -21,11 +20,6 @@ export const userReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         user: { ...state.user, boards: [...state.user.boards, payload] }
-      }
-    case userTypes.SET_IS_LOADING:
-      return {
-        ...state,
-        isLoading: payload
       }
     default:
       return state

@@ -1,15 +1,15 @@
 import utilService from '../../../service/utilService'
-import { useState } from 'react'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { useKey, useSetState } from 'react-use'
 import { ADD_BOARD } from '../../../store/board/BoardActions'
 
-export const CreateBoardModal = ({ setIsModalOpen }) => {
+export const CreateBoardModal = ({ toggleModal }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const user = useSelector(state => state.userReducer.user)
-  const [newBoard, setNewBoard] = useState({
+  const [newBoard, setNewBoard] = useSetState({
     title: '',
     labels: [
       { _id: utilService.makeId(), name: 'Not Started', color: 'red' },
@@ -28,31 +28,23 @@ export const CreateBoardModal = ({ setIsModalOpen }) => {
     activity: []
   })
 
-  useEffect(() => {
-    document.addEventListener('keyup', closeModal)
-    return () => document.removeEventListener('keyup', closeModal)
-  }, [])
+  useKey('Escape', toggleModal)
 
-  const closeModal = ({ type, key }) => {
-    if (type === 'click' || key === 'Escape') setIsModalOpen(false)
-  }
-
-  const handleInput = ({ target: { name, value } }) => {
-    setNewBoard({ ...newBoard, [name]: value })
-  }
+  const handleInput = ({ target: { name, value } }) => setNewBoard({ [name]: value })
 
   const addBoard = () => {
     dispatch(ADD_BOARD(newBoard))
+    toggleModal()
     history.push('/board')
   }
 
   return (
-    <div className="modal-screen flex col ac js" onClick={closeModal}>
+    <div className="modal-screen flex col ac js" onClick={toggleModal}>
       <div className="create-board-section" onClick={ev => ev.stopPropagation()}>
         <div className="create-board-container">
           <div className="title-container">
             <h2>Add a Board</h2>
-            <button className="exit-btn" onClick={closeModal}>
+            <button className="exit-btn" onClick={toggleModal}>
               X
             </button>
           </div>

@@ -12,7 +12,7 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
   const rectRef = useRef(null)
   const dispatch = useDispatch()
   const { _id: listId, cards } = list
-  const [{ title }, setEditables] = useSetState({ title: list.title })
+  const [title, setTitle] = useState(list.title)
   const [isAddCard, toggleAddCard] = useToggle(false)
   const [posOffset, setPosOffset] = useState(null)
   const [timer, setTimer] = useState(null)
@@ -73,7 +73,7 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
   const handleInput = ({ target: { name, value } }) => setNewCard({ [name]: value })
 
   const handleEdit = ({ target: { name, value } }) => {
-    setEditables({ [name]: value })
+    setTitle(value)
     clearTimeout(timer)
     setTimer(
       setTimeout(() => {

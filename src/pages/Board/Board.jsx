@@ -72,7 +72,7 @@ export const Board = () => {
 
   const handleDrop = details => dispatch(HANDLE_DROP(details))
 
-  const togglePopover = (ev, { cmp, cardId, el } = {}) => {
+  const togglePopover = (ev, cmp, cardId, el) => {
     ev.stopPropagation()
     cardId && dispatch(GET_CARD_BY_ID(cardId))
     cmp && setDynCmp(() => cmp)
@@ -84,7 +84,7 @@ export const Board = () => {
       <BoardHeader title={title} users={users} boards={boards} />
       {board && (
         <section className="container flex">
-          {lists?.map(list => (
+          {lists.map(list => (
             <List
               list={list}
               key={list._id}

@@ -1,7 +1,7 @@
 import { boardService } from '../../service/boardService'
 import utilService from '../../service/utilService'
 import { socketService, socketTypes } from '../../service/socketService.js'
-import { cloneDeep as clone } from 'lodash'
+import { cloneDeep as clone, forEach } from 'lodash'
 import { userTypes } from '../user/UserActions'
 
 export const boardTypes = {
@@ -9,13 +9,14 @@ export const boardTypes = {
   SET_USERS: 'SET_USERS',
   SET_CARD: 'SET_CARD',
   SET_LIST: 'SET_LIST',
-  RESET_BOARD: 'RESET_BOARD'
 }
 
 var timer
 
 export const CLEAR_BOARD = () => dispatch => {
-  dispatch({ type: boardTypes.RESET_BOARD, payload: null })
+  dispatch({ type: boardTypes.SET_BOARD, payload: null })
+  dispatch({ type: boardTypes.SET_LIST, payload: null })
+  dispatch({ type: boardTypes.SET_CARD, payload: null })
 }
 
 export const CLEAR_CARD = () => dispatch => {
@@ -43,10 +44,51 @@ export const GET_BOARD_BY_ID = id => async dispatch => {
   } catch (error) {}
 }
 
+export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  nextBoard[name] = value
+  if (name === 'users') dispatch(_removeUserFromCards(nextBoard))
+  dispatch(SAVE_BOARD(nextBoard))
+}
+
+const _removeUserFromCards = ({ users, lists }) => (dispatch, getState) => {
+  const prevUsers = getState().boardReducer.board.users
+  const { _id: userToRemove } = prevUsers.find(userId => !users.includes(userId)) || {}
+  if (userToRemove) {
+    lists.forEach(({ cards }) => {
+      cards.forEach(card => {
+        card.members = card.members.filter(memberId => memberId !== userToRemove)
+      })
+    })
+  }
+}
+
+export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
+  const prevBoard = clone(getState().boardReducer.board)
+  dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
+  clearTimeout(timer)
+  timer = setTimeout(async () => {
+    try {
+      await boardService.update(nextBoard)
+      socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
+    } catch (error) {
+      dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
+      console.error('Could not update board', error)
+    }
+  }, 1500)
+}
+
 export const ADD_LIST = list => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   list._id = utilService.makeId()
   nextBoard.lists.push(list)
+  dispatch(SAVE_BOARD(nextBoard))
+}
+
+export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  const list = nextBoard.lists.find(list => list._id === listId)
+  list[name] = value
   dispatch(SAVE_BOARD(nextBoard))
 }
 
@@ -57,12 +99,6 @@ export const REMOVE_LIST = listId => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
-  const nextBoard = clone(getState().boardReducer.board)
-  const list = nextBoard.lists.find(list => list._id === listId)
-  list[name] = value
-  dispatch(SAVE_BOARD(nextBoard))
-}
 
 export const ADD_CARD = (card, listId) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
@@ -94,6 +130,8 @@ export const UPDATE_CARD = ({ name, value, cardId }) => (dispatch, getState) => 
   var { card } = findItems(nextBoard.lists, cardId)
   card[name] = value
   card = _activityLog(card, name)
+  console.log(card._id)
+  console.log(card.members)
   dispatch(SAVE_BOARD(nextBoard))
 }
 
@@ -127,27 +165,6 @@ export const HANDLE_DROP = ({
     targetList.cards.splice(targetCardIdx + posOffset, 0, card)
   }
   dispatch(SAVE_BOARD(nextBoard))
-}
-
-export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
-  const nextBoard = clone(getState().boardReducer.board)
-  nextBoard[name] = value
-  dispatch(SAVE_BOARD(nextBoard))
-}
-
-export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
-  const prevBoard = clone(getState().boardReducer.board)
-  dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-  clearTimeout(timer)
-  timer = setTimeout(async () => {
-    try {
-      await boardService.update(nextBoard)
-      socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
-    } catch (error) {
-      dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
-      console.error('Could not update board', error)
-    }
-  }, 1500)
 }
 
 export const findItems = (lists, cardId) => {
