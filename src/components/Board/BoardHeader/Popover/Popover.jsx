@@ -1,14 +1,7 @@
 import { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Popover from '@material-ui/core/Popover'
 import Button from '@material-ui/core/Button'
-import { BoardMembers } from '../BoardMembers/BoardMembers'
-
-// const useStyles = makeStyles(theme => ({
-//   typography: {
-//     padding: theme.spacing(2)
-//   }
-// }))
+import { BoardMembers } from '../../ReUsables/Members/BoardMembers'
 
 export default function SimplePopover({ users }) {
   const [anchorEl, setAnchorEl] = useState(null)

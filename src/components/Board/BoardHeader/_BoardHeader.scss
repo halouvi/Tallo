@@ -16,23 +16,23 @@
     }
   }
 
-  >*:not(:last-child) {
+  > *:not(:last-child) {
     margin-inline-end: 8px;
-    
+
     @include for-narrow-layout {
       margin-inline-end: 10px;
     }
   }
-}
 
-.MuiButton-contained {
-  box-shadow: unset !important;
-}
+  .MuiButton-contained {
+    box-shadow: unset !important;
+  }
 
-.board-members-section .board-members-btn {
-  min-width: 165px;
-}
+  .board-members-section .board-members-btn {
+    min-width: 165px;
+  }
 
-.boards-select-section .boards-select-btn {
-  min-width: 115px;
+  .boards-select-section .boards-select-btn {
+    min-width: 115px;
+  }
 }

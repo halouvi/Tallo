@@ -2,110 +2,69 @@ import { ClickAwayListener } from '@material-ui/core'
 import { useState, useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
-import { UPDATE_LIST } from '../../../store/board/BoardActions'
+import { ADD_CARD, HANDLE_DROP } from '../../../store/board/BoardActions'
 import { Card } from '../Card/Card'
-import { ListMenu } from './ListMenu/ListMenu'
-import { ListPopover } from './ListMenu/ListPopover'
-import { useToggle, useSetState, useUpdateEffect } from 'react-use'
+import { useToggle, useUpdateEffect } from 'react-use'
+import { ListHeader } from './ListHeader/ListHeader'
 
-export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) => {
+export const List = ({ list, togglePopover, isDragLayer }) => {
   const rectRef = useRef(null)
   const dispatch = useDispatch()
   const { _id: listId, cards } = list
-  const [title, setTitle] = useState(list.title)
   const [isAddCard, toggleAddCard] = useToggle(false)
-  const [posOffset, setPosOffset] = useState(null)
-  const [timer, setTimer] = useState(null)
-  const [newCard, setNewCard] = useSetState({
-    title: '',
-    activity: [],
-    attachments: [],
-    checklist: [],
-    desc: '',
-    dueDate: '',
-    labels: [],
-    members: []
-  })
+  const [newCardTitle, setNewCardTitle] = useState('')
 
-  const [{ isDragging }, drag] = useDrag({
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging()
-    }),
+  const [isDragging, drag] = useDrag({
+    collect: monitor => monitor.isDragging(),
     item: { type: 'LIST' },
     begin: () => {
       const { height, width } = rectRef.current.getBoundingClientRect()
       return {
         type: 'LIST',
         list,
-        sourceListId: listId,
+        sourceId: listId,
         width,
         height
       }
     }
   })
 
-  const [{ cardOver, listOver, hoverWidth, hoverHeight }, drop] = useDrop({
+  const [{ cardOver, listOver, hoverWidth, hoverHeight, posOffset }, drop] = useDrop({
     accept: ['CARD', 'LIST'],
-    hover: (item, monitor) => {
-      const { left, width } = rectRef.current.getBoundingClientRect()
-      setPosOffset(left + width / 2 > monitor.getClientOffset().x ? 0 : 1)
+    canDrop: ({ sourceId, type }, monitor) =>
+      monitor.isOver() &&
+      (type === 'LIST' ||
+        (type === 'CARD' && (!cards[0] || (!cards[1] && cards[0]._id === sourceId)))),
+    collect: monitor => {
+      if (monitor.canDrop()) {
+        const { left, width } = rectRef.current.getBoundingClientRect()
+        const mouseX = monitor.getClientOffset().x
+        return {
+          posOffset: left + width / 2 > mouseX ? 0 : 1,
+          hoverWidth: monitor.getItem().width,
+          hoverHeight: monitor.getItem().height,
+          listOver: monitor.getItemType() === 'LIST',
+          cardOver: monitor.getItemType() === 'CARD'
+        }
+      } else return {}
     },
-    collect: monitor => ({
-      hoverWidth: monitor.getItem()?.width,
-      hoverHeight: monitor.getItem()?.height,
-      listOver:
-        monitor.isOver() &&
-        monitor.getItemType() === 'LIST' &&
-        monitor.getItem().sourceListId !== listId,
-      cardOver:
-        monitor.isOver() &&
-        monitor.getItemType() === 'CARD' &&
-        (!cards.length || (cards.length === 1 && monitor.getItem().sourceCardId === cards[0]._id))
-    }),
-    drop: (item, monitor) => {
-      if ((item.type === 'CARD' && !monitor.didDrop()) || item.type === 'LIST' || !cards.length) {
-        // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
-        handleDrop && handleDrop({ ...item, targetListId: listId, posOffset })
-      }
-    }
+    drop: item => dispatch(HANDLE_DROP({ ...item, posOffset, targetId: listId }))
   })
 
-  const handleInput = ({ target: { name, value } }) => setNewCard({ [name]: value })
+  useUpdateEffect(() => setNewCardTitle(''), [isAddCard])
 
-  const handleEdit = ({ target: { name, value } }) => {
-    setTitle(value)
-    clearTimeout(timer)
-    setTimer(
-      setTimeout(() => {
-        dispatch(UPDATE_LIST({ name, value, listId }))
-      }, 500)
-    )
-  }
+  const handleInput = ({ target: { value } }) => setNewCardTitle(value)
 
-  const blurTitle = ({ target, key }) => {
-    if (key === 'Enter' || key === 'Escape') target.blur()
-  }
-
-  const onAddCard = ev => {
+  const addCard = ev => {
     ev.preventDefault()
-    addCard(newCard, listId)
-    toggleAddCard(false)
-    setNewCard({
-      title: '',
-      activity: [],
-      attachments: [],
-      checklist: [],
-      desc: '',
-      dueDate: '',
-      labels: [],
-      members: []
-    })
+    dispatch(ADD_CARD(newCardTitle, listId))
+    toggleAddCard()
   }
-
-  const openMenu = ev => togglePopover(ev, { cmp: ListMenu, listId: listId, el: rectRef.current })
 
   return (
-    <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
+    <div
+      ref={!isDragLayer ? drop : null}
+      className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref flex">
         {listOver && !posOffset && (
           <div
@@ -116,59 +75,41 @@ export const List = ({ list, addCard, handleDrop, removeList, togglePopover }) =
             }}
           />
         )}
-        <div ref={drag} className={`list flex col`}>
-          <div className="list-header flex jb pointer">
-            <input
-              name="title"
-              value={title}
-              className="list-title fast f-110"
-              onMouseDown={ev => ev.preventDefault()}
-              onMouseUp={ev => ev.target.focus()}
-              onFocus={ev => ev.target.select()}
-              onChange={handleEdit}
-              onKeyUp={blurTitle}
-            />
-            <ListPopover className="delete-btn" listId={listId} removeList={removeList} />
-          </div>
+        <div ref={!isDragLayer ? drag : null} className={`list flex col`}>
+          <ListHeader list={list} togglePopover={togglePopover} />
           <div className="cards flex col">
             {cards.map(card => (
-              <Card
-                key={card._id}
-                card={card}
-                list={list}
-                handleDrop={handleDrop}
-                togglePopover={togglePopover}
-              />
+              <Card key={card._id} card={card} togglePopover={togglePopover} />
             ))}
             {cardOver && (
               <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />
             )}
           </div>
-          {isAddCard && (
-            <ClickAwayListener onClickAway={() => toggleAddCard(false)}>
-              <form action="" className="add-card-form" onSubmit={onAddCard}>
+          {isAddCard ? (
+            <ClickAwayListener onClickAway={toggleAddCard}>
+              <form className="add-card-form" onSubmit={addCard}>
                 <input
                   autoFocus
                   autoComplete="off"
                   placeholder="Enter a title for this card..."
                   type="text"
-                  name="title"
-                  value={newCard.title}
+                  name="newCardTitle"
+                  value={newCardTitle}
                   onChange={handleInput}
                 />
                 <div className="add-card-btns flex jb">
-                  <button className="add-card-btn">Add Card</button>
-                  <button onClick={toggleAddCard} className="close-btn">
+                  <button className="btn green">Add Card</button>
+                  <button className="btn trans" onClick={toggleAddCard}>
                     X
                   </button>
                 </div>
               </form>
             </ClickAwayListener>
-          )}
-          {!isAddCard && (
-            <div className="add-card" onClick={toggleAddCard}>
-              <span>+</span> Add another card
-            </div>
+          ) : (
+            <button className="btn trans" onClick={toggleAddCard}>
+              <span>+</span>
+              <span>Add another card</span>
+            </button>
           )}
         </div>
         {listOver && !!posOffset && (

@@ -1,9 +1,9 @@
 .labels.reusable {
-  width: 200px;
+  // width: 200px;
   .label {
     position: relative;
     > * {
-      padding: 6px;
+      padding: 8px;
       color: white;
       z-index: 1;
     }

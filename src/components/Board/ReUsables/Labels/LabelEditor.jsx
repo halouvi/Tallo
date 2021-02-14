@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import utilService from '../../../../service/utilService'
+import { makeId } from '../../../../service/utilService'
 import { cloneDeep as clone } from 'lodash'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 
-export const LabelEditor = ({ labelToEdit, setLabelToEdit, colors }) => {
+export const LabelEditor = ({ labelToEdit, setLabelToEdit, colors, togglePopover }) => {
   const dispatch = useDispatch()
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const [updatedLabel, setUpdatedLabel] = useState({ ...labelToEdit })
@@ -16,7 +16,7 @@ export const LabelEditor = ({ labelToEdit, setLabelToEdit, colors }) => {
   const saveLabel = ev => {
     const labelsClone = clone(gLabels)
     if (!updatedLabel._id) {
-      updatedLabel._id = utilService.makeId()
+      updatedLabel._id = makeId()
       labelsClone.push(updatedLabel)
     } else {
       const idx = gLabels.findIndex(label => label._id === labelToEdit._id)
@@ -35,10 +35,15 @@ export const LabelEditor = ({ labelToEdit, setLabelToEdit, colors }) => {
 
   return (
     <>
-      <button className="ass" onClick={() => setLabelToEdit(null)}>
-        Back
-      </button>
-      <span className="title bold asc">{updatedLabel._id ? 'Edit' : 'Add'} Label</span>
+      <div className="flex ac jb">
+        <button className="btn trans small" onClick={() => setLabelToEdit(null)}>
+          back
+        </button>
+        <span className="title bold asc">{updatedLabel._id ? 'Edit' : 'Add'} Label</span>
+        <button className="btn trans" onClick={togglePopover}>
+          X
+        </button>
+      </div>
       <label htmlFor="name">Name</label>
       <input id="name" name="name" type="text" value={updatedLabel.name} onChange={handleInput} />
       <label>Select Color</label>
@@ -57,8 +62,8 @@ export const LabelEditor = ({ labelToEdit, setLabelToEdit, colors }) => {
         ))}
       </div>
       <div className="flex jb">
-        <button onClick={saveLabel}>Save</button>
-        {updatedLabel._id && <button onClick={deleteLabel}>Delete</button>}
+        <button className="btn green" onClick={saveLabel}>Save</button>
+        {updatedLabel._id && <button className="btn red"  onClick={deleteLabel}>Delete</button>}
       </div>
     </>
   )

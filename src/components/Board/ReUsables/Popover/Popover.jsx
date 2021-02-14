@@ -1,6 +1,6 @@
 import { ClickAwayListener, Popper } from '@material-ui/core'
 
-export const Popover = ({ anchorEl, pos, children, togglePopover}) => {
+export const Popover = ({ anchorEl, pos, children, togglePopover = () => {}}) => {
   return (
     anchorEl && (
       <ClickAwayListener onClickAway={togglePopover}>

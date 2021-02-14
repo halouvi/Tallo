@@ -1,94 +1,137 @@
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { LOGIN, SIGNUP } from '../../store/user/UserActions';
-import { uploadImg } from '../../service/imgUploadService.js'
-import { useHistory } from 'react-router';
-import { useRef } from 'react';
- 
+import { useDispatch } from 'react-redux'
+import { LOGIN, SIGNUP } from '../../store/user/UserActions'
+import { mediaService } from '../../service/mediaService.js'
+import { useHistory } from 'react-router'
+import { useRef } from 'react'
+import { useKey, useSetState, useToggle, useUpdateEffect } from 'react-use'
+import { userService } from '../../service/userService'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { TextField } from '@material-ui/core'
+
 export const LoginSingup = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const outClick = useRef();
-  const [user, setUser] = useState({
+  const dispatch = useDispatch()
+  const { goBack, push } = useHistory()
+  const [emailAvailable, setEmailAvailable] = useState(true)
+  const [timer, setTimer] = useState(null)
+  const [creds, setCreds] = useSetState({
     email: '',
     password: ''
-  });
-  const [userCred, setUserCred] = useState({
+  })
+  const [user, setUser] = useSetState({
     fullname: '',
     email: '',
     password: '',
     imgUrl: '',
     boards: []
-  });
+  })
 
-  useEffect(() => {
-    document.addEventListener('keyup', closeModal)
-    document.getElementById('root').addEventListener('mouseup', closeModal)
-    return () => {
-      document.removeEventListener('keyup', closeModal)
-      document.getElementById('root').removeEventListener('mouseup', closeModal)
-    }
-  }, [])
+  useKey('Escape', goBack)
 
-  const closeModal = ({ key, target, type }) => {
-    if (type === 'keyup' && key === 'Escape') history.goBack()
-    else if (type === 'mouseup' && !outClick.current.contains(target)) history.goBack()
+  // const handleInputLogin = ev => console.log(ev.target.name)
+  const handleInputLogin = ({ target: { name, value } }) => setCreds({ [name]: value })
+  const handleInputSignup = ({ target: { name, value } }) => setUser({ [name]: value })
+
+  useUpdateEffect(() => {
+    clearTimeout(timer)
+    setEmailAvailable(true)
+    if (!user.email) return
+    setTimer(
+      setTimeout(async () => {
+        const res = await userService.validateEmail(user.email)
+        setEmailAvailable(res)
+      }, 300)
+    )
+  }, [user.email])
+
+  const login = async ev => {
+    ev.preventDefault()
+    dispatch(LOGIN(creds))
+    push('/board')
   }
 
-  const onHandleChange = (ev, type) => {
-    const field = ev.target.name;
-    const value = ev.target.value;
-    if (type === 'login') setUser({ ...user, [field]: value })
-    else setUserCred({ ...userCred, [field]: value })
+  const signup = async ev => {
+    ev.preventDefault()
+    if (!emailAvailable) return
+    dispatch(SIGNUP(user))
+    push('/board')
   }
 
-  const login = async (ev) => {
-    ev.preventDefault();
-    await dispatch(LOGIN(user));
-    history.push('/board');
-  }
-
-  const signup = async (ev) => {
-    ev.preventDefault();
-    await dispatch(SIGNUP(userCred));
-    history.push('/board');
-  }
-
-  const onUploadImg = async (ev) => {
-    const res = await uploadImg(ev);
-    console.log(res.url);
-    setUserCred({ ...userCred, imgUrl: res.url })
+  const uploadImg = async ev => {
+    const { secure_url } = await mediaService.uploadImg(ev)
+    setUser({ imgUrl: secure_url })
   }
 
   return (
-    <div className="login-signup-section">
-      <div className="login-signup-container" ref={outClick}>
-        <button className="exit-btn" onClick={history.goBack}>X</button>
-        <h2>Login</h2>
-        <form action="" className="login-form" onSubmit={login}>
-          <label htmlFor="">Email:</label>
-          <input type="text" name="email" value={user.email} onChange={(event) => onHandleChange(event, 'login')} id="" />
-          <label htmlFor="">Password:</label>
-          <input type="text" name="password" value={user.password} onChange={(event) => onHandleChange(event, 'login')} id="" />
-          <button>Login</button>
+    <div className="modal-screen" onClick={goBack}>
+      <div className="login-signup gb20" onClick={ev => ev.stopPropagation()}>
+        <form className="login-form gb10" onSubmit={login}>
+          <div className="flex ac jb">
+            <h2>Login</h2>
+            <button className="btn trans" onClick={goBack}>
+              X
+            </button>
+          </div>
+          <TextField
+            size="small"
+            type="email"
+            label="Email"
+            name="email"
+            variant="outlined"
+            value={creds.email}
+            onChange={handleInputLogin}
+          />
+
+          <TextField
+            size="small"
+            type="password"
+            name="password"
+            label="Password"
+            variant="outlined"
+            value={creds.password}
+            onChange={handleInputLogin}
+          />
+          <button className="btn blue large">Login</button>
         </form>
-        <div className="forms-seperator">
-          -Or-
-        </div>
-        <h2>Signup</h2>
-        <form action="" className="signup-form" onSubmit={signup}>
-          <label htmlFor="">Full Name:</label>
-          <input type="text" name="fullname" value={userCred.fullname} onChange={(event) => onHandleChange(event, 'signup')} id="" />
-          <label htmlFor="">Email:</label>
-          <input type="text" name="email" value={userCred.email} onChange={(event) => onHandleChange(event, 'signup')} id="" />
-          <label htmlFor="">Password:</label>
-          <input type="text" name="password" value={userCred.password} onChange={(event) => onHandleChange(event, 'signup')} id="" />
-          <label htmlFor="imgUrl">
+        {/* <div className="forms-seperator">-Or-</div> */}
+        <form className="signup-form gb10" onSubmit={signup}>
+          <h2>Signup</h2>
+          <TextField
+            size="small"
+            label="Name"
+            name="fullname"
+            variant="outlined"
+            value={user.fullname}
+            onChange={handleInputSignup}
+          />
+          <TextField
+            size="small"
+            type="email"
+            label="Email"
+            name="email"
+            variant="outlined"
+            value={user.email}
+            onChange={handleInputSignup}
+          />
+
+          <TextField
+            size="small"
+            type="password"
+            name="password"
+            label="Password"
+            variant="outlined"
+            value={user.password}
+            onChange={handleInputSignup}
+          />
+          <label>
             <p>Upload a Profile Picture:</p>
-            <img src="https://res.cloudinary.com/ariecloud/image/upload/v1611571897/tallo/PinClipart.com_button-clipart_321890_rkdp7l.png" alt=""/>
+            <img
+              src="https://res.cloudinary.com/ariecloud/image/upload/v1611571897/tallo/PinClipart.com_button-clipart_321890_rkdp7l.png"
+              alt=""
+            />
+            <input className="upload-img" type="file" name="imgUrl" onChange={uploadImg} />
           </label>
-          <input className="upload-img" type="file" name="imgUrl" onChange={onUploadImg} id="imgUrl" />
-          <button>Signup</button>
+          <button className="btn blue large">Signup</button>
         </form>
       </div>
     </div>

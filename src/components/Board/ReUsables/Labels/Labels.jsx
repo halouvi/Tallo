@@ -25,12 +25,15 @@ export const Labels = ({ card: { labels, _id: cardId }, togglePopover }) => {
 
   return (
     <div className="labels reusable flex col">
-      <button className="close-btn" onClick={togglePopover}>
-        X
-      </button>
-      {!labelToEdit && (
+      {!labelToEdit ? (
         <>
-          <span className="title bold asc">Labels</span>
+          <div className="flex ac jb">
+            <i className="invisible btn trans">X</i>
+            <span className="title bold asc">Labels</span>
+            <button className="btn trans" onClick={togglePopover}>
+              X
+            </button>
+          </div>
           <input
             type="text"
             placeholder="Search Labels"
@@ -53,11 +56,17 @@ export const Labels = ({ card: { labels, _id: cardId }, togglePopover }) => {
                 )
             )}
           </div>
-          <button onClick={() => setLabelToEdit(newLabel)}>Add Label</button>
+          <button className="btn trans" onClick={() => setLabelToEdit(newLabel)}>
+            Add Label
+          </button>
         </>
-      )}
-      {labelToEdit && (
-        <LabelEditor labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} colors={colors} />
+      ) : (
+        <LabelEditor
+          labelToEdit={labelToEdit}
+          setLabelToEdit={setLabelToEdit}
+          colors={colors}
+          togglePopover={togglePopover}
+        />
       )}
     </div>
   )

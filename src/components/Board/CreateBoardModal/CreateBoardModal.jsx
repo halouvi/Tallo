@@ -1,39 +1,20 @@
-import utilService from '../../../service/utilService'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { useKey, useSetState } from 'react-use'
+import { useKey } from 'react-use'
 import { ADD_BOARD } from '../../../store/board/BoardActions'
 
 export const CreateBoardModal = ({ toggleModal }) => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const user = useSelector(state => state.userReducer.user)
-  const [newBoard, setNewBoard] = useSetState({
-    title: '',
-    labels: [
-      { _id: utilService.makeId(), name: 'Not Started', color: 'red' },
-      { _id: utilService.makeId(), name: 'In Progress', color: 'orange' },
-      { _id: utilService.makeId(), name: 'QA', color: 'yellow' },
-      { _id: utilService.makeId(), name: 'Done', color: 'green' },
-      { _id: utilService.makeId(), name: 'Production', color: 'blue' }
-    ],
-    users: [user],
-    lists: [
-      { _id: utilService.makeId(), title: 'To Do', cards: [] },
-      { _id: utilService.makeId(), title: 'Doing', cards: [] },
-      { _id: utilService.makeId(), title: 'Done', cards: [] },
-      { _id: utilService.makeId(), title: 'QA', cards: [] }
-    ],
-    activity: []
-  })
+  const [title, setTitle] = useState('')
 
   useKey('Escape', toggleModal)
 
-  const handleInput = ({ target: { name, value } }) => setNewBoard({ [name]: value })
+  const handleInput = ({ target: { value } }) => setTitle(value)
 
   const addBoard = () => {
-    dispatch(ADD_BOARD(newBoard))
+    dispatch(ADD_BOARD(title))
     toggleModal()
     history.push('/board')
   }
@@ -48,8 +29,10 @@ export const CreateBoardModal = ({ toggleModal }) => {
               X
             </button>
           </div>
-          <label htmlFor="">Board Title:</label>
-          <input name="title" type="text" value={newBoard.title} onChange={handleInput} />
+          <label className="flex col">
+            Board Title:
+            <input value={title} onChange={handleInput} />
+          </label>
           <button onClick={addBoard}>Create Board</button>
         </div>
       </div>

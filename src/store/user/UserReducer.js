@@ -1,11 +1,17 @@
 import { userTypes } from './UserActions'
 
 const initState = {
-  user: sessionStorage.loggedUser ? JSON.parse(sessionStorage.loggedUser) : null
+  isLoading: true,
+  user: null
 }
 
 export const userReducer = (state = initState, { type, payload }) => {
   switch (type) {
+    case userTypes.SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: payload
+      }
     case userTypes.SET_LOGGED_USER:
       return {
         ...state,

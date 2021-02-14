@@ -15,10 +15,10 @@ export const DeleteCard = ({ card, togglePopover }) => {
     <div className="reusable delete-card-section flex col">
       <span className="title asc">Delete Card?</span>
       <div className="flex">
-        <button className="modal-btn" onClick={deleteCard}>
+        <button className="btn gray" onClick={deleteCard}>
           Delete
         </button>
-        <button className="modal-btn" onClick={togglePopover}>
+        <button className="btn gray" onClick={togglePopover}>
           Cancel
         </button>
       </div>

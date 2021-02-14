@@ -1,38 +1,13 @@
 .side-bar {
-  // width: 25%;
-  grid-column: 1 / span 3;
-  margin-top: 25px;
-  
+  grid-column: 1;
   @include for-medium-layout {
-    grid-column: 3 / span 1;
-    margin-top: 0;
+    width: 150px;
+    grid-column: 2;
   }
-
-
-
   .buttons {
-    display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 8px;
-    
     @include for-medium-layout {
       grid-template-columns: 1fr;
     }
-
-    .modal-btn {
-      display: flex;
-      align-items: center;
-      
-      img {
-        width: 13px;
-        height: 13px;
-        margin-inline-end: 10px;
-        // opacity: 0.9;
-      }
-    }
-  }
-
-  span {
-    margin-bottom: 6px;
   }
 }

@@ -3,7 +3,8 @@ import { boardTypes } from './BoardActions'
 const initState = {
   board: null,
   list: null,
-  card: null
+  card: null,
+  currVideoUrl: null
 }
 
 export const boardReducer = (state = initState, { type, payload }) => {
@@ -22,6 +23,11 @@ export const boardReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         card: payload
+      }
+    case boardTypes.SET_CURR_VIDEO_URL:
+      return {
+        ...state,
+        currVideoUrl: payload
       }
     default:
       return state

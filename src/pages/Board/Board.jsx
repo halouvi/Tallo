@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSetState } from 'react-use'
+import { useToggle, useUpdateEffect } from 'react-use'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -7,11 +7,12 @@ import {
   HANDLE_DROP,
   ADD_CARD,
   ADD_LIST,
-  REMOVE_LIST,
-  GET_CARD_BY_ID
+  DELETE_LIST,
+  GET_BY_ID,
+  CLEAR_CARD
 } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'
-import { socketService, socketTypes, socket } from '../../service/socketService.js'
+import { socketService, socketTypes } from '../../service/socketService.js'
 import { BoardHeader } from '../../components/Board/BoardHeader/BoardHeader'
 import { useHistory } from 'react-router'
 import { ClickAwayListener } from '@material-ui/core'
@@ -22,25 +23,21 @@ export const Board = () => {
   const history = useHistory()
   const { board, list, card } = useSelector(state => state.boardReducer) || {}
   const { lists, title, _id, users } = board || {}
-  const { user } = useSelector(state => state.userReducer) || {}
-  const { boards } = user || {}
-  const [isAddList, setIsAddList] = useState(false)
+  const { boards } = useSelector(state => state.userReducer.user) || {}
+  const [isAddList, toggleAddList] = useToggle(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const [DynCmp, setDynCmp] = useState(null)
-  const [newList, setNewList] = useSetState({
-    title: '',
-    cards: []
-  })
+  const [newListTitle, setNewListTitle] = useState('')
+
+  useUpdateEffect(() => setNewListTitle(''), [isAddList])
 
   useEffect(() => {
     if (!boards[0]) history.replace('/create-modal')
     else {
-      if (socket) {
-        socketService.emit(socketTypes.JOIN_BOARD, _id)
-        socketService.on(socketTypes.BOARD_UPDATED, nextBoard => {
-          dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-        })
-      }
+      socketService.emit(socketTypes.JOIN_BOARD, _id)
+      socketService.on(socketTypes.BOARD_UPDATED, nextBoard => {
+        dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
+      })
     }
     return () => {
       socketService.emit(socketTypes.LEAVE_BOARD, _id)
@@ -48,78 +45,51 @@ export const Board = () => {
     }
   }, [])
 
-  const addCard = (card, listId) => {
-    dispatch(ADD_CARD(card, listId))
+  const togglePopover = (ev, cmp, itemId, preserveAnchor) => {
+    // ev.stopPropagation()
+    // console.log(itemId)
+    // itemId && dispatch(GET_BY_ID(itemId))
+    // // itemId && dispatch(itemId ? GET_BY_ID(itemId) : CLEAR_CARD())
+    // !preserveAnchor && setAnchorEl(ev.target !== anchorEl ? ev.target : null)
+    // setDynCmp(cmp ? () => cmp : null)
   }
 
-  const addList = ev => {
-    ev.preventDefault()
-    dispatch(ADD_LIST(newList))
-    setIsAddList(false)
-    setNewList({ title: '', cards: [] })
+  const addList = () => {
+    dispatch(ADD_LIST(newListTitle))
+    toggleAddList()
   }
 
-  const removeList = listId => dispatch(REMOVE_LIST(listId))
-
-  const handleInput = ({ target: { name, value } }) => setNewList({ [name]: value })
-
-  const [{ isOver }, drop] = useDrop({
-    accept: 'LIST',
-    collect: monitor => ({
-      isOver: !!monitor.isOver()
-    })
-  })
-
-  const handleDrop = details => dispatch(HANDLE_DROP(details))
-
-  const togglePopover = (ev, cmp, cardId, el) => {
-    ev.stopPropagation()
-    cardId && dispatch(GET_CARD_BY_ID(cardId))
-    cmp && setDynCmp(() => cmp)
-    setAnchorEl(el ? el : ev.target !== anchorEl && cmp ? ev.target : null)
-  }
+  const handleInput = ({ target: { value } }) => setNewListTitle(value)
 
   return (
-    <main ref={drop} className="board">
+    <main className="board">
       <BoardHeader title={title} users={users} boards={boards} />
       {board && (
         <section className="container flex">
           {lists.map(list => (
-            <List
-              list={list}
-              key={list._id}
-              removeList={removeList}
-              addCard={addCard}
-              handleDrop={handleDrop}
-              togglePopover={togglePopover}
-            />
+            <List list={list} key={list._id} togglePopover={togglePopover} />
           ))}
-          {isAddList && (
-            <ClickAwayListener onClickAway={() => setIsAddList(false)}>
-              <form action="" className="add-list-form" onSubmit={addList}>
+          {isAddList ? (
+            <ClickAwayListener onClickAway={toggleAddList}>
+              <div className="add-list-form">
                 <input
                   placeholder="Enter a title for this list..."
                   type="text"
-                  name="title"
-                  value={newList.title}
+                  value={newListTitle}
                   onChange={handleInput}
                 />
                 <div className="add-list-btns">
-                  <button className="add-list-btn">Add list</button>
-                  <button
-                    onClick={ev => {
-                      ev.preventDefault()
-                      setIsAddList(false)
-                    }}
-                    className="close-btn">
+                  <button className="add-list-btn" onClick={addList}>
+                    Add list
+                  </button>
+                  <button className="close-btn" onClick={toggleAddList}>
                     X
                   </button>
                 </div>
-              </form>
+              </div>
             </ClickAwayListener>
-          )}
-          {!isAddList && (
-            <div className="add-list-container" onClick={() => setIsAddList(true)}>
+          ) : (
+            <div className="add-list-container" onClick={toggleAddList}>
               <p>
                 <span>+</span> Add another list
               </p>
@@ -127,7 +97,7 @@ export const Board = () => {
           )}
         </section>
       )}
-      <Popover anchorEl={anchorEl} togglePopover={togglePopover} pos="right-start">
+      <Popover anchorEl={anchorEl} togglePopover={togglePopover} pos="bottom">
         {DynCmp && (
           <DynCmp anchorEl={anchorEl} togglePopover={togglePopover} list={list} card={card} />
         )}

@@ -1,72 +1,76 @@
 import { useRef, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CardAvatars } from '../avatars/CardAvatars'
 import { CardMenu } from './CardMenu/CardMenu'
 import clock from '../../../assets/clock.svg'
+import { HANDLE_DROP } from '../../../store/board/BoardActions'
+import { Popover } from '@material-ui/core'
+import { VideoPlayer } from '../ReUsables/VideoPlayer/VideoPlayer'
 
-export const Card = ({ card, list, handleDrop, togglePopover }) => {
-  const gLabels = useSelector(state => state.boardReducer.board.labels)
-  const { _id: cardId, title, attachments, members, desc, dueDate, labels, cardVideo } = card || {}
-  const [posOffset, setPosOffset] = useState(0)
-  const rectRef = useRef(null)
+export const Card = ({ card, isDragLayer }) => {
+  const { users, labels: gLabels } = useSelector(state => state.boardReducer.board)
+  const { _id: cardId, title, attachments, desc, dueDate, labels, cardVideo } = card
+  const members = users.filter(({ _id }) => card.members.includes(_id))
+  const [anchorEl, setAnchorEl] = useState(null)
+  const rectRef = useRef()
   const history = useHistory()
+  const dispatch = useDispatch()
 
-  const [{ isDragging }, drag] = useDrag({
-    collect: monitor => ({ isDragging: !!monitor.isDragging() }),
+  const [isDragging, drag] = useDrag({
+    collect: monitor => monitor.isDragging(),
     item: { type: 'CARD' },
     begin: () => {
       const { height, width } = rectRef.current.getBoundingClientRect()
       return {
         type: 'CARD',
+        sourceId: cardId,
         card,
-        sourceCardId: cardId,
-        sourceListId: list._id,
         height,
         width
       }
     }
   })
 
-  const [{ cardOver, hoverHeight }, drop] = useDrop({
+  const [{ hoverHeight, posOffset }, drop] = useDrop({
     accept: 'CARD',
-    hover: (item, monitor) => {
-      const { top, height } = rectRef.current.getBoundingClientRect()
-      setPosOffset(top + height / 2 > monitor.getClientOffset().y ? 0 : 1)
+    collect: monitor => {
+      if (monitor.isOver()) {
+        const { top, height } = rectRef.current.getBoundingClientRect()
+        const mouseY = monitor.getClientOffset().y
+        return {
+          posOffset: top + height / 2 > mouseY ? 0 : 1,
+          hoverHeight: monitor.getItem().height
+        }
+      } else return {}
     },
-    collect: monitor => ({
-      cardOver: monitor.isOver() && monitor.getItem().sourceCardId !== cardId,
-      hoverHeight: monitor.getItem()?.height
-    }),
-    drop: item => {
-      // handleDrop is not passed as prop when this instance is the drag layer to prevent this instance from accepting itself.
-      handleDrop && handleDrop({ ...item, targetCardId: cardId, targetListId: list._id, posOffset })
-    }
+    drop: item => dispatch(HANDLE_DROP({ ...item, posOffset, targetId: cardId }))
   })
 
   const openModal = () => history.push(`/board/modal/${cardId}`)
 
-  const openMenu = ev => togglePopover(ev, CardMenu, cardId, rectRef.current)
+  const togglePopover = ev => {
+    ev.stopPropagation()
+    setAnchorEl(ev.target)
+  }
 
   return (
-    <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
+    <div
+      ref={!isDragLayer ? drop : null}
+      className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref">
-        {cardOver && !posOffset && (
+        {!!hoverHeight && !posOffset && (
           <div className="placeholder top" style={{ height: `${hoverHeight}px` }} />
         )}
-        <div ref={drag} className="card-preview flex col fast m8 sbl">
-          <div onClick={openModal} className={`container f-110 flex col m8 sbl`}>
+        <div ref={!isDragLayer ? drag : null} className="card-preview flex col fast gb8 sbl">
+          <div onClick={openModal} className={`container f-110 flex col gb8 sbl`}>
             <span className="title">{title}</span>
-            <button className="menu-btn" onClick={openMenu}>
+            <button className="menu-btn" onClick={togglePopover}>
               ···
             </button>
             <span className="desc fw">{desc}</span>
-            {cardVideo && !attachments[0] && (
-              <video controls>
-                <source src={cardVideo} />
-              </video>
-            )}
+            {cardVideo && <VideoPlayer videoUrl={cardVideo} isGrouped={true} />}
             {attachments[0] && (
               <div className="attachments">
                 <img src={attachments[0]} alt="" />
@@ -91,15 +95,29 @@ export const Card = ({ card, list, handleDrop, togglePopover }) => {
                   </div>
                 )}
                 <div className="spacer" />
-                {members[0] && <CardAvatars members={members} />}
+                {members[0] && <CardAvatars max={4} users={members} />}
               </div>
             )}
           </div>
         </div>
-        {cardOver && !!posOffset && (
+        {!!hoverHeight && !!posOffset && (
           <div className="placeholder bottom" style={{ height: `${hoverHeight}px` }} />
         )}
       </div>
+      <Popover
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}>
+        <CardMenu card={card} setAnchorEl={setAnchorEl} />
+      </Popover>
     </div>
   )
 }

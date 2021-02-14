@@ -2,6 +2,8 @@ import { StrictMode } from 'react'
 import { render } from 'react-dom'
 import { HashRouter as RouterProvider } from 'react-router-dom'
 import { Provider as ReduxProvider } from 'react-redux'
+import { Provider as EventBusProvider } from 'react-bus'
+
 import { store } from './store/Store'
 import { DndProvider } from 'react-dnd'
 import MouseBackEnd from 'react-dnd-mouse-backend'
@@ -13,39 +15,30 @@ const hasNative = document && (document.elementsFromPoint || document.msElements
 function getDropTargetElementsAtPoint(x, y, dropTargets) {
   return dropTargets.filter(t => {
     const rect = t.getBoundingClientRect()
-    return (
-      x >= rect.left &&
-      x <= rect.right &&
-      y <= rect.bottom &&
-      y >= rect.top
-    )
+    return x >= rect.left && x <= rect.right && y <= rect.bottom && y >= rect.top
   })
 }
 
 const backendOptions = {
-  getDropTargetElementsAtPoint: !hasNative && getDropTargetElementsAtPoint,
+  getDropTargetElementsAtPoint: !hasNative && getDropTargetElementsAtPoint
 }
 
-// const windowSize = () => {
-//   return window.innerWidth
-// } 
-
-// window.addEventListener('resize', () => {
-//   windowSize()
-//   console.log(windowSize());
-// })
-
 render(
-  <StrictMode>
-    <ReduxProvider store={store}>
-      <DndProvider backend={window.innerWidth > 600 ? MouseBackEnd: TouchBackend} delayTouchStart={3} options={backendOptions}>
-        <RouterProvider>
+  // <StrictMode>
+  <EventBusProvider>
+    <RouterProvider>
+      <ReduxProvider store={store}>
+        <DndProvider
+          backend={window.innerWidth > 600 ? MouseBackEnd : TouchBackend}
+          delayTouchStart={3}
+          options={backendOptions}>
           <App />
-        </RouterProvider>
-      </DndProvider>
-    </ReduxProvider>
-  </StrictMode>,
+        </DndProvider>
+      </ReduxProvider>
+    </RouterProvider>
+  </EventBusProvider>,
+  // </StrictMode>,
   document.getElementById('root')
 )
 
-navigator.serviceWorker.register('./serviceWorker.js');
+// navigator.serviceWorker.register('./serviceWorker.js');

@@ -1,0 +1,70 @@
+.modal-screen {
+  position: fixed;
+  height: 100%;
+  width: 100vw;
+  overflow: auto;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.btn {
+  cursor: pointer;
+  padding: 10px 12px;
+  max-height: 36px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  transition: 100ms;
+  > * {
+    text-align: start;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+  &:hover {
+    &.gray {
+      filter: brightness(0.9);
+    }
+    &:not(.gray) {
+      filter: brightness(1.1);
+    }
+  }
+  &.small {
+    max-height: 26px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  &.large {
+    height: 46px;
+    font-size: 20px;
+  }
+  img.icon {
+    max-width: 10%;
+    height: 100%;
+    margin: 0 10px 0 0;
+    height: 16px;
+    width: 16px;
+  }
+}
+
+
+.avatar {
+  &.sm {
+    font-size: inherit;
+    height: 26px;
+    width: 26px;
+  }
+  &.md {
+    font-size: 10%;
+    height: 30px;
+    width: 30px;
+  }
+  &.bg {
+    font-size: 10%;
+    height: 40px;
+    width: 40px;
+  }
+}

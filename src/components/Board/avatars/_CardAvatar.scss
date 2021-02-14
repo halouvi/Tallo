@@ -1,0 +1,15 @@
+.avatar {
+  &.small {
+    font-size: inherit;
+    height: 26px;
+    width: 26px;
+  }
+  &.medium {
+    height: 36px;
+    width: 36px;
+  }
+  &.large {
+    height: 40px;
+    width: 40px;
+  }
+}

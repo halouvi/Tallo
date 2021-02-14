@@ -21,8 +21,8 @@ export const DragLayer = () => {
           width: `${width}px`,
           height: `${height}px`
         }}>
-        {type === 'LIST' && <List list={list} />}
-        {type === 'CARD' && <Card card={card} />}
+        {type === 'LIST' && <List list={list} isDragLayer={true}/>}
+        {type === 'CARD' && <Card card={card} isDragLayer={true}/>}
       </div>
     )
   )
