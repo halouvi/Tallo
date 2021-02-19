@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react'
 
-export const Activity = () => {
+export const CardActivity = () => {
   const activity = useSelector(state => state.boardReducer.card.activity)
   const users = useSelector(state => state.boardReducer.board.users)
   // The activity array contains only the user Id (createdBy)
@@ -17,19 +17,19 @@ export const Activity = () => {
     !idx || activity[idx]._id !== activity[idx - 1]._id ? false : true
 
   return (
-    <div className="activity fw grid tc-aa1 g8">
+    <div className="activity fw grid tc-aaaa1 g8">
       <img className="icon" src={process.env.PUBLIC_URL + `/Activity.png`} alt="" />
-      <h3 className="gc2-4">Activity</h3>
-      {activityWithUserData.slice(0, 5).map((item, idx) => (
+      <h3 className="gc2-6">Activity</h3>
+      {activityWithUserData.slice(0, 10).map((item, idx) => (
         <Fragment key={item.createdAt}>
           {!isSameUserAsPrev(idx) && (
             <>
               <CardAvatar className="gc2" user={item} size="small" />
-              <h4 className="gc3 asc">{item.fullname} :</h4>
+              <h4 className="gc3-6 asc">{item.fullname} :</h4>
             </>
           )}
-          <span className="gc3">{item.activity}</span>
-          <h5 className="gc3">{moment(item.createdAt).fromNow()}</h5>
+          <span className="gc2-4">{item.activity}</span>
+          <h5 className="gc5">{moment(item.createdAt).fromNow()}</h5>
         </Fragment>
       ))}
     </div>

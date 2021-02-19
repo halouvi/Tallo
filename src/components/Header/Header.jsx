@@ -10,7 +10,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="flex ac jb">
+      <header className="main-header flex ac jb">
         <Link className="logo-container" to="/">
           <svg width="24" height="24" role="presentation" focusable="false" viewBox="0 0 24 24">
             <path

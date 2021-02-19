@@ -6,11 +6,9 @@ export const CardVideo = () => {
 
   return cardVideo ? (
     <div className="video fw grid tc-a1 g8">
-      <img className="icon gc1" src={process.env.PUBLIC_URL + `/AddVideo.png`} alt="" />
+      <img className="icon" src={process.env.PUBLIC_URL + `/AddVideo.png`} alt="" />
       <h3 className="gc2">Card Video</h3>
-      <div className="gc2">
-        <VideoPlayer videoUrl={cardVideo} />
-      </div>
+      <VideoPlayer className="gc2" videoUrl={cardVideo} />
     </div>
   ) : (
     <></>

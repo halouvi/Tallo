@@ -1,0 +1,17 @@
+> main {
+  > .description {
+    [name='desc'] {
+      height: 50px;
+      &:focus {
+        height: 100px;
+      }
+    }
+  }
+
+  > .attachments {
+    img.item {
+      max-width: 220px;
+      max-height: 220px;
+    }
+  }
+}

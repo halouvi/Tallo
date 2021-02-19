@@ -38,8 +38,50 @@
 
 // Margin
 
+.mb2 {
+  margin-bottom: 2px;
+}
+
+.mb4 {
+  margin-bottom: 4px;
+}
+
+.mb6 {
+  margin-bottom: 6px;
+}
+
+.mb8 {
+  margin-bottom: 8px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mb12 {
+  margin-bottom: 12px;
+}
+
+.mb14 {
+  margin-bottom: 14px;
+}
+
+.mb16 {
+  margin-bottom: 16px;
+}
+
+.mb18 {
+  margin-bottom: 18px;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
 .ml30 {
   margin-left: 30px;
+}
+.ml32 {
+  margin-left: 32px;
 }
 .mr18 {
   margin-right: 18px;
@@ -146,60 +188,11 @@
   }
 }
 
-// Margin
-
-.mb2 {
-  margin-bottom: 2px;
-}
-
-.mb4 {
-  margin-bottom: 4px;
-}
-
-.mb6 {
-  margin-bottom: 6px;
-}
-
-.mb8 {
-  margin-bottom: 8px;
-}
-
-.mb10 {
-  margin-bottom: 10px;
-}
-
-.mb12 {
-  margin-bottom: 12px;
-}
-
-.mb14 {
-  margin-bottom: 14px;
-}
-
-.mb16 {
-  margin-bottom: 16px;
-}
-
-.mb18 {
-  margin-bottom: 18px;
-}
-
-.mb20 {
-  margin-bottom: 20px;
-}
-
 //Strech Before Last
 .sbl {
   display: flex;
   > *:nth-last-child(2) {
     flex-grow: 1;
-  }
-}
-
-//Margin right odd child
-.mroc16 {
-  > *:nth-child(odd) {
-    margin-inline-end: 16px;
   }
 }
 
@@ -250,6 +243,30 @@
   }
   &.tc-aa1 {
     grid-template-columns: auto auto 1fr;
+  }
+  &.tc-aaa1 {
+    grid-template-columns: auto auto auto 1fr;
+  }
+  &.tc-aaaa1 {
+    grid-template-columns: auto auto auto auto 1fr;
+  }
+  &.tc-1a {
+    grid-template-columns: 1fr auto;
+  }
+  &.tc-1aa {
+    grid-template-columns: 1fr auto auto;
+  }
+  &.tc-1aaa {
+    grid-template-columns: 1fr auto auto auto;
+  }
+  &.tc-1aaaa {
+    grid-template-columns: 1fr auto auto auto auto;
+  }
+  &.tc-a1a {
+    grid-template-columns: auto 1fr auto;
+  }
+  &.tc-a1aa {
+    grid-template-columns: auto 1fr auto auto;
   }
   &.g2 {
     grid-gap: 2px;
@@ -326,6 +343,30 @@
     }
     &.gc3-7 {
       grid-column: 3/7;
+    }
+    &.gc4 {
+      grid-column: 4;
+    }
+    &.gc4-6 {
+      grid-column: 4/6;
+    }
+    &.gc4-7 {
+      grid-column: 4/7;
+    }
+    &.gc4-8 {
+      grid-column: 4/8;
+    }
+    &.gc5 {
+      grid-column: 5;
+    }
+    &.gc5-7 {
+      grid-column: 5/7;
+    }
+    &.gc5-8 {
+      grid-column: 5/8;
+    }
+    &.gc5-9 {
+      grid-column: 5/9;
     }
     &.gr1 {
       grid-row: 1;

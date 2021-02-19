@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { CardAvatar } from '../../avatars/CardAvatar'
 
-export const CardMembers = ({ card, togglePopover, setAnchorEl }) => {
-  const { _id: cardId, members } = card || {}
-  const { users } = useSelector(state => state.boardReducer.board) || {}
+export const CardMembersPopup = ({ togglePopover }) => {
+  const {
+    board: { users },
+    card: { _id: cardId, members }
+  } = useSelector(state => state.boardReducer) || {}
   const [searchTerm, setSearchTerm] = useState('')
   const [searchRes, setSearchRes] = useState([])
   const [membersToShow, setMembersToShow] = useState([])

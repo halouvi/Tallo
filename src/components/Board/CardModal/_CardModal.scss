@@ -20,42 +20,15 @@
     }
 
     img.icon {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
     }
 
-    > .header {
-      @include for-medium-layout {
-        grid-column: 1 / span 2;
-      }
-      .title {
-        font-size: 22px;
-        padding: 0 2.5px;
-        margin: 0 -2.5px;
-        border: none;
-        &:focus {
-          cursor: initial;
-          box-shadow: 0 0 0 1.5px rgb(66, 66, 66);
-        }
-      }
-    }
+    @import './CardHeader/CardHeader';
+    
+    @import './CardMain/CardMain';
+    
+    @import './CardAside/CardAside';
 
-    > .content {
-      > .description {
-        [name='desc'] {
-          height: 50px;
-          &:focus {
-            height: 100px;
-          }
-        }
-      }
-
-      > .attachments {
-        img.item {
-          max-width: 220px;
-          max-height: 220px;
-        }
-      }
-    }
   }
 }

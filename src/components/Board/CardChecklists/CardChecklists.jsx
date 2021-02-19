@@ -5,7 +5,7 @@ import { useToggle, useSetState } from 'react-use'
 import ProgressBar from './ProgressBar'
 import { makeId } from '../../../service/utilService'
 
-export const CardChecklists = ({ checklist, cardChecklists }) => {
+export const CardChecklist = ({ checklist, cardChecklists }) => {
   const dispatch = useDispatch()
   const cardId = useSelector(state => state.boardReducer.card._id)
   const [showInput, toggleInput] = useToggle(false)

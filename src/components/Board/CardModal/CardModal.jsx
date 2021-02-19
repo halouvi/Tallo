@@ -4,16 +4,16 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useKey, useSetState, useUpdateEffect } from 'react-use'
 import { CLEAR_CARD, GET_BY_ID, UPDATE_CARD } from '../../../store/board/BoardActions'
 import { Popover } from '../ReUsables/Popover/Popover'
-import { CardModalHeader } from './Header/CardModalHeader'
-import { SideBar } from './SideBar/SideBar'
-import { Activity } from './Content/Activity'
-import { Description } from './Content/Description'
-import { CardVideo } from './Content/CardVideo'
-import { Attachments } from './Content/Attachments'
-import { Checklists } from './Content/Checklists'
+import { CardHeader } from './CardHeader/CardHeader'
+import { CardAside } from './CardAside/CardAside'
+import { CardActivity } from './CardMain/CardActivity'
+import { CardDescription } from './CardMain/CardDescription'
+import { CardVideo } from './CardMain/CardVideo'
+import { CardAttachments } from './CardMain/CardAttachments'
+import { CardChecklists } from './CardMain/CardChecklists'
 import { CardNav } from './CardNav/CardNav'
-import { Members } from './Content/Members'
-import { CardLabels } from './Content/Labels'
+import { CardMembers } from './CardMain/CardMembers'
+import { CardLabels } from './CardMain/CardLabels'
 
 export const CardModal = () => {
   const history = useHistory()
@@ -52,28 +52,28 @@ export const CardModal = () => {
   }
 
   return (
-    <div className="modal-screen flex col ac js" onClick={closeModal}>
+    <div className="modal-screen" onClick={closeModal}>
       <CardNav />
       {card && (
-        <section className="card-modal white grid g16 " onClick={togglePopover}>
-          <CardModalHeader title={title} handleEdit={handleEdit} closeModal={closeModal} />
-          <div className="content flex wrap gb16  ">
-            <Members togglePopover={togglePopover} />
+        <section className="card-modal white grid g16" onClick={togglePopover}>
+          <CardHeader title={title} handleEdit={handleEdit} closeModal={closeModal} />
+          <main className="flex wrap gb16  ">
+            <CardMembers togglePopover={togglePopover} />
             <CardLabels togglePopover={togglePopover} />
             <CardVideo />
-            <Attachments />
-            <Description desc={desc} handleEdit={handleEdit} />
-            <Checklists />  
-            <Activity />
-          </div>
-          <SideBar togglePopover={togglePopover} />
+            <CardAttachments />
+            <CardDescription desc={desc} handleEdit={handleEdit} />
+            <CardChecklists />
+            <CardActivity />
+          </main>
+          <CardAside togglePopover={togglePopover} />
         </section>
       )}
-      <Popover anchorEl={anchorEl} togglePopover={togglePopover} pos="bottom-start">
-        {DynCmp && (
+      {DynCmp && (
+        <Popover anchorEl={anchorEl} togglePopover={togglePopover} pos="bottom-start">
           <DynCmp anchorEl={anchorEl} togglePopover={togglePopover} list={list} card={card} />
-        )}
-      </Popover>
+        </Popover>
+      )}
     </div>
   )
 }

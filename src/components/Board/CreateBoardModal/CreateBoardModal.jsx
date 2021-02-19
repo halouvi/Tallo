@@ -20,7 +20,7 @@ export const CreateBoardModal = ({ toggleModal }) => {
   }
 
   return (
-    <div className="modal-screen flex col ac js" onClick={toggleModal}>
+    <div className="modal-screen" onClick={toggleModal}>
       <div className="create-board-section" onClick={ev => ev.stopPropagation()}>
         <div className="create-board-container">
           <div className="title-container">

@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useBus, useListener } from 'react-bus'
 
-export const VideoPlayer = ({ videoUrl, isGrouped }) => {
+export const VideoPlayer = ({ videoUrl, isGrouped, className }) => {
   const videoRef = useRef()
   const eventBus = useBus()
 
@@ -32,6 +32,7 @@ export const VideoPlayer = ({ videoUrl, isGrouped }) => {
 
   return (
     <video
+      className={className}
       controls
       ref={videoRef}
       onCanPlay={!isGrouped ? requestVideoFromGroup : undefined}

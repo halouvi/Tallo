@@ -1,4 +1,4 @@
-import { CardMembers as Members } from '../../ReUsables/Members/CardMembers'
+import { CardMembersPopup as Members } from '../../ReUsables/Members/CardMembers'
 import { Labels } from '../../ReUsables/Labels/Labels'
 import { CheckList } from '../../ReUsables/CheckList/CheckList'
 import { DueDate } from '../../ReUsables/DueDate/DueDate'
@@ -6,8 +6,9 @@ import { Attachment } from '../../ReUsables/Attachment/Attachment'
 import { MoveCard } from '../../ReUsables/MoveCard/MoveCard'
 import { DeleteCard } from '../../ReUsables/DeleteCard/DeleteCard'
 import { AddVideo } from '../../ReUsables/AddVideo/AddVideo'
+// import { Popper } from '@material-ui/core'
 
-export const SideBar = ({ togglePopover = () => {} }) => {
+export const CardAside = ({ togglePopover = () => {} }) => {
   const cmpMap = {
     AddToCard: {
       Members,
@@ -24,7 +25,7 @@ export const SideBar = ({ togglePopover = () => {} }) => {
   }
 
   return (
-    <div className="side-bar gb18">
+    <aside className="gb18">
       {Object.entries(cmpMap).map(([title, list]) => (
         <div key={title} className="gb6">
           <h4>{title.split(/(?=[A-Z])/).join(' ')}</h4>
@@ -38,6 +39,6 @@ export const SideBar = ({ togglePopover = () => {} }) => {
           </div>
         </div>
       ))}
-    </div>
+    </aside>
   )
 }

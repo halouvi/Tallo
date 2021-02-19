@@ -15,7 +15,7 @@ export const CardNav = () => {
   }
 
   return cards ? (
-    <nav className="card-nav flex jb fw">
+    <nav className="flex jb fw">
       <button className="btn gray small" value={-1} onClick={cycleCards}>
         Previous Card
       </button>
