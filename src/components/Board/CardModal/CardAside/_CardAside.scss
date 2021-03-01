@@ -1,7 +1,6 @@
 > aside {
   grid-column: 1;
   @include for-medium-layout {
-    width: 150px;
     grid-column: 2;
   }
   .buttons {

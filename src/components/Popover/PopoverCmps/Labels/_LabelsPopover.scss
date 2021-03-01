@@ -1,0 +1,29 @@
+.labels.popover-cmp {
+  .label {
+    position: relative;
+    > * {
+      z-index: 1;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      transition: inherit;
+      background-color: inherit;
+      border-top-left-radius: inherit;
+      border-bottom-left-radius: inherit;
+      height: 100%;
+      width: 12px;
+      left: 0;
+    }
+    &:hover {
+      padding-left: 18px;
+      &::before {
+        filter: brightness(0.8);
+        transform: translateX(-50%);
+      }
+    }
+  }
+  .selected {
+    box-shadow: 0 0 0 2px#3F51B5;
+  }
+}

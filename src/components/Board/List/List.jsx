@@ -3,16 +3,16 @@ import { useState, useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { ADD_CARD, HANDLE_DROP } from '../../../store/board/BoardActions'
-import { Card } from '../Card/Card'
+import { CardPreview } from '../CardPreview/CardPreview'
 import { useToggle, useUpdateEffect } from 'react-use'
 import { ListHeader } from './ListHeader/ListHeader'
+import { AddCard } from './AddCard/AddCard'
 
-export const List = ({ list, togglePopover, isDragLayer }) => {
+export const List = ({ list, isDragLayer }) => {
   const rectRef = useRef(null)
   const dispatch = useDispatch()
+
   const { _id: listId, cards } = list
-  const [isAddCard, toggleAddCard] = useToggle(false)
-  const [newCardTitle, setNewCardTitle] = useState('')
 
   const [isDragging, drag] = useDrag({
     collect: monitor => monitor.isDragging(),
@@ -51,16 +51,6 @@ export const List = ({ list, togglePopover, isDragLayer }) => {
     drop: item => dispatch(HANDLE_DROP({ ...item, posOffset, targetId: listId }))
   })
 
-  useUpdateEffect(() => setNewCardTitle(''), [isAddCard])
-
-  const handleInput = ({ target: { value } }) => setNewCardTitle(value)
-
-  const addCard = ev => {
-    ev.preventDefault()
-    dispatch(ADD_CARD(newCardTitle, listId))
-    toggleAddCard()
-  }
-
   return (
     <div
       ref={!isDragLayer ? drop : null}
@@ -75,42 +65,17 @@ export const List = ({ list, togglePopover, isDragLayer }) => {
             }}
           />
         )}
-        <div ref={!isDragLayer ? drag : null} className={`list flex col`}>
-          <ListHeader list={list} togglePopover={togglePopover} />
+        <div ref={!isDragLayer ? drag : null} className={`list gray flex col gb6`}>
+          <ListHeader list={list} />
           <div className="cards flex col">
             {cards.map(card => (
-              <Card key={card._id} card={card} togglePopover={togglePopover} />
+              <CardPreview key={card._id} card={card} />
             ))}
             {cardOver && (
               <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />
             )}
           </div>
-          {isAddCard ? (
-            <ClickAwayListener onClickAway={toggleAddCard}>
-              <form className="add-card-form" onSubmit={addCard}>
-                <input
-                  autoFocus
-                  autoComplete="off"
-                  placeholder="Enter a title for this card..."
-                  type="text"
-                  name="newCardTitle"
-                  value={newCardTitle}
-                  onChange={handleInput}
-                />
-                <div className="add-card-btns flex jb">
-                  <button className="btn green">Add Card</button>
-                  <button className="btn trans" onClick={toggleAddCard}>
-                    X
-                  </button>
-                </div>
-              </form>
-            </ClickAwayListener>
-          ) : (
-            <button className="btn trans" onClick={toggleAddCard}>
-              <span>+</span>
-              <span>Add another card</span>
-            </button>
-          )}
+          <AddCard listId={listId} />
         </div>
         {listOver && !!posOffset && (
           <div

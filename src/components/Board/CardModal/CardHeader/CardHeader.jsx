@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 export const CardHeader = ({ title, handleEdit = () => {}, closeModal = () => {} }) => {
@@ -5,7 +6,7 @@ export const CardHeader = ({ title, handleEdit = () => {}, closeModal = () => {}
 
   return (
     <header className="fw grid tc-a1aa g8">
-        <img className="icon asc gc1" src={`${process.env.PUBLIC_URL}/Card.png`} alt="" />
+      <img className="section-icon asc gc1" src={`${process.env.PUBLIC_URL}/Card.png`} alt="" />
       <input
         className="gc2 title pointer"
         autoComplete="off"
@@ -14,9 +15,9 @@ export const CardHeader = ({ title, handleEdit = () => {}, closeModal = () => {}
         onFocus={ev => ev.target.select()}
         onChange={handleEdit}
       />
-      <button className="gc4 btn trans large" onClick={closeModal}>
+      <Button className="gc4 " size="large" onClick={closeModal}>
         X
-      </button>
+      </Button>
       <span className="gc2">
         in list <u>{listTitle}</u>
       </span>

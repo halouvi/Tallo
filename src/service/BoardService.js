@@ -19,11 +19,11 @@ export const boardService = {
       { _id: makeId(), title: 'QA', cards: [] }
     ],
     labels: [
-      { _id: makeId(), name: 'Not Started', color: 'red' },
-      { _id: makeId(), name: 'In Progress', color: 'orange' },
-      { _id: makeId(), name: 'QA', color: 'yellow' },
-      { _id: makeId(), name: 'Done', color: 'green' },
-      { _id: makeId(), name: 'Production', color: 'blue' }
+      { _id: makeId(), title: 'Not Started', color: 'red' },
+      { _id: makeId(), title: 'In Progress', color: 'orange' },
+      { _id: makeId(), title: 'QA', color: 'yellow' },
+      { _id: makeId(), title: 'Done', color: 'green' },
+      { _id: makeId(), title: 'Production', color: 'blue' }
     ]
   }),
 
@@ -43,5 +43,11 @@ export const boardService = {
     dueDate: '',
     labels: [],
     members: []
+  }),
+
+  createNewLabel: title => ({
+    _id: makeId(),
+    title,
+    color: ''
   })
 }

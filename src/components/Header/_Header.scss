@@ -1,92 +1,33 @@
 .main-header {
-  background-color: rgba(0, 0, 0, 0.13);
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.2);
   color: $white;
-  padding: 7px 0.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-
-  nav {
-    @include for-medium-layout {
-    }
-    .nav-item {
-      margin-right: 10px;
-      border-radius: 3px;
-      padding: 6px 8px;
-      font-size: 0.9rem;
-      background-color: rgba(255, 255, 255, 0.226);
-      font-weight: bold;
-
-      @include for-medium-layout {
-        font-size: 1rem;
-      }
-    }
-
-    .active {
-      background-color: rgba(255, 255, 255, 0.555);
-    }
-
+  * {
+    color: inherit !important;
+  }
+  .active {
+    background-color: rgba(255, 255, 255, 0.5) !important;
   }
 
-  .logo-container {
+  .logo {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
 
-    p {
-      font-size: 1.8rem;
+    svg {
+      height: 36px;
+      width: 36px;
+      margin: 0 3px 0 0;
+    }
+    span {
+      font-size: 2rem;
       font-weight: bold;
       margin: 0;
       font-style: italic;
     }
-
-    svg {
-      height: 35px;
-      width: 35px;
-      margin: 0 3px 0 0;
-    }
   }
 
-  .nav-item.add-board-btn {
-    padding: 6px 11px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg {
-      height: 17px;
-      width: 17px;
-      fill: $white;
-    }
-  }
-
-  .user-container {
-    height: 35px;
-    width: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(204, 204, 204);
-    border-radius: 50%;
-    cursor: pointer;
-
-    @include for-medium-layout {
-      height: 40px;
-      width: 40px;
-    }
-
-    img {
-      height: 100%;
-      width: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    svg {
-      height: 75%;
-      width: 75%;
-      border-radius: 50%;
-      fill: white;
-      stroke: white;
-    }
+  .user-btn {
+    border-radius: 100px;
+    padding: 1px;
   }
 }

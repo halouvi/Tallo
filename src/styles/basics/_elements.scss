@@ -1,4 +1,18 @@
+@keyframes blur {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0);
+  }
+  100% {
+    backdrop-filter: blur(1.5px);
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
 .modal-screen {
+  animation: 200ms blur;
+  backdrop-filter: blur(1.5px);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -9,50 +23,37 @@
   z-index: 10;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.btn {
-  cursor: pointer;
-  padding: 10px 12px;
-  max-height: 36px;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  transition: 100ms;
-  > * {
-    text-align: start;
-    &:not(:last-child) {
-      margin-right: 10px;
+.MuiButton-root {
+  &.MuiButtonBase-root {
+    font-family: inherit;
+    text-transform: capitalize ;
+    transition: 180ms;
+    font-size: 1rem;
+    height: 30px;
+    min-width: 30px;
+    &:hover{
+      background-color: darken($gray, 7%);
     }
   }
-  &:hover {
-    &.gray {
-      filter: brightness(0.9);
-    }
-    &:not(.gray) {
-      filter: brightness(1.1);
-    }
+  &.MuiButton-sizeLarge {
+    height: 36px;
+    min-width: 36px;
   }
-  &.small {
-    max-height: 26px;
-    padding: 8px 10px;
-    font-size: 12px;
+  &.MuiButton-sizeSmall {
+    height: 24px;
+    min-width: 24px;
   }
-  &.large {
-    height: 46px;
-    font-size: 20px;
-  }
-  img.icon {
-    max-width: 10%;
+  .MuiButton-label {
     height: 100%;
-    margin: 0 10px 0 0;
-    height: 16px;
-    width: 16px;
   }
 }
 
+img.icon {
+  height: 1rem;
+  margin: 0 10px 0 0;
+}
 
 .avatar {
   &.sm {

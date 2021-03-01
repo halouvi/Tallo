@@ -11,31 +11,32 @@ export const capitalize = (string = '') => {
   return string
     .toLowerCase()
     .split(/,|-| /)
-    .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+    .map(s => s[0].toUpperCase() + s.substring(1))
     .join(' ')
 }
 
-export const colorPicker = name => {
+export const colorPicker = (name = 'a') => {
+  const test = range => new RegExp(`(?=[${range}])`, 'i').test(name[2])
   switch (true) {
-    case /(?=[a-c])/.test(name.toLowerCase()[0]):
+    case test('a-c'):
       return 'red'
-    case /(?=[d-f])/.test(name.toLowerCase()[0]):
+    case test('d-f'):
       return 'orange'
-    case /(?=[g-i])/.test(name.toLowerCase()[0]):
+    case test('g-i'):
       return 'yellow'
-    case /(?=[j-l])/.test(name.toLowerCase()[0]):
+    case test('j-l'):
       return 'green'
-    case /(?=[m-o])/.test(name.toLowerCase()[0]):
+    case test('m-o'):
       return 'blue'
-    case /(?=[p-r])/.test(name.toLowerCase()[0]):
+    case test('p-r'):
       return 'purple'
-    case /(?=[s-u])/.test(name.toLowerCase()[0]):
+    case test('s-u'):
       return 'pink'
-    case /(?=[v-x])/.test(name.toLowerCase()[0]):
+    case test('v-x'):
       return 'black'
-    case /(?=[y-z])/.test(name.toLowerCase()[0]):
+    case test('y-z'):
       return 'gold'
     default:
-      break
+      return 'gray'
   }
 }

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { useKey, useSetState, useUpdateEffect } from 'react-use'
 import { CLEAR_CARD, GET_BY_ID, UPDATE_CARD } from '../../../store/board/BoardActions'
-import { Popover } from '../ReUsables/Popover/Popover'
 import { CardHeader } from './CardHeader/CardHeader'
 import { CardAside } from './CardAside/CardAside'
 import { CardActivity } from './CardMain/CardActivity'
@@ -14,65 +13,56 @@ import { CardChecklists } from './CardMain/CardChecklists'
 import { CardNav } from './CardNav/CardNav'
 import { CardMembers } from './CardMain/CardMembers'
 import { CardLabels } from './CardMain/CardLabels'
+import { ClickAwayListener } from '@material-ui/core'
+import { usePopover } from '../../Popover/Popover'
 
 export const CardModal = () => {
   const history = useHistory()
   const dispatch = useDispatch()
+
   const { cardId } = useParams()
-  const { list, card } = useSelector(state => state.boardReducer) || {}
+  useEffect(() => dispatch(GET_BY_ID(cardId)), [cardId])
+
+  const card = useSelector(state => state.boardReducer.card)
   const [{ title, desc }, setEditables] = useSetState({ title: '', desc: '' })
-
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [DynCmp, setDynCmp] = useState(null)
-  const [timer, setTimer] = useState(null)
-
   const updateEditablesOnCardNav = () => setEditables({ title: card.title, desc: card.desc })
+  useUpdateEffect(updateEditablesOnCardNav, [card?._id])
 
-  const closeModal = () => {
+  const closeModal = ev => {
+    if (ev.avoidCardModal || (ev.target === document.body && ev.type === 'click')) return
     history.push('/board')
     dispatch(CLEAR_CARD())
   }
+  useKey('Escape', ev => setTimeout(() => closeModal(ev), 0))
 
-  useEffect(() => dispatch(GET_BY_ID(cardId)), [cardId])
-
-  useUpdateEffect(updateEditablesOnCardNav, [card?._id])
-
-  useKey('Escape', closeModal)
-
-  const handleEdit = ({ target: { name, value } }) => {
+  const [timer, setTimer] = useState(null)
+  const handleEdit = ({ currentTarget: { name, value } }) => {
     setEditables({ [name]: value })
     clearTimeout(timer)
     setTimer(setTimeout(() => dispatch(UPDATE_CARD({ name, value, cardId })), 500))
   }
 
-  const togglePopover = (ev, cmp) => {
-    ev.stopPropagation()
-    setDynCmp(cmp ? () => cmp : null)
-    setAnchorEl(ev.currentTarget !== anchorEl ? ev.currentTarget : null)
-  }
+  const togglePopover = usePopover()
 
   return (
-    <div className="modal-screen" onClick={closeModal}>
+    <div className="modal-screen">
       <CardNav />
       {card && (
-        <section className="card-modal white grid g16" onClick={togglePopover}>
-          <CardHeader title={title} handleEdit={handleEdit} closeModal={closeModal} />
-          <main className="flex wrap gb16  ">
-            <CardMembers togglePopover={togglePopover} />
-            <CardLabels togglePopover={togglePopover} />
-            <CardVideo />
-            <CardAttachments />
-            <CardDescription desc={desc} handleEdit={handleEdit} />
-            <CardChecklists />
-            <CardActivity />
-          </main>
-          <CardAside togglePopover={togglePopover} />
-        </section>
-      )}
-      {DynCmp && (
-        <Popover anchorEl={anchorEl} togglePopover={togglePopover} pos="bottom-start">
-          <DynCmp anchorEl={anchorEl} togglePopover={togglePopover} list={list} card={card} />
-        </Popover>
+        <ClickAwayListener onClickAway={closeModal}>
+          <section className="card-modal white grid g16">
+            <CardHeader title={title} handleEdit={handleEdit} closeModal={closeModal} />
+            <main className="flex wrap gb16  ">
+              <CardMembers togglePopover={togglePopover} />
+              <CardLabels togglePopover={togglePopover} />
+              <CardVideo />
+              <CardAttachments />
+              <CardDescription desc={desc} handleEdit={handleEdit} />
+              <CardChecklists />
+              <CardActivity />
+            </main>
+            <CardAside togglePopover={togglePopover} />
+          </section>
+        </ClickAwayListener>
       )}
     </div>
   )

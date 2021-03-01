@@ -19,7 +19,7 @@ export const LoginSingup = () => {
     password: ''
   })
   const [user, setUser] = useSetState({
-    fullname: '',
+    name: '',
     email: '',
     password: '',
     imgUrl: '',
@@ -68,7 +68,7 @@ export const LoginSingup = () => {
         <form className="login-form gb10" onSubmit={login}>
           <div className="flex ac jb">
             <h2>Login</h2>
-            <button className="btn trans" onClick={goBack}>
+            <button className="btn " onClick={goBack}>
               X
             </button>
           </div>
@@ -99,9 +99,9 @@ export const LoginSingup = () => {
           <TextField
             size="small"
             label="Name"
-            name="fullname"
+            name="name"
             variant="outlined"
-            value={user.fullname}
+            value={user.name}
             onChange={handleInputSignup}
           />
           <TextField

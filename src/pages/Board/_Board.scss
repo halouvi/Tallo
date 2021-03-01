@@ -4,7 +4,7 @@
   max-height: 100%;
   overflow-y: hidden;
   @include scrollBar(14px, #2934624f);
-  
+
   @include for-narrow-layout {
     height: 93vh;
   }
@@ -14,71 +14,6 @@
   }
   > .container {
     height: 100%;
-  }
-
-  .add-list-container {
-    cursor: pointer;
-    font-size: 0.95rem;
-    height: fit-content;
-    background-color: rgba(173, 216, 230, 0.418);
-    color: white;
-    border-radius: 3px;
-    padding: 15px 20px;
-    margin-right: 10px;
-    
-    >p {
-      width: 272px;
-      margin: 0;
-    }
-  }
-
-  .add-list-form {
-    background-color: rgba(173, 216, 230, 0.418);
-    border-radius: 3px;
-    padding: 10px;
-    height: fit-content;
-    margin-right: 10px;
-    
-    input {
-      width: 272px;
-      // width: 100%;
-      height: 65px;
-      border: none;
-      border-radius: 5px;
-      box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-      margin-bottom: 5px;
-      padding: 0 8px;
-    }
-  }
-
-  .add-list {
-    color: rgb(116, 116, 116);
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
-
-    &:hover {
-      background-color: rgba(173, 172, 172, 0.582);
-    }
-
-    // span {
-    //   font-size: 1.5rem;
-    // }
-  }
-  .add-list-btns {
-    display: flex;
-    margin-bottom: 3px;
-
-    .add-list-btn {
-      background-color: #5aac44;
-      padding: 6px 12px;
-      border-radius: 3px;
-      color: white;
-      margin-right: 10px;
-    }
-    .close-btn {
-      font-size: 1.2rem;
-      color: gray;
-    }
+    @import '../../components/Board/AddList/AddList';
   }
 }

@@ -1,6 +1,6 @@
 import { useDragLayer } from 'react-dnd'
 import { List } from '../Board/List/List'
-import { Card } from '../Board/Card/Card'
+import { CardPreview } from '../Board/CardPreview/CardPreview'
 
 export const DragLayer = () => {
   const { item, pos } = useDragLayer(monitor => ({
@@ -22,7 +22,7 @@ export const DragLayer = () => {
           height: `${height}px`
         }}>
         {type === 'LIST' && <List list={list} isDragLayer={true}/>}
-        {type === 'CARD' && <Card card={card} isDragLayer={true}/>}
+        {type === 'CARD' && <CardPreview card={card} isDragLayer={true}/>}
       </div>
     )
   )

@@ -36,46 +36,86 @@
   }
 }
 
+// Padding
+
+.p2 {
+  padding: 2px;
+}
+.p4 {
+  padding: 4px;
+}
+.p6 {
+  padding: 6px;
+}
+.p8 {
+  padding: 8px;
+}
+.p10 {
+  padding: 10px;
+}
+.p12 {
+  padding: 12px;
+}
+.p14 {
+  padding: 14px;
+}
+.p16 {
+  padding: 16px;
+}
+.p18 {
+  padding: 18px;
+}
+.p20 {
+  padding: 20px;
+}
+
 // Margin
 
+.mt6 {
+  margin-top: 6px !important;
+}
+
 .mb2 {
-  margin-bottom: 2px;
+  margin-bottom: 2px !important;
 }
 
 .mb4 {
-  margin-bottom: 4px;
+  margin-bottom: 4px !important;
 }
 
 .mb6 {
-  margin-bottom: 6px;
+  margin-bottom: 6px !important;
 }
 
 .mb8 {
-  margin-bottom: 8px;
+  margin-bottom: 8px !important;
 }
 
 .mb10 {
-  margin-bottom: 10px;
+  margin-bottom: 10px !important;
 }
 
 .mb12 {
-  margin-bottom: 12px;
+  margin-bottom: 12px !important;
 }
 
 .mb14 {
-  margin-bottom: 14px;
+  margin-bottom: 14px !important;
 }
 
 .mb16 {
-  margin-bottom: 16px;
+  margin-bottom: 16px !important;
 }
 
 .mb18 {
-  margin-bottom: 18px;
+  margin-bottom: 18px !important;
 }
 
 .mb20 {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
+}
+.ml6 {
+  margin-left: 6px;
 }
 .ml30 {
   margin-left: 30px;
@@ -139,52 +179,52 @@
 }
 .gb2 {
   > *:not(:last-child) {
-    margin-bottom: 2px;
+    margin-bottom: 2px !important;
   }
 }
 .gb4 {
   > *:not(:last-child) {
-    margin-bottom: 4px;
+    margin-bottom: 4px !important;
   }
 }
 .gb6 {
   > *:not(:last-child) {
-    margin-bottom: 6px;
+    margin-bottom: 6px !important;
   }
 }
 .gb8 {
   > *:not(:last-child) {
-    margin-bottom: 8px;
+    margin-bottom: 8px !important;
   }
 }
 .gb10 {
   > *:not(:last-child) {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
   }
 }
 .gb12 {
   > *:not(:last-child) {
-    margin-bottom: 12px;
+    margin-bottom: 12px !important;
   }
 }
 .gb14 {
   > *:not(:last-child) {
-    margin-bottom: 14px;
+    margin-bottom: 14px !important;
   }
 }
 .gb16 {
   > *:not(:last-child) {
-    margin-bottom: 16px;
+    margin-bottom: 16px !important;
   }
 }
 .gb18 {
   > *:not(:last-child) {
-    margin-bottom: 18px;
+    margin-bottom: 18px !important;
   }
 }
 .gb20 {
   > *:not(:last-child) {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
   }
 }
 
@@ -225,6 +265,9 @@
   }
   &.tc4 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  &.tc5 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
   &.tr1 {
     grid-template-rows: 1fr;
@@ -308,6 +351,15 @@
     grid-auto-columns: min-content;
   }
   > * {
+    &.gcf {
+      grid-column: 1/-1;
+    }
+    &.gcf-1 {
+      grid-column: 1/-2;
+    }
+    &.gcl {
+      grid-column: -2;
+    }
     &.gc1 {
       grid-column: 1;
     }
@@ -368,6 +420,7 @@
     &.gc5-9 {
       grid-column: 5/9;
     }
+
     &.gr1 {
       grid-row: 1;
     }
@@ -446,7 +499,9 @@
 
 .fp {
   height: 100%;
+  max-height: 100%;
   width: 100%;
+  max-width: 100%;
 }
 
 .fvw {
@@ -477,12 +532,18 @@
   position: relative;
 }
 
-.right {
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.top-right {
   position: absolute;
   top: 0;
-  bottom: 0;
   right: 0;
-  // transform: translateY(-50%);
+  // transform: translate(-50%);
 }
 
 // Shape {
@@ -515,10 +576,34 @@
   border-radius: 10px;
 }
 
+//List items inherit Border Radius
+
+.list-br {
+  > * {
+    &:first-child {
+      border-top-left-radius: inherit;
+      border-top-right-radius: inherit;
+    }
+    &:last-child {
+      border-bottom-left-radius: inherit;
+      border-bottom-right-radius: inherit;
+    }
+  }
+}
+
+// Font Size 
+
+.rem{
+  font-size: 1rem;
+}
+
 // Text
 
 .tac {
   text-align: center;
+}
+.tas {
+  text-align: start;
 }
 
 .lh1 {
@@ -541,56 +626,101 @@
 //color
 
 .red {
-  color: $white;
+  color: $white !important;
   background-color: #eb5a46 !important;
+  &.MuiButton-root:hover {
+    background-color: darken(#eb5a46, 7%) !important;
+  }
 }
 .orange {
-  color: $white;
+  color: $white !important;
   background-color: #ff9f1a !important;
+  &.MuiButton-root:hover {
+    background-color: darken(#ff9f1a, 10%) !important;
+  }
 }
 .yellow {
-  color: $white;
+  color: $white !important;
   background-color: #f2d600 !important;
+  &.MuiButton-root:hover {
+    background-color: darken(#f2d600, 7%) !important;
+  }
 }
 .green {
-  color: $white;
+  color: $white !important;
   background-color: #61bd4f !important;
+  &.MuiButton-root:hover {
+    background-color: darken(#61bd4f, 7%) !important;
+  }
 }
 .blue {
-  color: $white;
+  color: $white !important;
   background-color: #0079bf !important;
+  &.MuiButton-root:hover {
+    background-color: darken(#0079bf, 7%) !important;
+  }
 }
 .purple {
-  color: $white;
+  color: $white !important;
   background-color: #c377e0 !important;
+  &.MuiButton-root:hover {
+    background-color: darken(#c377e0, 10%) !important;
+  }
 }
 .pink {
-  color: $white;
+  color: $white !important;
   background-color: #ff78cb !important;
+  &.MuiButton-root:hover {
+    background-color: darken(#ff78cb, 10%) !important;
+  }
 }
 .black {
-  color: $white;
+  color: $white !important;
   background-color: $black !important;
+  &.MuiButton-root:hover {
+    background-color: darken($black, 7%) !important;
+  }
 }
 .white {
-  color: $black;
+  color: $black !important;
   background-color: $white !important;
+  &.MuiButton-root:hover {
+    background-color: darken($white, 7%) !important;
+  }
 }
 .gray {
-  background-color: #cfcfcf !important;
+  color: $black !important;
+  background-color: $gray !important;
+  &.MuiButton-root:hover {
+    background-color: lighten($gray, 7%) !important;
+  }
 }
 .gold {
+  color: $white !important;
   background-color: gold !important;
+  &.MuiButton-root:hover {
+    background-color: darken(gold, 7%) !important;
+  }
 }
 .trans {
-  background-color: transparent !important;
+  background-color: rgba(255, 255, 255, 0.3) !important;
   &:hover {
-    background-color: #bebebe !important;
+    background-color: rgba(255, 255, 255, 0.45) !important;
   }
 }
 
 .gradient {
   background: linear-gradient(#006f83, #00aecc);
+}
+
+// Box Shadow
+
+.shdw1 {
+  box-shadow: $shadow1;
+}
+
+.shdw2 {
+  box-shadow: $shadow2;
 }
 
 // Transition

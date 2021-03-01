@@ -1,0 +1,95 @@
+.card-drop-container {
+  > .rect-ref {
+    border-radius: 4px;
+    padding-bottom: $cardPadding;
+    > .placeholder {
+      border-radius: inherit;
+      position: relative;
+      &.top {
+        padding-bottom: $cardPadding;
+      }
+      &.bottom {
+        padding-top: $cardPadding;
+      }
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: calc(100% - #{$cardPadding});
+        border-radius: inherit;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    > .card-preview {
+      border-radius: inherit;
+      cursor: grab;
+      > .container {
+        border-radius: inherit;
+        &:hover {
+          filter: brightness(0.95);
+          &.menu-btn-hovered {
+            filter: none;
+          }
+        }
+        
+        > *:not(:last-child) {
+          margin-bottom: 8px;
+        }
+
+        .card-title {
+          margin-bottom: 16px;
+          color: rgb(50, 50, 50);
+        }
+
+        .card-desc {
+          margin-bottom: 24px;
+        }
+
+        > .labels {
+          > .label {
+            width: 40px;
+            height: 9px;
+            border-radius: 3px;
+
+            &:not(:last-child) {
+              margin-inline-end: 5px;
+            }
+          }
+        }
+
+        .due-date {
+          padding: 4px 5px;
+          border-radius: 3px;
+          background-color: royalblue;
+          width: fit-content;
+          max-height: 28px;
+
+          > p {
+            color: whitesmoke;
+            font-size: 0.85rem;
+            margin: 0;
+          }
+
+          > img {
+            width: 16px;
+            height: 16px;
+            margin-inline-end: 5px;
+          }
+        }
+
+        .MuiAvatarGroup-avatar {
+          height: 30px;
+          width: 30px;
+          font-size: 1rem;
+        }
+
+        img {
+          width: 80%;
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+}

@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux'
-import { CardChecklist } from '../../CardChecklists/CardChecklists'
+import { CardChecklist } from '../../../CardChecklist/CardChecklist'
 export const CardChecklists = () => {
-  const checklist = useSelector(state => state.boardReducer.card.checklist)
+  const checklists = useSelector(state => state.boardReducer.card.checklists) || []
 
-  return checklist[0] ? (
+  return checklists[0] ? (
     <div className="checklists fw gb10">
-      {checklist.map((currChecklist, idx) => (
-        <CardChecklist key={idx} cardChecklists={checklist} checklist={currChecklist} />
+      {checklists.map((checklist, idx) => (
+        <CardChecklist key={idx} checklists={checklists} checklist={checklist} />
       ))}
     </div>
   ) : (

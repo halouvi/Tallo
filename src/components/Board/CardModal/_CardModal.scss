@@ -10,7 +10,9 @@
     width: 100vw;
     border: 1px solid rgb(161, 161, 161);
     border-radius: 0;
+    grid-template-columns: 1fr;
     @include for-medium-layout {
+      grid-template-columns: 1fr auto;
       padding: 16px;
       margin: 10vh 0;
       width: 800px;
@@ -19,7 +21,7 @@
       box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     }
 
-    img.icon {
+    img.section-icon {
       width: 24px;
       height: 24px;
     }

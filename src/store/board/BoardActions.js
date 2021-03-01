@@ -79,6 +79,7 @@ export const ADD_LIST = title => (dispatch, getState) => {
 }
 
 export const UPDATE_LIST = ({ name, value, listId }) => (dispatch, getState) => {
+  console.log('updating')
   const nextBoard = clone(getState().boardReducer.board)
   const { list } = _findItems(nextBoard, listId)
   list[name] = value
@@ -94,9 +95,9 @@ export const DELETE_LIST = listId => (dispatch, getState) => {
 
 export const GET_BY_ID = itemId => (dispatch, getState) => {
   const board = getState().boardReducer.board
-  const { list, card } = _findItems(board, itemId)
-  if (list) dispatch({ type: boardTypes.SET_LIST, payload: list })
-  if (card) dispatch({ type: boardTypes.SET_CARD, payload: card })
+  const { list = null, card = null } = _findItems(board, itemId)
+  dispatch({ type: boardTypes.SET_LIST, payload: list })
+  dispatch({ type: boardTypes.SET_CARD, payload: card })
 }
 
 export const ADD_CARD = (title, listId) => (dispatch, getState) => {
