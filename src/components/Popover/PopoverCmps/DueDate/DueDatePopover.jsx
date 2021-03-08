@@ -35,7 +35,7 @@ export const DueDatePopover = ({ togglePopover }) => {
   }
 
   return (
-    <div className="due-date-section popover-cmp flex col">
+    <div className="popover-cmp due-date-section flex col">
       <PopoverHeader title="Due Date" />
       <form action="" onSubmit={saveDueDate} className="due-date-form flex col">
         <input

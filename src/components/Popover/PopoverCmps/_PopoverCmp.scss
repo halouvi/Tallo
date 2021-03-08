@@ -23,4 +23,9 @@
       filter: none !important;
     }
   }
+  @import './Labels/LabelsPopover';
+  @import './AddVideo/VideoPopover';
+  @import './Attachment/AttachmentPopover';
+  @import './DueDate/DueDatePopover';
+  @import './CheckList/CheckListPopover';
 }

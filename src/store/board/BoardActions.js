@@ -1,27 +1,21 @@
 import { boardService } from '../../service/boardService'
 import { socketService, socketTypes } from '../../service/socketService.js'
-import { cloneDeep as clone } from 'lodash'
 import { userTypes } from '../user/UserActions'
+import { cloneDeep as clone } from 'lodash'
 
 export const boardTypes = {
+  RESET_STATE: 'RESET_STATE',
   SET_BOARD: 'SET_BOARD',
-  SET_LIST: 'SET_LIST',
-  SET_CARD: 'SET_CARD'
+  SET_ITEMS: 'SET_ITEMS'
 }
 
-export const CLEAR_BOARD = () => dispatch => {
-  dispatch({ type: boardTypes.SET_BOARD, payload: null })
-  dispatch({ type: boardTypes.SET_LIST, payload: null })
-  dispatch({ type: boardTypes.SET_CARD, payload: null })
-}
+export const CLEAR_BOARD = () => dispatch => dispatch({ type: boardTypes.RESET_STATE })
 
-export const CLEAR_LIST = () => dispatch => {
-  dispatch({ type: boardTypes.SET_LIST, payload: null })
-}
-
-export const CLEAR_CARD = () => dispatch => {
-  dispatch({ type: boardTypes.SET_LIST, payload: null })
-  dispatch({ type: boardTypes.SET_CARD, payload: null })
+export const CLEAR_ITEMS = () => dispatch => {
+  dispatch({
+    type: boardTypes.SET_ITEMS,
+    payload: { list: null, card: null }
+  })
 }
 
 export const ADD_BOARD = title => async (dispatch, getState) => {
@@ -54,10 +48,11 @@ export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
 
 let timer
 export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
-  const prevBoard = clone(getState().boardReducer.board)
-  const cardId = getState().boardReducer.card?._id
+  const { board, list, card } = getState().boardReducer || {}
+  const prevBoard = clone(board)
+  const itemId = card?._id || list?._id
   dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
-  if (cardId) dispatch(GET_BY_ID(cardId))
+  if (itemId) dispatch(GET_BY_ID(itemId))
   clearTimeout(timer)
   timer = setTimeout(async () => {
     try {
@@ -65,10 +60,10 @@ export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
       socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
     } catch (err) {
       dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
-      if (cardId) dispatch(GET_BY_ID(cardId))
+      if (itemId) dispatch(GET_BY_ID(itemId))
       console.error('Could not update board', err)
     }
-  }, 1500)
+  }, 2500)
 }
 
 export const ADD_LIST = title => (dispatch, getState) => {
@@ -95,9 +90,8 @@ export const DELETE_LIST = listId => (dispatch, getState) => {
 
 export const GET_BY_ID = itemId => (dispatch, getState) => {
   const board = getState().boardReducer.board
-  const { list = null, card = null } = _findItems(board, itemId)
-  dispatch({ type: boardTypes.SET_LIST, payload: list })
-  dispatch({ type: boardTypes.SET_CARD, payload: card })
+  const { list, card } = _findItems(board, itemId)
+  dispatch({ type: boardTypes.SET_ITEMS, payload: { list, card } })
 }
 
 export const ADD_CARD = (title, listId) => (dispatch, getState) => {
@@ -123,8 +117,6 @@ export const DELETE_CARD = cardId => (dispatch, getState) => {
   list.cards.splice(cardIdx, 1)
   dispatch(SAVE_BOARD(nextBoard))
 }
-
-export const SET_CURR_VIDEO_URL = videoUrl => (dispatch, getState) => {}
 
 export const HANDLE_DROP = ({ type, sourceId, targetId, posOffset }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)

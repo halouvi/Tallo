@@ -1,13 +1,14 @@
 import { Button } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { LabelsPopover } from '../../../Popover/PopoverCmps/Labels/LabelsPopover'
+import { usePopover } from '../../../components/Popover/Popover'
+import { LabelsPopover } from '../../../components/Popover/PopoverCmps/Labels/LabelsPopover'
 
-export const CardLabels = ({ togglePopover }) => {
-  const labels = useSelector(state => state.boardReducer.card.labels)
+export const CardLabels = ({ labels }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const activelabels = gLabels.filter(({ _id }) => labels.includes(_id))
+  const togglePopover = usePopover()
 
-  return activelabels[0] ? (
+  return (
     <div className="labels ml32 pointer" onClick={ev => togglePopover(ev, LabelsPopover)}>
       <h4>Labels</h4>
       <div className="flex gr6 wfc wrap">
@@ -21,7 +22,5 @@ export const CardLabels = ({ togglePopover }) => {
         </Button>
       </div>
     </div>
-  ) : (
-    <></>
   )
 }

@@ -1,12 +1,12 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { makeId } from '../../../../service/utilService'
+import { useSetState } from 'react-use'
 
 export const CheckListPopover = ({ togglePopover }) => {
   const { _id: cardId = '', checklists = [] } = useSelector(state => state.boardReducer.card) || {}
 
-  const [checklist, setChecklist] = useState({
+  const [checklist, setChecklist] = useSetState({
     _id: makeId(),
     title: '',
     items: []
@@ -18,15 +18,10 @@ export const CheckListPopover = ({ togglePopover }) => {
     dispatch(UPDATE_CARD({ name: 'checklist', value: [...checklists, checklist], cardId }))
   }
 
-  const onHandleChange = ev => {
-    const value = ev.target.value
-    const field = ev.target.name
-    setChecklist({ ...checklist, [field]: value })
-    console.log(checklist)
-  }
+  const handleInput = ({ target: { value } }) => setChecklist({ title: value })
 
   return (
-    <div className="checklist-section popover-cmp flex col">
+    <div className="popover-cmp checklist-section flex col">
       <button className="close-btn pos-tr" onClick={togglePopover}>
         X
       </button>
@@ -37,8 +32,7 @@ export const CheckListPopover = ({ togglePopover }) => {
           autoFocus
           id="checklist-title"
           value={checklist.title}
-          onChange={onHandleChange}
-          name="title"
+          onChange={handleInput}
           type="text"
           placeholder="Insert a title..."
         />

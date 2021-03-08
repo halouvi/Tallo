@@ -8,7 +8,7 @@ import { usePopover } from '../Popover/Popover'
 import UserMenu from '../Popover/PopoverCmps/Menus/UserMenu'
 
 export const Header = () => {
-  const { user } = useSelector(state => state.userReducer) || {}
+  const user = useSelector(state => state.userReducer.user)
   const [isModalOpen, toggleModal] = useToggle(false)
 
   const { push } = useHistory()
@@ -60,7 +60,7 @@ export const Header = () => {
             Board
           </Button>
           <Button className="user-btn trans" onClick={ev => togglePopover(ev, UserMenu)}>
-            <CardAvatar user={user} />
+            {user && <CardAvatar user={user} />}
           </Button>
         </nav>
       </header>

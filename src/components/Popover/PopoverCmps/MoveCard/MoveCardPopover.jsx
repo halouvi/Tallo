@@ -55,6 +55,7 @@ export const MoveCardPopover = () => {
       </Select>
       <InputLabel htmlFor="targetPos">Position:</InputLabel>
       <Select
+        onOpen={ev => console.log(ev)}
         value={targetPos}
         onChange={handleInput}
         inputProps={{

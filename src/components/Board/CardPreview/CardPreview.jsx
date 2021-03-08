@@ -10,6 +10,7 @@ import { VideoPlayer } from '../../VideoPlayer/VideoPlayer'
 import { Button } from '@material-ui/core'
 import { useToggle } from 'react-use'
 import { usePopover } from '../../Popover/Popover'
+import moment from 'moment'
 
 export const CardPreview = ({ card, isDragLayer }) => {
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ export const CardPreview = ({ card, isDragLayer }) => {
       return {
         type: 'CARD',
         sourceId: cardId,
+        overListId: '',
         card,
         height,
         width
@@ -34,26 +36,29 @@ export const CardPreview = ({ card, isDragLayer }) => {
     }
   })
 
-  const [{ hoverHeight, posOffset }, drop] = useDrop({
-    accept: 'CARD',
+  const [{ hoverHeight = 0, posOffset = 0 }, drop] = useDrop({
+    accept: !isDragLayer ? 'CARD' : '',
+    hover: item => (item.overListId = ''),
     collect: monitor => {
-      if (monitor.isOver()) {
+      if (!monitor.isOver()) return {}
+      else {
         const { top, height } = rectRef.current.getBoundingClientRect()
         const mouseY = monitor.getClientOffset().y
         return {
           posOffset: top + height / 2 > mouseY ? 0 : 1,
           hoverHeight: monitor.getItem().height
         }
-      } else return {}
+      }
     },
     drop: item => dispatch(HANDLE_DROP({ ...item, posOffset, targetId: cardId }))
   })
 
   const togglePopover = usePopover()
 
-  const openMenu = ev => {
+  const cardInStore = useSelector(state => state.boardReducer.card)
+  const toggleMenu = ev => {
     ev.avoidModal = true
-    dispatch(GET_BY_ID(cardId))
+    if (card !== cardInStore) dispatch(GET_BY_ID(card._id))
     togglePopover(ev, CardMenu)
   }
 
@@ -70,7 +75,7 @@ export const CardPreview = ({ card, isDragLayer }) => {
       className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref">
         {!!hoverHeight && !posOffset && (
-          <div className="placeholder top" style={{ height: `${hoverHeight}px` }} />
+          <div className="card-placeholder top" style={{ height: `${hoverHeight}px` }} />
         )}
         <div ref={!isDragLayer ? drag : null} className="card-preview flex col fast gb8 sbl shdw2">
           <div
@@ -85,7 +90,7 @@ export const CardPreview = ({ card, isDragLayer }) => {
                 className=""
                 onMouseEnter={() => setMenuBtnHovered(true)}
                 onMouseLeave={() => setMenuBtnHovered(false)}
-                onClick={openMenu}>
+                onClick={toggleMenu}>
                 ···
               </Button>
             </div>
@@ -107,21 +112,22 @@ export const CardPreview = ({ card, isDragLayer }) => {
               </div>
             )}
             {(!!dueDate || !!members[0]) && (
-              <div className="flex jb">
+              <div className="grid tc-a1a">
                 {!!dueDate && (
-                  <div className="due-date flex ac">
+                  <div className="gc1 due-date flex ac">
                     <img src={clock} alt="" />
-                    <p>{new Date(dueDate).toDateString()}</p>
+                    <p>{moment(dueDate).format('ddd, MMM do')}</p>
                   </div>
                 )}
-                <div className="spacer" />
-                {members[0] && <CardAvatars max={4} users={members} />}
+                {members[0] && (
+                  <CardAvatars className="gc3" max={4} users={members} isDragLayer={isDragLayer} />
+                )}
               </div>
             )}
           </div>
         </div>
         {!!hoverHeight && !!posOffset && (
-          <div className="placeholder bottom" style={{ height: `${hoverHeight}px` }} />
+          <div className="card-placeholder bottom" style={{ height: `${hoverHeight}px` }} />
         )}
       </div>
     </div>

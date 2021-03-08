@@ -18,25 +18,18 @@
 @import '../components/Home/HomeQuotes/HomeQuotes';
 @import '../components/Home/HomeGetStarted/HomeGetStarted';
 @import '../components/Home/HomeFooter/HomeFooter';
+@import '../components/Board/BoardHeader/BoardHeader';
 @import '../components/Board/List/List';
 @import '../components/Board/CardPreview/CardPreview';
-@import '../components/Avatars/CardAvatar';
-@import '../components/Board/BoardHeader/BoardHeader';
 @import '../components/DragLayer/DragLayer';
 @import '../components/Loader/Loader';
-
+@import '../components/Avatars/CardAvatar';
 @import '../components/Popover/PopoverCmps/PopoverCmp';
-@import '../components/Popover/PopoverCmps/Labels/LabelsPopover';
-@import '../components/Popover/PopoverCmps/AddVideo/VideoPopover';
-@import '../components/Popover/PopoverCmps/Attachment/AttachmentPopover';
-@import '../components/Popover/PopoverCmps/DueDate/DueDatePopover';
-@import '../components/Popover/PopoverCmps/CheckList/CheckListPopover';
 @import '../components/CardChecklist/CardChecklist';
-
-
-//VIEWS
-@import '../pages/Home/Home';
-@import '../pages/Board/Board';
-@import '../components/Board/CardModal/CardModal';
 @import '../components/CreateBoardModal/CreateBoardModal';
 @import '../components/LoginSignup/LoginSignup';
+
+//PAGES
+@import '../pages/Home/Home';
+@import '../pages/Board/Board';
+@import '../pages/CardModal/CardModal';

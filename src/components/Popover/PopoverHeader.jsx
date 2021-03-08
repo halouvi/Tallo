@@ -6,13 +6,13 @@ import { ListMenu } from './PopoverCmps/Menus/ListMenu'
 import { usePopover } from './Popover'
 
 export const PopoverHeader = ({ title, onBack }) => {
-  const inModal = useLocation().pathname.includes('board/modal')
-  const cardId = useSelector(state => state.boardReducer.card?._id)
+  const card = useSelector(state => state.boardReducer.card)
   const list = useSelector(state => state.boardReducer.list)
+  const inModal = useLocation().pathname.includes('board/modal')
 
   const togglePopover = usePopover()
 
-  const backToMenu = ev => togglePopover(ev, cardId ? CardMenu : ListMenu, true)
+  const backToMenu = ev => togglePopover(ev, card ? CardMenu : ListMenu, true)
 
   return onBack || (!inModal && list) ? (
     <div className="gcf fw flex rel jb ">

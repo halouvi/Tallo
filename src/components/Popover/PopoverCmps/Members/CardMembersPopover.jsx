@@ -29,14 +29,14 @@ export const CardMembersPopover = () => {
 
   useEffect(updateState, [users, members])
 
-  const toggleMember = ({ currentTarget: { value } }) => {
+  const toggleMember = userId => {
     dispatch(
       UPDATE_CARD({
         cardId,
         name: 'members',
-        value: members.includes(value)
-          ? members.filter(memberId => memberId !== value)
-          : [...members, value]
+        value: members.includes(userId)
+          ? members.filter(memberId => memberId !== userId)
+          : [...members, userId]
       })
     )
   }
@@ -45,33 +45,38 @@ export const CardMembersPopover = () => {
     <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Card Members" />
       <TextField
-        className="mb6"
         size="small"
         variant="outlined"
         label="Search Members"
         value={searchTerm}
         onChange={updateState}
       />
-      {activeMembers.map(user => (
-        <Button key={user._id} className=" flex js" value={user._id} onClick={toggleMember}>
-          <CardAvatar className="" user={user} size="small" />
-          <span className="capital ml6 fg1 tas">{user.name}</span>X
-        </Button>
-      ))}
+      <div className="flex col gb6">
+        {activeMembers.map(user => (
+          <Button
+            key={user._id}
+            classes={{ label: 'flex ac js gr10 sbl' }}
+            onClick={() => toggleMember(user._id)}>
+            <CardAvatar user={user} size="small" />
+            <span className="capital tas">{user.name}</span>
+            <span>X</span>
+          </Button>
+        ))}
+      </div>
       {searchRes[0] && (
-        <>
-          <b className="tac">Board Members</b>
+        <div className="flex col gb6">
+          <span className="tac">Board Members</span>
           {searchRes.map(user => (
             <Button
               key={user._id}
-              className=" flex js"
-              value={user._id}
-              onClick={toggleMember}>
-              <CardAvatar className="" user={user} size="small" />
-              <span className="capital ml6 fg1 tas">{user.name}</span>X
+              classes={{ label: 'flex ac js gr10 sbl' }}
+              onClick={() => toggleMember(user._id)}>
+              <CardAvatar user={user} size="small" />
+              <span className="capital tas">{user.name}</span>
+              <span>+</span>
             </Button>
           ))}
-        </>
+        </div>
       )}
     </div>
   )

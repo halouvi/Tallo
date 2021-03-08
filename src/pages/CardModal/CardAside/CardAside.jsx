@@ -1,14 +1,17 @@
-import { CardMembersPopover } from '../../../Popover/PopoverCmps/Members/CardMembersPopover'
-import { LabelsPopover } from '../../../Popover/PopoverCmps/Labels/LabelsPopover'
-import { CheckListPopover } from '../../../Popover/PopoverCmps/CheckList/CheckListPopover'
-import { DueDatePopover } from '../../../Popover/PopoverCmps/DueDate/DueDatePopover'
-import { AttachmentPopover } from '../../../Popover/PopoverCmps/Attachment/AttachmentPopover'
-import { MoveCardPopover } from '../../../Popover/PopoverCmps/MoveCard/MoveCardPopover'
-import { DeletePopover } from '../../../Popover/PopoverCmps/Delete/DeletePopover'
-import { AddVideoPopover } from '../../../Popover/PopoverCmps/AddVideo/VideoPopover'
+import { CardMembersPopover } from '../../../components/Popover/PopoverCmps/Members/CardMembersPopover'
+import { LabelsPopover } from '../../../components/Popover/PopoverCmps/Labels/LabelsPopover'
+import { CheckListPopover } from '../../../components/Popover/PopoverCmps/CheckList/CheckListPopover'
+import { DueDatePopover } from '../../../components/Popover/PopoverCmps/DueDate/DueDatePopover'
+import { AttachmentPopover } from '../../../components/Popover/PopoverCmps/Attachment/AttachmentPopover'
+import { MoveCardPopover } from '../../../components/Popover/PopoverCmps/MoveCard/MoveCardPopover'
+import { DeletePopover } from '../../../components/Popover/PopoverCmps/Delete/DeletePopover'
+import { AddVideoPopover } from '../../../components/Popover/PopoverCmps/AddVideo/VideoPopover'
 import { Button } from '@material-ui/core'
+import { usePopover } from '../../../components/Popover/Popover'
 
-export const CardAside = ({ togglePopover }) => {
+export const CardAside = () => {
+  const togglePopover = usePopover()
+
   const cmpMap = {
     Add_To_Card: {
       Members: CardMembersPopover,

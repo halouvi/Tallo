@@ -1,7 +1,7 @@
 import { Button, ClickAwayListener } from '@material-ui/core'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useToggle, useUpdateEffect } from 'react-use'
+import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_LIST } from '../../../store/board/BoardActions'
 
 export const AddList = () => {
@@ -18,7 +18,7 @@ export const AddList = () => {
     toggleAddList()
   }
 
-  const handleInput = ({ target: { value } }) => setNewListTitle(value)
+  useKey('Escape', () => toggleAddList(false))
 
   return (
     <div className="add-list">
@@ -34,7 +34,9 @@ export const AddList = () => {
               onChange={ev => setNewListTitle(ev.target.value)}
             />
             <div className="flex jb">
-              <Button className="green">Add List</Button>
+              <Button className="green" type="submit">
+                Add List
+              </Button>
               <Button onClick={toggleAddList}>X</Button>
             </div>
           </form>

@@ -1,12 +1,12 @@
 import { ClickAwayListener } from '@material-ui/core'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
-import { ADD_CARD, HANDLE_DROP } from '../../../store/board/BoardActions'
+import { HANDLE_DROP } from '../../../store/board/BoardActions'
 import { CardPreview } from '../CardPreview/CardPreview'
-import { useToggle, useUpdateEffect } from 'react-use'
 import { ListHeader } from './ListHeader/ListHeader'
 import { AddCard } from './AddCard/AddCard'
+import { CardDropZone } from './CardDropZone'
 
 export const List = ({ list, isDragLayer }) => {
   const rectRef = useRef(null)
@@ -30,31 +30,28 @@ export const List = ({ list, isDragLayer }) => {
   })
 
   const [{ cardOver, listOver, hoverWidth, hoverHeight, posOffset }, drop] = useDrop({
-    accept: ['CARD', 'LIST'],
-    canDrop: ({ sourceId, type }, monitor) =>
-      monitor.isOver() &&
-      (type === 'LIST' ||
-        (type === 'CARD' && (!cards[0] || (!cards[1] && cards[0]._id === sourceId)))),
+    accept: !isDragLayer ? ['LIST', 'CARD'] : '',
     collect: monitor => {
-      if (monitor.canDrop()) {
-        const { left, width } = rectRef.current.getBoundingClientRect()
-        const mouseX = monitor.getClientOffset().x
-        return {
-          posOffset: left + width / 2 > mouseX ? 0 : 1,
-          hoverWidth: monitor.getItem().width,
-          hoverHeight: monitor.getItem().height,
-          listOver: monitor.getItemType() === 'LIST',
-          cardOver: monitor.getItemType() === 'CARD'
-        }
-      } else return {}
+      const { left, width } = rectRef.current?.getBoundingClientRect() || {}
+      const mouseX = monitor.getClientOffset()?.x
+      return {
+        posOffset: left + width / 2 > mouseX ? 0 : 1,
+        hoverWidth: monitor.getItem()?.width || 0,
+        hoverHeight: monitor.getItem()?.height || 0,
+        listOver: monitor.isOver() && monitor.getItemType() === 'LIST',
+        cardOver: monitor.getItem()?.overListId === listId
+      }
     },
+    canDrop: ({ type }) => type === 'LIST' || cardOver,
     drop: item => dispatch(HANDLE_DROP({ ...item, posOffset, targetId: listId }))
   })
 
+  // useEffect(() => {
+  //   cardOver && console.log(listId)
+  // }, [cardOver])
+
   return (
-    <div
-      ref={!isDragLayer ? drop : null}
-      className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
+    <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref flex">
         {listOver && !posOffset && (
           <div
@@ -72,14 +69,14 @@ export const List = ({ list, isDragLayer }) => {
               <CardPreview key={card._id} card={card} />
             ))}
             {cardOver && (
-              <div className="placeholder-card" style={{ height: `${hoverHeight}px` }} />
+              <div className="card-placeholder" style={{ height: `${hoverHeight}px` }} />
             )}
           </div>
           <AddCard listId={listId} />
         </div>
         {listOver && !!posOffset && (
           <div
-            className="placeholder right"
+            className="list-placeholder right"
             style={{
               width: `${hoverWidth}px`,
               height: `${hoverHeight}px`
@@ -87,6 +84,7 @@ export const List = ({ list, isDragLayer }) => {
           />
         )}
       </div>
+      <CardDropZone listId={listId} />
     </div>
   )
 }

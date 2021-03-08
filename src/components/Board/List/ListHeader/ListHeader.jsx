@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core'
 import { useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useKey } from 'react-use'
 import { GET_BY_ID, UPDATE_LIST } from '../../../../store/board/BoardActions'
 import { usePopover } from '../../../Popover/Popover'
@@ -29,10 +29,10 @@ export const ListHeader = ({ list }) => {
 
   const togglePopover = usePopover()
 
-  const openMenu = ev => {
-    // ev.stopPropagation()
+  const listInStore = useSelector(state => state.boardReducer.list)
+  const toggleMenu = ev => {
     ev.avoidModal = true
-    dispatch(GET_BY_ID(list._id))
+    if (list !== listInStore) dispatch(GET_BY_ID(list._id))
     togglePopover(ev, ListMenu)
   }
 
@@ -53,8 +53,7 @@ export const ListHeader = ({ list }) => {
         className=""
         onMouseDown={ev => ev.stopPropagation()}
         onClick={ev => ev.stopPropagation()}
-        onMouseUp={openMenu}
-        >
+        onMouseUp={toggleMenu}>
         ···
       </Button>
     </header>

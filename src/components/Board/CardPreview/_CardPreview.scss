@@ -1,27 +1,28 @@
 .card-drop-container {
   > .rect-ref {
-    border-radius: 4px;
+    
+    border-radius: $cardRadius;
     padding-bottom: $cardPadding;
-    > .placeholder {
-      border-radius: inherit;
-      position: relative;
-      &.top {
-        padding-bottom: $cardPadding;
-      }
-      &.bottom {
-        padding-top: $cardPadding;
-      }
-      &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: calc(100% - #{$cardPadding});
-        border-radius: inherit;
-        background-color: rgba(0, 0, 0, 0.1);
-      }
-    }
-
+    // > .placeholder-card {
+      // border-radius: inherit;
+      // position: relative;
+      // &.top {
+      //   padding-bottom: $cardPadding;
+      // }
+      // &.bottom {
+      //   padding-top: $cardPadding;
+      // }
+      // &::after {
+      //   content: '';
+      //   display: block;
+      //   position: absolute;
+      //   width: 100%;
+      //   height: calc(100% - #{$cardPadding});
+      //   border-radius: inherit;
+      //   background-color: rgba(0, 0, 0, 0.1);
+      // }
+    // }
+    
     > .card-preview {
       border-radius: inherit;
       cursor: grab;

@@ -2,10 +2,10 @@ import { ClickAwayListener, makeStyles, Popper } from '@material-ui/core'
 import Grow from '@material-ui/core/Grow'
 import { useState } from 'react'
 import { useBus, useListener } from 'react-bus'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { useKey, useSetState } from 'react-use'
-import { CLEAR_CARD } from '../../store/board/BoardActions'
+import { CLEAR_ITEMS } from '../../store/board/BoardActions'
 
 const useStyles = makeStyles(theme => ({
   popper: {
@@ -44,26 +44,25 @@ export const usePopover = () => {
 }
 
 export const Popover = () => {
-  useListener('togglePopover', ([ev, cmp, preserveAnchor]) => {
-    togglePopover(ev, cmp, preserveAnchor)
-  })
+  useListener('togglePopover', payload => togglePopover(...payload))
 
   const initState = { anchorEl: null, DynCmp: null }
   const [{ anchorEl, DynCmp }, setState] = useSetState(initState)
+  const list = useSelector(state => state.boardReducer.list)
 
-  const isModal = useLocation().pathname.includes('board/modal')
+  const inModal = useLocation().pathname.includes('board/modal')
 
   const dispatch = useDispatch()
 
   const togglePopover = (ev, cmp, preserveAnchor) => {
-    if (ev.avoidClickAway || ev.target === document.body) return
+    if (ev.avoidPopoverClickAway || (ev.target === document.body && ev.type === 'click')) return
     if (!cmp || ev.currentTarget === anchorEl) {
-      if (!isModal) dispatch(CLEAR_CARD())
+      if (!inModal && list) dispatch(CLEAR_ITEMS())
       setState(initState)
     } else if (preserveAnchor) {
       setState({ DynCmp: cmp })
     } else {
-      ev.nativeEvent.avoidClickAway = true
+      ev.nativeEvent.avoidPopoverClickAway = true
       setState({ anchorEl: ev.currentTarget, DynCmp: cmp })
     }
   }

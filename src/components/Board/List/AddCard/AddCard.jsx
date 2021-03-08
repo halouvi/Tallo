@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_CARD } from '../../../../store/board/BoardActions'
+import { CardDropZone } from '../CardDropZone'
 
 export const AddCard = ({ listId }) => {
   const dispatch = useDispatch()
@@ -32,12 +33,19 @@ export const AddCard = ({ listId }) => {
           onChange={ev => setNewCardTitle(ev.target.value)}
         />
         <div className="flex jb">
-          <Button className="green">Add Card</Button>
+          <Button className="green" type="submit">
+            Add Card
+          </Button>
           <Button onClick={toggleAddCard}>X</Button>
         </div>
       </form>
     </ClickAwayListener>
   ) : (
-    <Button className="flex ac js" onClick={toggleAddCard}>+ Add another card</Button>
+    <>
+      <Button className="flex ac js" onClick={toggleAddCard}>
+        + Add another card
+      </Button>
+      {/* <CardDropZone listId={listId} /> */}
+    </>
   )
 }

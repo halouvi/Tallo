@@ -1,13 +1,12 @@
 .board {
   position: relative;
-  height: 89vh;
-  max-height: 100%;
+  height: 94vh;
   overflow-y: hidden;
   @include scrollBar(14px, #2934624f);
 
-  @include for-narrow-layout {
-    height: 93vh;
-  }
+  // @include for-narrow-layout {
+  //   height: 90vh;
+  // }
 
   h3 {
     margin: 0 0 0 0.5rem;

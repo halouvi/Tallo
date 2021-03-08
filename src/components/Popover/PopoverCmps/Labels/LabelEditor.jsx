@@ -1,6 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { makeId } from '../../../../service/utilService'
-import { cloneDeep as clone } from 'lodash'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 import { Button, TextField } from '@material-ui/core'
 import { useSetState } from 'react-use'
@@ -14,13 +12,13 @@ export const LabelEditor = ({ labelToEdit, closeEditor }) => {
 
   const handleInput = ({ currentTarget: { name, value } }) => setUpdatedLabel({ [name]: value })
 
-  const isNewLabel = gLabels.find(({ _id }) => _id === updatedLabel._id)
+  const isNewLabel = !gLabels.find(({ _id }) => _id === updatedLabel._id)
 
   const saveLabel = () => {
     if (isNewLabel) updateLabels([...gLabels, updatedLabel])
     else {
       const idx = gLabels.findIndex(label => label._id === labelToEdit._id)
-      const updatedLabels = clone(gLabels)
+      const updatedLabels = [...gLabels]
       updatedLabels.splice(idx, 1, updatedLabel)
       updateLabels(updatedLabels)
     }

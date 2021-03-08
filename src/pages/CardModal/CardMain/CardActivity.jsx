@@ -1,10 +1,9 @@
-import { CardAvatar } from '../../../Avatars/CardAvatar'
+import { CardAvatar } from '../../../components/Avatars/CardAvatar'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react'
 
-export const CardActivity = () => {
-  const activity = useSelector(state => state.boardReducer.card.activity)
+export const CardActivity = ({ activity }) => {
   const users = useSelector(state => state.boardReducer.board.users)
   // The activity array contains only the user Id (createdBy)
   // Here we get his name and image from the global users array

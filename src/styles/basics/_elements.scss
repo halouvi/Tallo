@@ -10,9 +10,7 @@
 }
 
 .modal-screen {
-  animation: 200ms blur;
-  backdrop-filter: blur(1.5px);
-  background-color: rgba(0, 0, 0, 0.5);
+  animation: 200ms blur forwards;
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -34,7 +32,7 @@
     height: 30px;
     min-width: 30px;
     &:hover{
-      background-color: darken($gray, 7%);
+      background-color: rgba(0, 0, 0, 0.15);
     }
   }
   &.MuiButton-sizeLarge {

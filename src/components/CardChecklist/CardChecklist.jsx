@@ -4,6 +4,7 @@ import { UPDATE_CARD } from '../../store/board/BoardActions'
 import { useToggle, useSetState } from 'react-use'
 import ProgressBar from './ProgressBar'
 import { makeId } from '../../service/utilService'
+import { cloneDeep as clone } from 'lodash'
 
 export const CardChecklist = ({ checklist, checklists }) => {
   const dispatch = useDispatch()
@@ -13,8 +14,8 @@ export const CardChecklist = ({ checklist, checklists }) => {
     _id: makeId(),
     desc: '',
     isChecked: false
-  }) 
-  
+  })
+
   const progressStatus = () => {
     var checkedItems = checklist.items.filter(item => item.isChecked === true)
     let res = (+checkedItems.length / +checklist.items.length) * 100
@@ -23,8 +24,8 @@ export const CardChecklist = ({ checklist, checklists }) => {
   }
 
   const toogleCheckBox = ({ target: { value } }) => {
-    let list = JSON.parse(JSON.stringify(checklist))
-    let lists = JSON.parse(JSON.stringify(checklists))
+    let list = clone(checklist)
+    let lists = clone(checklists)
     list.items[value].isChecked = !list.items[value].isChecked
     const listIdx = lists.findIndex(aList => aList._id === list._id)
     lists[listIdx] = list
@@ -32,8 +33,8 @@ export const CardChecklist = ({ checklist, checklists }) => {
   }
 
   const addNewItem = async () => {
-    let list = JSON.parse(JSON.stringify(checklist))
-    let lists = JSON.parse(JSON.stringify(checklists))
+    let list = clone(checklist)
+    let lists = clone(checklists)
     const listIdx = lists.findIndex(aList => aList._id === list._id)
     lists[listIdx].items.push(newItem)
     await dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
@@ -42,8 +43,8 @@ export const CardChecklist = ({ checklist, checklists }) => {
   }
 
   const removeItem = ({ target: { value } }) => {
-    let list = JSON.parse(JSON.stringify(checklist))
-    let lists = JSON.parse(JSON.stringify(checklists))
+    let list = clone(checklist)
+    let lists = clone(checklists)
     list.items.splice(value, 1)
     const listIdx = lists.findIndex(aList => aList._id === list._id)
     lists[listIdx] = list
@@ -53,7 +54,7 @@ export const CardChecklist = ({ checklist, checklists }) => {
   const handleInput = ({ target: { name, value } }) => setNewItem({ [name]: value })
 
   const removeList = () => {
-    let lists = JSON.parse(JSON.stringify(checklists))
+    let lists = clone(checklists)
     const listIdx = lists.findIndex(list => list._id === checklist._id)
     lists.splice(listIdx, 1)
     dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))

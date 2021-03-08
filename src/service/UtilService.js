@@ -16,7 +16,7 @@ export const capitalize = (string = '') => {
 }
 
 export const colorPicker = (name = 'a') => {
-  const test = range => new RegExp(`(?=[${range}])`, 'i').test(name[2])
+  const test = range => new RegExp(`(?=[${range}])`, 'i').test(name[1])
   switch (true) {
     case test('a-c'):
       return 'red'

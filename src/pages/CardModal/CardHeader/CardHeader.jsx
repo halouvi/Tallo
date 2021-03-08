@@ -1,8 +1,10 @@
 import { Button } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
-export const CardHeader = ({ title, handleEdit = () => {}, closeModal = () => {} }) => {
+export const CardHeader = ({ title, handleEdit, closeModal }) => {
   const listTitle = useSelector(state => state.boardReducer.list.title)
+
+  const blurTitle = ({ key, target }) => key === 'Enter' && target.blur()
 
   return (
     <header className="fw grid tc-a1aa g8">
@@ -12,6 +14,7 @@ export const CardHeader = ({ title, handleEdit = () => {}, closeModal = () => {}
         autoComplete="off"
         name="title"
         value={title}
+        onKeyPress={blurTitle}
         onFocus={ev => ev.target.select()}
         onChange={handleEdit}
       />

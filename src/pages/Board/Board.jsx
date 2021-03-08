@@ -32,12 +32,12 @@ export const Board = () => {
     <main className="board flex col">
       <BoardHeader />
       {boardId && (
-        <section className="container flex">
+        <main className="container flex">
           {lists.map(list => (
             <List list={list} key={list._id} />
           ))}
           <AddList />
-        </section>
+        </main>
       )}
     </main>
   )

@@ -1,7 +1,7 @@
 import { MenuItem, MenuList } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { GET_BOARD_BY_ID } from '../../../../store/board/BoardActions'
-import { usePopover } from '../../../Popover/Popover'
+import { usePopover } from '../../Popover'
 
 export const BoardSelect = () => {
   const boardId = useSelector(state => state.boardReducer.board._id)
@@ -11,7 +11,7 @@ export const BoardSelect = () => {
 
   const selectBoard = (ev, selectedBoard) => {
     if (selectedBoard !== boardId) {
-      dispatch(GET_BOARD_BY_ID(boardId))
+      dispatch(GET_BOARD_BY_ID(selectedBoard))
       togglePopover(ev)
     }
   }

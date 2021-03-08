@@ -4,13 +4,11 @@ import { useBus, useListener } from 'react-bus'
 export const VideoPlayer = ({ videoUrl, isGrouped, className }) => {
   const eventBus = useBus()
   const videoRef = useRef()
-   
-  const isPlaying = () => !videoRef.current.paused
 
   const requestVideoFromGroup = () => !isGrouped && eventBus.emit('videoRequest', videoUrl)
 
   useListener('videoRequest', requestedUrl => {
-    if (isGrouped && isPlaying()) {
+    if (isGrouped && !videoRef.current.paused) {
       if (requestedUrl === videoUrl) {
         eventBus.emit('videoResponse', getVideoState())
       }
@@ -38,8 +36,8 @@ export const VideoPlayer = ({ videoUrl, isGrouped, className }) => {
       controls
       ref={videoRef}
       onCanPlay={requestVideoFromGroup}
-      onClick={ev => isGrouped && ev.preventDefault()}>
-      <source src={videoUrl} />
-    </video>
+      onClick={ev => isGrouped && ev.preventDefault()}
+      src={videoUrl}
+    />
   )
 }

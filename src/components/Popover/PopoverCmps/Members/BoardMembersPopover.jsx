@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userService } from '../../../../service/userService'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 import { CardAvatar } from '../../../Avatars/CardAvatar'
-import { TextField } from '@material-ui/core'
+import { Button, MenuList, TextField } from '@material-ui/core'
 import { PopoverHeader } from '../../PopoverHeader'
 
 export const BoardMembersPopover = ({ setAnchorEl }) => {
@@ -35,41 +35,45 @@ export const BoardMembersPopover = ({ setAnchorEl }) => {
     )
   }
 
+  const isMe = id => id === userId
+
   return (
-    <div className="members popover-cmp flex col gb12">
+    <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Board Members" />
       <TextField
         size="small"
-        label="Search Members"
         variant="outlined"
+        label="Search Members"
         value={searchTerm}
         onChange={handleInput}
       />
-      <div className="flex col gb2">
+      <div className="flex col gb6 ">
         {users.map(user => (
-          <button
-            className={`btn  sbl${user._id === userId ? ' logged-user' : ''}`}
+          <Button
+            className={isMe(user._id) ? 'logged-user' : ''}
+            classes={{ label: 'flex ac js gr10 sbl' }}
             key={user._id}
-            onClick={() => toggleUser(user)}>
+            onClick={() => isMe(user._id) || toggleUser(user)}>
             <CardAvatar user={user} size="small" />
-            <span className="capital">{user.name}</span>
-            <span>{user._id !== userId ? 'X' : '(You)'}</span>
-          </button>
+            <span className="capital tas">{user.name}</span>
+            <span>{isMe(user._id) ? '(You)' : 'X'}</span>
+          </Button>
         ))}
       </div>
       {filteredRes[0] && (
-        <>
-          <b>Users</b>
-          <div className="flex col gb2">
-            {filteredRes.map(user => (
-              <button className="btn  sbl" key={user._id} onClick={() => toggleUser(user)}>
-                <CardAvatar user={user} size="small" />
-                <span className="capital fg1">{user.name}</span>
-                <span>+</span>
-              </button>
-            ))}
-          </div>
-        </>
+        <div className="flex col gb6">
+          <span className="tac">Users</span>
+          {filteredRes.map(user => (
+            <Button
+              classes={{ label: 'flex ac js gr10 sbl' }}
+              key={user._id}
+              onClick={() => toggleUser(user)}>
+              <CardAvatar user={user} size="small" />
+              <span className="capital tas">{user.name}</span>
+              <span>+</span>
+            </Button>
+          ))}
+        </div>
       )}
     </div>
   )
