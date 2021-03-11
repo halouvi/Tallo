@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_CARD } from '../../../../store/board/BoardActions'
-import { CardDropZone } from '../CardDropZone'
 
 export const AddCard = ({ listId }) => {
   const dispatch = useDispatch()
@@ -45,7 +44,6 @@ export const AddCard = ({ listId }) => {
       <Button className="flex ac js" onClick={toggleAddCard}>
         + Add another card
       </Button>
-      {/* <CardDropZone listId={listId} /> */}
     </>
   )
 }

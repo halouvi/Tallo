@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { boardTypes } from '../../store/board/BoardActions'
 import { List } from '../../components/Board/List/List'

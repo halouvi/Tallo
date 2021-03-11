@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -11,6 +11,8 @@ import { Button } from '@material-ui/core'
 import { useToggle } from 'react-use'
 import { usePopover } from '../../Popover/Popover'
 import moment from 'moment'
+import { getEmptyImage } from 'react-dnd-html5-backend'
+import { useRect } from 'react-use-rect'
 
 export const CardPreview = ({ card, isDragLayer }) => {
   const dispatch = useDispatch()
@@ -19,42 +21,26 @@ export const CardPreview = ({ card, isDragLayer }) => {
   const { _id: cardId, title, attachments, desc, dueDate, labels, cardVideo } = card
   const members = users.filter(({ _id }) => card.members.includes(_id))
 
-  const rectRef = useRef()
-  const [isDragging, drag] = useDrag({
-    collect: monitor => monitor.isDragging(),
-    item: { type: 'CARD' },
-    begin: () => {
-      const { height, width } = rectRef.current.getBoundingClientRect()
-      return {
-        type: 'CARD',
-        sourceId: cardId,
-        overListId: '',
-        card,
-        height,
-        width
-      }
-    }
-  })
+  const [{ width, height, top }, rectRef] = useRect()
 
-  const [{ hoverHeight = 0, posOffset = 0 }, drop] = useDrop({
-    accept: !isDragLayer ? 'CARD' : '',
-    hover: item => (item.overListId = ''),
-    collect: monitor => {
-      if (!monitor.isOver()) return {}
-      else {
-        const { top, height } = rectRef.current.getBoundingClientRect()
-        const mouseY = monitor.getClientOffset().y
-        return {
-          posOffset: top + height / 2 > mouseY ? 0 : 1,
-          hoverHeight: monitor.getItem().height
-        }
-      }
+  const [isDragging, drag, preview] = useDrag({
+    collect: monitor => monitor.isDragging(),
+    item: { type: 'card', sourceId: cardId, card, height, width }
+  })
+  useEffect(() => preview(getEmptyImage()), [])
+
+  const [posOffset, setPosOffset] = useState(0)
+  const [hoverHeight, drop] = useDrop({
+    accept: 'card',
+    hover: (item, monitor) => {
+      if (monitor.isOver({ shallow: true }))
+        setPosOffset(top + height / 2 > monitor.getClientOffset().y ? 0 : 1)
     },
+    collect: monitor => monitor.isOver({ shallow: true }) && monitor.getItem().height,
     drop: item => dispatch(HANDLE_DROP({ ...item, posOffset, targetId: cardId }))
   })
 
   const togglePopover = usePopover()
-
   const cardInStore = useSelector(state => state.boardReducer.card)
   const toggleMenu = ev => {
     ev.avoidModal = true

@@ -7,12 +7,14 @@ export const makeId = (length = 8) => {
   return txt
 }
 
-export const capitalize = (string = '') => {
+export const capitalize = string => {
   return string
-    .toLowerCase()
-    .split(/,|-| /)
-    .map(s => s[0].toUpperCase() + s.substring(1))
-    .join(' ')
+    ? string
+        .toLowerCase()
+        .split(/,|-| /)
+        .map(s => s[0].toUpperCase() + s.substring(1))
+        .join(' ')
+    : ''
 }
 
 export const colorPicker = (name = 'a') => {

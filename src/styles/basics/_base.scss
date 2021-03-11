@@ -10,6 +10,7 @@ body {
 }
 
 #root {
+  position: relative;
   color: $black;
   background: linear-gradient(rgb(0, 111, 131), rgb(0, 174, 204));
   height: 100%;

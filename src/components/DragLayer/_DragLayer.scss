@@ -1,12 +1,14 @@
 .drag-layer {
-  position: absolute;
+  position: fixed;
+  pointer-events: none;
+  will-change: left, top;
   z-index: 1000;
   transition: transform 150ms, box-shadow 150ms;
-  &:hover {
+  &.dragging {
     transform: rotate(3deg);
   }
-  &.CARD .card-preview,
-  &.LIST .list {
+  &.card .card-preview,
+  &.list .list {
     filter: brightness(0.93) !important;
     box-shadow: 0 2px 10px 0 rgba($color: #5f5f5f, $alpha: 0.5) !important;
   }

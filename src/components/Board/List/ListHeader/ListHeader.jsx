@@ -9,7 +9,7 @@ import { ListMenu } from '../../../Popover/PopoverCmps/Menus/ListMenu'
 export const ListHeader = ({ list }) => {
   const dispatch = useDispatch()
   const [{ title, timer }, setState] = useState({ title: list.title, timer: null })
-  const titleRef = useRef(null)
+  const titleRef = useRef()
 
   const preventOnFirstClick = ev => ev.target !== document.activeElement && ev.preventDefault()
   const selectOnFirstClick = ev => ev.target !== document.activeElement && ev.target.select()

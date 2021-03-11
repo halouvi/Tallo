@@ -9,6 +9,7 @@ import { DndProvider } from 'react-dnd'
 import MouseBackEnd from 'react-dnd-mouse-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import { App } from './App.jsx'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 // const hasNative = document && (document.elementsFromPoint || document.msElementsFromPoint)
 // function getDropTargetElementsAtPoint(x, y, dropTargets) {
@@ -39,7 +40,7 @@ render(
   <EventBusProvider>
     <RouterProvider>
       <ReduxProvider store={store}>
-        <DndProvider backend={MouseBackEnd}>
+        <DndProvider backend={HTML5Backend}>
           <App />
         </DndProvider>
       </ReduxProvider>

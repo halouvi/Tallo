@@ -3,27 +3,22 @@ import { List } from '../Board/List/List'
 import { CardPreview } from '../Board/CardPreview/CardPreview'
 
 export const DragLayer = () => {
-  const { item, pos } = useDragLayer(monitor => ({
-    item: monitor.getItem(),
-    pos: monitor.getSourceClientOffset()
-  }))
-
-  const { type, list, card, width, height } = item || {}
+  const [{ type, list, card, width, height }, { x, y }] = useDragLayer(monitor => [
+    monitor.getItem() || {},
+    monitor.getSourceClientOffset() || {}
+  ])
 
   return (
-    item &&
-    !!pos && (
-      <div
-        className={`drag-layer ${type}`}
-        style={{
-          top: `${pos.y}px`,
-          left: `${pos.x}px`,
-          width: `${width}px`,
-          height: `${height}px`
-        }}>
-        {type === 'LIST' && <List list={list} isDragLayer={true}/>}
-        {type === 'CARD' && <CardPreview card={card} isDragLayer={true}/>}
-      </div>
-    )
+    <div
+      className={`drag-layer${type ? ' dragging ' + type : ''}`}
+      style={{
+        top: `${y}px`,
+        left: `${x}px`,
+        width: `${width}px`,
+        height: `${height}px`
+      }}>
+      {type === 'list' && <List list={list} isDragLayer={true} />}
+      {type === 'card' && <CardPreview card={card} isDragLayer={true} />}
+    </div>
   )
 }
