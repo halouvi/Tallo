@@ -1,9 +1,9 @@
 import { Button, Checkbox } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_CARD } from '../../store/board/BoardActions'
+import { UPDATE_CARD } from 'store/board/BoardActions'
 import { useToggle, useSetState } from 'react-use'
-import ProgressBar from './ProgressBar'
-import { makeId } from '../../service/utilService'
+import { makeId } from 'service/utilService'
+import { ProgressBar } from 'components/CardChecklist/ProgressBar'
 import { cloneDeep as clone } from 'lodash'
 
 export const CardChecklist = ({ checklist, checklists }) => {
@@ -32,12 +32,12 @@ export const CardChecklist = ({ checklist, checklists }) => {
     dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
   }
 
-  const addNewItem = async () => {
+  const addNewItem = () => {
     let list = clone(checklist)
     let lists = clone(checklists)
     const listIdx = lists.findIndex(aList => aList._id === list._id)
     lists[listIdx].items.push(newItem)
-    await dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
+    dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
     setNewItem({ _id: makeId(), desc: '', isChecked: false })
     toggleInput()
   }

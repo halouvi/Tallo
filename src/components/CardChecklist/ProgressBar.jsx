@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function ProgressBar({ progress }) {
+export const ProgressBar = ({ progress }) => {
   const classes = useStyles()
 
   return (

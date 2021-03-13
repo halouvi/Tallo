@@ -6,11 +6,11 @@
     font-weight: bold;
     border-radius: 6px;
     border: 2px solid transparent;
-    cursor: pointer;
+    cursor: grab;
     &:focus {
       cursor: initial;
       background-color: white;
-      border-color: rgb(66, 66, 66);
+      border-color: rgb(120, 120, 120);
     }
   }
 }

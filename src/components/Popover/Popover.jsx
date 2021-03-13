@@ -55,14 +55,14 @@ export const Popover = () => {
   const dispatch = useDispatch()
 
   const togglePopover = (ev, cmp, preserveAnchor) => {
-    if (ev.avoidPopoverClickAway || (ev.target === document.body && ev.type === 'click')) return
+    if (ev.clickAway || (ev.target === document.body && ev.type === 'click')) return
     if (!cmp || ev.currentTarget === anchorEl) {
       if (!inModal && list) dispatch(CLEAR_ITEMS())
       setState(initState)
     } else if (preserveAnchor) {
       setState({ DynCmp: cmp })
     } else {
-      ev.nativeEvent.avoidPopoverClickAway = true
+      ev.nativeEvent.clickAway = true
       setState({ anchorEl: ev.currentTarget, DynCmp: cmp })
     }
   }

@@ -1,24 +1,32 @@
 import { useDragLayer } from 'react-dnd'
-import { List } from '../Board/List/List'
-import { CardPreview } from '../Board/CardPreview/CardPreview'
+import { memo } from 'react'
+import { useUpdateEffect } from 'react-use'
+import { List } from 'components/Board/List/List'
+import { CardPreview } from 'components/Board/CardPreview/CardPreview'
 
-export const DragLayer = () => {
-  const [{ type, list, card, width, height }, { x, y }] = useDragLayer(monitor => [
-    monitor.getItem() || {},
-    monitor.getSourceClientOffset() || {}
+export const DragLayer = memo(() => {
+  const [{ list, card, width, height }, { x, y }] = useDragLayer(mon => [
+    mon.getItem() || {},
+    mon.getSourceClientOffset() || {}
   ])
+
+  useUpdateEffect(() => {
+    document
+      .querySelectorAll('.card-preview')
+      .forEach(el => el.classList.toggle('cancel-pointer', width ? true : false))
+  }, [width])
 
   return (
     <div
-      className={`drag-layer${type ? ' dragging ' + type : ''}`}
+      className={`drag-layer${width ? ' dragging ' : ''}`}
       style={{
-        top: `${y}px`,
-        left: `${x}px`,
         width: `${width}px`,
-        height: `${height}px`
+        height: `${height}px`,
+        top: `${Math.round(y)}px`,
+        left: `${Math.round(x)}px`
       }}>
-      {type === 'list' && <List list={list} isDragLayer={true} />}
-      {type === 'card' && <CardPreview card={card} isDragLayer={true} />}
+      {list && <List list={list} />}
+      {card && <CardPreview card={card} />}
     </div>
   )
-}
+})

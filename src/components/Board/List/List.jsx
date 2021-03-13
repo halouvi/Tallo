@@ -1,60 +1,44 @@
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
-import { HANDLE_DROP } from '../../../store/board/BoardActions'
-import { CardPreview } from '../CardPreview/CardPreview'
-import { ListHeader } from './ListHeader/ListHeader'
-import { AddCard } from './AddCard/AddCard'
+import { HANDLE_DROP } from 'store/board/BoardActions'
 import { useRect } from 'react-use-rect'
-import { useEffect, useState } from 'react'
-import { getEmptyImage } from 'react-dnd-html5-backend'
-import { useSetState } from 'react-use'
+import { memo, useState } from 'react'
+import { ListHeader } from 'components/Board/List/ListHeader/ListHeader'
+import { CardPreview } from 'components/Board/CardPreview/CardPreview'
+import { AddCard } from 'components/Board/List/AddCard/AddCard'
 
-export const List = ({ list, isDragLayer }) => {
+export const List = memo(({ list }) => {
   const dispatch = useDispatch()
 
   const { _id: listId, cards } = list
 
   const [{ width, height, left }, rectRef] = useRect()
 
-  const [isDragging, drag, preview] = useDrag({
-    collect: monitor => monitor.isDragging(),
+  const [isDragging, drag] = useDrag({
+    collect: mon => mon.isDragging(),
     item: { type: 'list', sourceId: listId, list, width, height }
   })
-  useEffect(() => preview(getEmptyImage()), [])
 
-
-  const [posOffset, setPosOffset] = useState(0)
-  const [{ cardOver, listOver, hoverWidth, hoverHeight }, drop] = useDrop({
-    accept: !isDragLayer ? ['list', 'card'] : '',
-    hover: (item, monitor) => {
-      if (monitor.isOver({ shallow: true })) {
-        setPosOffset(left + width / 2 > monitor.getClientOffset().x ? 0 : 1)
-      }
-    },
-    collect: monitor =>
-      monitor.isOver({ shallow: true })
-        ? {
-            hoverWidth: monitor.getItem()?.width,
-            hoverHeight: monitor.getItem()?.height,
-            cardOver: monitor.getItemType() === 'card',
-            listOver: monitor.getItemType() === 'list'
-          }
-        : {},
-    canDrop: () => listOver || cardOver,
-    drop: item => dispatch(HANDLE_DROP({ ...item, posOffset, targetId: listId }))
+  const [hovPos, setHovPos] = useState(0)
+  const [{ type: hovType, width: hovWidth, height: hovHeight }, drop] = useDrop({
+    accept: ['list', 'card'],
+    collect: mon => (mon.isOver({ shallow: true }) ? mon.getItem() : {}),
+    hover: (_, mon) => hovHeight && setHovPos(left + width / 2 > mon.getClientOffset().x ? 0 : 1),
+    canDrop: () => hovType,
+    drop: item => dispatch(HANDLE_DROP({ ...item, hovPos, targetId: listId }))
   })
 
   return (
-    <div
-      ref={!isDragLayer ? drop : null}
-      className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
+    <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
       <div ref={rectRef} className="rect-ref flex">
-        {listOver && !posOffset && (
+        {hovType === 'list' && (
           <div
-            className="placeholder left"
+            className="list-placeholder"
             style={{
-              width: `${hoverWidth}px`,
-              height: `${hoverHeight}px`
+              order: hovPos,
+              paddingLeft: `${hovPos * 12}px`,
+              width: `${hovWidth}px`,
+              height: `${hovHeight}px`
             }}
           />
         )}
@@ -64,22 +48,13 @@ export const List = ({ list, isDragLayer }) => {
             {cards.map(card => (
               <CardPreview key={card._id} card={card} />
             ))}
-            {cardOver && (
-              <div className="card-placeholder" style={{ height: `${hoverHeight}px` }} />
+            {hovType === 'card' && (
+              <div className="card-placeholder" style={{ height: `${hovHeight}px` }} />
             )}
           </div>
           <AddCard listId={listId} />
         </div>
-        {listOver && !!posOffset && (
-          <div
-            className="list-placeholder right"
-            style={{
-              width: `${hoverWidth}px`,
-              height: `${hoverHeight}px`
-            }}
-          />
-        )}
       </div>
     </div>
   )
-}
+})

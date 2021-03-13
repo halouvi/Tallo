@@ -2,7 +2,7 @@ import { Button, ClickAwayListener } from '@material-ui/core'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
-import { ADD_LIST } from '../../../store/board/BoardActions'
+import { ADD_LIST } from 'store/board/BoardActions'
 
 export const AddList = () => {
   const dispatch = useDispatch()

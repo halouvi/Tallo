@@ -2,7 +2,7 @@ import { Button, ClickAwayListener, Input, TextField } from '@material-ui/core'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
-import { ADD_CARD } from '../../../../store/board/BoardActions'
+import { ADD_CARD } from 'store/board/BoardActions'
 
 export const AddCard = ({ listId }) => {
   const dispatch = useDispatch()

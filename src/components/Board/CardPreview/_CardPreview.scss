@@ -1,31 +1,10 @@
 .card-drop-container {
+  cursor: grab;
   > .rect-ref {
-    
     border-radius: $cardRadius;
     padding-bottom: $cardPadding;
-    // > .placeholder-card {
-      // border-radius: inherit;
-      // position: relative;
-      // &.top {
-      //   padding-bottom: $cardPadding;
-      // }
-      // &.bottom {
-      //   padding-top: $cardPadding;
-      // }
-      // &::after {
-      //   content: '';
-      //   display: block;
-      //   position: absolute;
-      //   width: 100%;
-      //   height: calc(100% - #{$cardPadding});
-      //   border-radius: inherit;
-      //   background-color: rgba(0, 0, 0, 0.1);
-      // }
-    // }
-    
     > .card-preview {
       border-radius: inherit;
-      cursor: grab;
       > .container {
         border-radius: inherit;
         &:hover {
@@ -33,19 +12,6 @@
           &.menu-btn-hovered {
             filter: none;
           }
-        }
-        
-        > *:not(:last-child) {
-          margin-bottom: 8px;
-        }
-
-        .card-title {
-          margin-bottom: 16px;
-          color: rgb(50, 50, 50);
-        }
-
-        .card-desc {
-          margin-bottom: 24px;
         }
 
         > .labels {

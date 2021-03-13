@@ -1,4 +1,4 @@
-import { boardService } from '../../service/boardService'
+import { boardService } from '../../service/BoardService'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { userTypes } from '../user/UserActions'
 import { cloneDeep as clone } from 'lodash'
@@ -40,6 +40,7 @@ export const GET_BOARD_BY_ID = id => async dispatch => {
 }
 
 export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
+  name === 'users' && console.log({ name, value })
   const nextBoard = clone(getState().boardReducer.board)
   if (name === 'users') _removeUserFromCards(nextBoard, value)
   nextBoard[name] = value
@@ -117,23 +118,23 @@ export const DELETE_CARD = cardId => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const HANDLE_DROP = ({ type, sourceId, targetId, posOffset }) => (dispatch, getState) => {
+export const HANDLE_DROP = ({ type, sourceId, targetId, hovPos }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   if (type === 'list') {
     const { listIdx: sourceIdx } = _findItems(nextBoard, sourceId)
     const [list] = nextBoard.lists.splice(sourceIdx, 1)
     const { listIdx: targetIdx } = _findItems(nextBoard, targetId)
-    nextBoard.lists.splice(targetIdx + posOffset, 0, list)
+    nextBoard.lists.splice(targetIdx + hovPos, 0, list)
   } else {
     const { list: sourceList, cardIdx: sourceIdx } = _findItems(nextBoard, sourceId)
     const [card] = sourceList.cards.splice(sourceIdx, 1)
     const { list: targetList, cardIdx: targetIdx } = _findItems(nextBoard, targetId)
-    if (posOffset === null) {
-      // posOffset is set to null when transfering card via menu and not DnD
+    if (hovPos === null) {
+      // hovPos is set to null when transfering card via menu and not DnD
       // this calculation needs to happen after the dragged card has been spliced
-      posOffset = sourceList === targetList && targetIdx >= sourceIdx ? 1 : 0
+      hovPos = sourceList === targetList && targetIdx >= sourceIdx ? 1 : 0
     }
-    targetList.cards.splice(targetIdx + posOffset, 0, card)
+    targetList.cards.splice(targetIdx + hovPos, 0, card)
   }
   dispatch(SAVE_BOARD(nextBoard))
 }

@@ -252,6 +252,12 @@
   }
 }
 
+// overflow
+
+.ofy-h {
+  overflow-y: hidden;
+}
+
 .grid {
   display: grid;
   &.tc1 {
@@ -591,9 +597,9 @@
   }
 }
 
-// Font Size 
+// Font Size
 
-.rem{
+.rem {
   font-size: 1rem;
 }
 
@@ -761,6 +767,13 @@
 
 .not-allowed {
   cursor: not-allowed;
+}
+
+.cancel-pointer {
+  pointer-events: none;
+  * {
+    pointer-events: none;
+  }
 }
 // Aspect ratios
 

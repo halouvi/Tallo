@@ -1,6 +1,7 @@
-.modal-screen {
-  @include for-medium-layout {
-    @include scrollBar(12px, whitesmoke);
+.card.modal-screen {
+  overflow: scroll;
+  @include for-narrow-layout {
+    @include scrollBar(0px, whitesmoke);
   }
   @import './CardNav/CardNav';
 
@@ -27,10 +28,9 @@
     }
 
     @import './CardHeader/CardHeader';
-    
-    @import './CardMain/CardMain';
-    
-    @import './CardAside/CardAside';
 
+    @import './CardMain/CardMain';
+
+    @import './CardAside/CardAside';
   }
 }

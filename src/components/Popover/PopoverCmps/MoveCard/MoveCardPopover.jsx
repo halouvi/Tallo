@@ -28,7 +28,7 @@ export const MoveCardPopover = () => {
     dispatch(
       HANDLE_DROP({
         type: 'card',
-        posOffset: null,
+        hovPos: null,
         sourceId: card._id,
         targetId: targetPos
       })

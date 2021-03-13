@@ -1,59 +1,53 @@
 import { Button } from '@material-ui/core'
+import { usePopover } from 'components/Popover/Popover'
+import { ListMenu } from 'components/Popover/PopoverCmps/Menus/ListMenu'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useKey } from 'react-use'
-import { GET_BY_ID, UPDATE_LIST } from '../../../../store/board/BoardActions'
-import { usePopover } from '../../../Popover/Popover'
-import { ListMenu } from '../../../Popover/PopoverCmps/Menus/ListMenu'
+import { GET_BY_ID, UPDATE_LIST } from 'store/board/BoardActions'
 
 export const ListHeader = ({ list }) => {
   const dispatch = useDispatch()
+  const listId = list._id
   const [{ title, timer }, setState] = useState({ title: list.title, timer: null })
-  const titleRef = useRef()
+  const ref = useRef()
 
-  const preventOnFirstClick = ev => ev.target !== document.activeElement && ev.preventDefault()
-  const selectOnFirstClick = ev => ev.target !== document.activeElement && ev.target.select()
+  const isBlurred = ev => ev.target !== document.activeElement
+  const preventOnFirstClick = ev => isBlurred(ev) && ev.preventDefault()
+  const selectOnFirstClick = ev => isBlurred(ev) && ev.target.select()
 
-  const blurTitle = () => titleRef.current.blur()
-  useKey(['Escape', 'Enter'], blurTitle)
+  const blurTitle = () => ref.current.blur()
+  useKey('Escape', blurTitle)
+  useKey('Enter', blurTitle)
 
   const handleInput = ({ target: { name, value } }) => {
     clearTimeout(timer)
     setState({
-      title: value,
-      timer: setTimeout(() => {
-        dispatch(UPDATE_LIST({ name, value, listId: list._id }))
-      }, 500)
+      [name]: value,
+      timer: setTimeout(() => dispatch(UPDATE_LIST({ name, value, listId })), 500)
     })
   }
 
   const togglePopover = usePopover()
-
-  const listInStore = useSelector(state => state.boardReducer.list)
+  const { list: listInStore, card: cardInStore } = useSelector(state => state.boardReducer)
   const toggleMenu = ev => {
-    ev.avoidModal = true
-    if (list !== listInStore) dispatch(GET_BY_ID(list._id))
+    if (listInStore?._id !== listId || cardInStore) dispatch(GET_BY_ID(listId))
     togglePopover(ev, ListMenu)
   }
 
   return (
-    <header className="flex ac jb pointer">
+    <header className="flex ac jb gr2">
       <input
         autoComplete="off"
         name="title"
         value={title}
-        ref={titleRef}
-        className="title fast f-110"
+        ref={ref}
+        className="title fg1 fast"
         onMouseDown={preventOnFirstClick}
         onMouseUp={selectOnFirstClick}
         onChange={handleInput}
       />
-      <Button
-        size="small"
-        className=""
-        onMouseDown={ev => ev.stopPropagation()}
-        onClick={ev => ev.stopPropagation()}
-        onMouseUp={toggleMenu}>
+      <Button size="small" onClick={toggleMenu}>
         ···
       </Button>
     </header>

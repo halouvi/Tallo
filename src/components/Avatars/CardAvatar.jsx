@@ -1,6 +1,6 @@
 import Tooltip from '@material-ui/core/Tooltip'
 import Avatar from '@material-ui/core/Avatar'
-import { capitalize, colorPicker } from '../../service/utilService'
+import { capitalize, colorPicker } from 'service/utilService'
 
 export const CardAvatar = ({ user: { name, imgUrl }, size = 'medium', tooltip, className }) => {
   return (

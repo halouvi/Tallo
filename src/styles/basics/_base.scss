@@ -1,19 +1,22 @@
 * {
   box-sizing: border-box;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1;
+  @include scrollBar(14px, rgba(0, 0, 0, 0.5));
 }
 
 body {
   margin: 0;
-  height: 100vh;
 }
 
 #root {
+  display: flex;
+  flex-direction: column;
   position: relative;
   color: $black;
   background: linear-gradient(rgb(0, 111, 131), rgb(0, 174, 204));
-  height: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 b {

@@ -1,14 +1,14 @@
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip'
-import { capitalize, colorPicker } from '../../service/utilService'
+import { capitalize, colorPicker } from 'service/utilService'
 
-export const CardAvatars = ({ users, max, className, size = 'medium', isDragLayer }) => {
+export const CardAvatars = ({ users, max, className, size = 'medium' }) => {
   return (
     <div className={className}>
       <AvatarGroup max={max}>
         {users.map(({ _id, name, imgUrl }) => (
-          <Tooltip title={capitalize(name)} arrow key={_id} disableHoverListener={isDragLayer}>
+          <Tooltip title={capitalize(name)} arrow key={_id}>
             <Avatar
               src={imgUrl || '/'}
               alt={capitalize(name)}

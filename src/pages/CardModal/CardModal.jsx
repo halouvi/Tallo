@@ -24,7 +24,7 @@ export const CardModal = () => {
 
   const card = useSelector(state => state.boardReducer.card)
 
-  const [{ title, desc }, setEditables] = useSetState({ title: '', desc: '' })
+  const [{ title, desc, timer }, setEditables] = useSetState({ title: '', desc: '', timer: null })
   const updateEditablesOnCardNav = () => setEditables({ title: card.title, desc: card.desc })
   useUpdateEffect(updateEditablesOnCardNav, [card?._id])
 
@@ -35,16 +35,17 @@ export const CardModal = () => {
   }
   useKey('Escape', ev => setTimeout(() => closeModal(ev), 0))
 
-  const [timer, setTimer] = useState(null)
   const handleEdit = ({ currentTarget: { name, value } }) => {
-    setEditables({ [name]: value })
     clearTimeout(timer)
-    setTimer(setTimeout(() => dispatch(UPDATE_CARD({ name, value, cardId })), 500))
+    setEditables({
+      [name]: value,
+      timer: setTimeout(() => dispatch(UPDATE_CARD({ name, value, cardId })), 500)
+    })
   }
 
   const { members, labels, cardVideo, attachments, checklists, activity } = card || {}
   return (
-    <div className="modal-screen">
+    <div className="card modal-screen">
       <CardNav />
       {card && (
         <ClickAwayListener onClickAway={closeModal}>

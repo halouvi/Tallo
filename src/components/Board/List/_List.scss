@@ -7,12 +7,6 @@ $listPadding: 6px;
     > .list-placeholder {
       position: relative;
       border-radius: inherit;
-      &.left {
-        padding-right: calc(#{$listPadding} * 2);
-      }
-      &.right {
-        padding-left: calc(#{$listPadding} * 2);
-      }
       &::after {
         content: '';
         display: block;
@@ -25,27 +19,21 @@ $listPadding: 6px;
     }
 
     > .list {
+      max-height: 83.5vh;
       height: fit-content;
       width: $listWidth;
       border-radius: inherit;
       padding: 6px;
+      cursor: grab;
 
       @import './ListHeader/ListHeader';
 
       > .cards {
-        max-height: 75vh;
         overflow-y: auto;
-        overflow-x: hidden;
         @include scrollBar(6px, #2934624f);
 
         .card-placeholder {
           position: relative;
-          &.top {
-            padding-bottom: $cardPadding;
-          }
-          &.bottom {
-            padding-top: $cardPadding;
-          }
           &::after {
             content: '';
             display: block;
@@ -58,10 +46,5 @@ $listPadding: 6px;
         }
       }
     }
-  }
-  > .drop-zone {
-    margin-top: -42px;
-    max-height: 100%;
-    height: 100%;
   }
 }
