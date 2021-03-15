@@ -1,55 +1,55 @@
 import Axios from 'axios'
 import jwtDecode from 'jwt-decode'
-const BASE_URL = process.env.NODE_ENV !== 'development' ? '/api/' : '//localhost:3030/api/'
+const BASE_URL = process.env.NODE_ENV !== 'development' ? '/api/' : 'http://192.168.1.3:3030/api/'
 var axios = Axios.create({
   withCredentials: true
 })
 
-let accessToken = null
- 
 export const httpService = {
-  get: (endpoint, data) => {
-    return ajax(endpoint, 'GET', data)
+  get: async (endpoint, data) => {
+    if (newTokensNeeded(endpoint)) await getNewTokens()
+    return await ajax(endpoint, 'GET', data)
   },
-  post(endpoint, data) {
-    return ajax(endpoint, 'POST', data)
+
+  post: async (endpoint, data) => {
+    if (newTokensNeeded(endpoint)) await getNewTokens()
+    return await ajax(endpoint, 'POST', data)
   },
-  put(endpoint, data) {
-    return ajax(endpoint, 'PUT', data)
+
+  put: async (endpoint, data) => {
+    if (newTokensNeeded(endpoint)) await getNewTokens()
+    return await ajax(endpoint, 'PUT', data)
   },
-  delete(endpoint, data) {
-    return ajax(endpoint, 'DELETE', data)
+
+  delete: async (endpoint, data) => {
+    if (newTokensNeeded(endpoint)) await getNewTokens()
+    return await ajax(endpoint, 'DELETE', data)
   }
 }
 
-async function ajax(endpoint, method = 'get', data = null) {
+let accessToken = null
+const ajax = async (endpoint, method, data = null) => {
   try {
-    if (newTokensNeeded(endpoint)) await getNewTokens()
     const res = await axios({
       url: BASE_URL + endpoint,
       headers: { authorization: `bearer ${accessToken}` },
       method,
       data
     })
-    if (typeof res.data.accessToken !== 'undefined') accessToken = res.data.accessToken
+    if (res.data.accessToken !== undefined) accessToken = res.data.accessToken
     return res.data
-  } catch (err) {
-    console.error(`Had issues ${method}ing to server:\n${err}`)
+  } catch ({ response: { data: err } }) {
     throw err
   }
 }
 
-export function newTokensNeeded(endpoint = '') {
-  if (endpoint.includes('logout') || endpoint.includes('login')) return false
+export const newTokensNeeded = endpoint => {
+  if (endpoint.match(/login|signup|logout|validate_email/)) return false
   const { exp } = jwtDecode(accessToken)
   return Date.now() >= exp * 1000 ? true : false
 }
 
-export async function getNewTokens() {
-  try {
-    const res = await axios.post(`${BASE_URL}auth/refresh_token`)
-    accessToken = res.data.accessToken
-  } catch (error) {
-    throw error
-  }
+export const getNewTokens = async () => {
+  const res = await ajax('auth/refresh_token', 'POST')
+  accessToken = res.data.accessToken
 }

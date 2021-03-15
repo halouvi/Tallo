@@ -1,0 +1,80 @@
+import { useSetState, useUpdateEffect } from 'react-use'
+import { useDispatch, useSelector } from 'react-redux'
+import { userService } from '../../../../service/userService'
+import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
+import { CardAvatar } from '../../../Avatars/CardAvatar'
+import { Button, MenuList, TextField } from '@material-ui/core'
+import { PopoverHeader } from '../../PopoverHeader'
+
+export const BoardMembersPopover = ({ setAnchorEl }) => {
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.boardReducer.board.users)
+  const userId = useSelector(state => state.userReducer.user._id)
+  const [{ searchTerm, searchRes, filteredRes }, setState] = useSetState({
+    searchTerm: '',
+    searchRes: [],
+    filteredRes: []
+  })
+
+  const handleInput = ({ target: { value } }) => setState({ searchTerm: value })
+
+  useUpdateEffect(async () => {
+    setState({ searchRes: searchTerm ? await userService.query(searchTerm) : [] })
+  }, [searchTerm])
+
+  useUpdateEffect(() => {
+    setState({ filteredRes: searchRes.filter(res => !users.some(user => res._id === user._id)) })
+  }, [searchRes, users])
+
+  const toggleUser = user => {
+    dispatch(
+      UPDATE_BOARD({
+        name: 'users',
+        value: users.includes(user) ? users.filter(currUser => currUser !== user) : [...users, user]
+      })
+    )
+  }
+
+  const isMe = id => id === userId
+
+  return (
+    <div className="popover-cmp flex col gb6">
+      <PopoverHeader title="Board Members" />
+      <TextField
+        size="small"
+        variant="outlined"
+        label="Search Members"
+        value={searchTerm}
+        onChange={handleInput}
+      />
+      <div className="flex col gb6 ">
+        {users.map(user => (
+          <Button
+            className={isMe(user._id) ? 'logged-user' : ''}
+            classes={{ label: 'flex ac js gr10 sbl' }}
+            key={user._id}
+            onClick={() => isMe(user._id) || toggleUser(user)}>
+            <CardAvatar user={user} size="small" />
+            <span className="capital tas">{user.name}</span>
+            <span>{isMe(user._id) ? '(You)' : 'X'}</span>
+          </Button>
+        ))}
+      </div>
+      {filteredRes[0] && (
+        <div className="flex col gb6">
+          <span className="tac">Users</span>
+          {filteredRes.map(user => (
+            <Button
+              classes={{ label: 'flex ac js gr10 sbl' }}
+              key={user._id}
+              onClick={() => toggleUser(user)}>
+              <CardAvatar user={user} size="small" />
+              <span className="capital tas">{user.name}</span>
+              <span>+</span>
+            </Button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

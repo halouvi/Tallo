@@ -1,10 +1,8 @@
 // COLOR PALETTE
 
 $brand: #9149a7;
-$white: #f8f8f8;
-$grey1: #c9c9c9;
-$grey2: #929292;
-$grey3: #505050;
+$white: #ffffff;
+$gray: #cfcfcf;
 $black: #111111;
 
 // LAYOUT BREAKPOINTS
@@ -15,4 +13,9 @@ $breakDesktop: 900px;
 $breakWide: 1100px;
 
 $cardPadding: 6px;
-$listPadding: 6px;
+$cardRadius: 4px;
+
+$shadow1: 0px 2px 4px 1px rgba(100, 100, 100, 0.4);
+$shadow2: 0px 2px 2px 0px rgba(100, 100, 100, 0.3);
+
+$listWidth: 270px;

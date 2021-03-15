@@ -1,5 +1,5 @@
 {
-  "name": "hello-react",
+  "name": "tallo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,8 +16,8 @@
     "node-sass": "^4.14.1",
     "react": "^17.0.1",
     "react-beforeunload": "^2.4.0",
+    "react-bus": "^2.0.1",
     "react-dnd": "^11.1.3",
-    "react-dnd-mouse-backend": "^1.0.0-rc.2",
     "react-dnd-touch-backend": "^11.1.3",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
@@ -25,6 +25,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-use": "^15.3.8",
+    "react-use-rect": "^1.0.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",

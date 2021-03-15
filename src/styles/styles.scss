@@ -7,43 +7,29 @@
 // BASICS
 @import './basics/base';
 @import './basics/effects';
+@import './basics/elements';
 @import './basics/helpers';
 @import './basics/layout';
 
 // COMPONENTS
 @import '../components/Header/Header';
-@import '../components/Header/UserMenu/UserMenu';
 @import '../components/Home/HomeHero/HomeHero';
 @import '../components/Home/HomeMain/HomeMain';
 @import '../components/Home/HomeQuotes/HomeQuotes';
 @import '../components/Home/HomeGetStarted/HomeGetStarted';
 @import '../components/Home/HomeFooter/HomeFooter';
-@import '../components/Board/List/List';
-@import '../components/Board/List/ListMenu/ListMenu';
-@import '../components/Board/Card/Card';
 @import '../components/Board/BoardHeader/BoardHeader';
-@import '../components/Board/BoardHeader/BoardsSelect/BoardsSelect';
-@import '../components/Board/BoardHeader/BoardMembers/BoardMembers';
-@import '../components/Board/BoardHeader/ColorPicker/ColorPicker';
-@import '../components/Board/BoardHeader/Popover/Popover';
+@import '../components/Board/List/List';
+@import '../components/Board/CardPreview/CardPreview';
 @import '../components/DragLayer/DragLayer';
+@import '../components/Loader/Loader';
+@import '../components/Avatars/CardAvatar';
+@import '../components/Popover/PopoverCmps/PopoverCmp';
+@import '../components/CardChecklist/CardChecklist';
+@import '../components/CreateBoardModal/CreateBoardModal';
+@import '../components/LoginSignup/LoginSignup';
 
-@import '../components/Board/CardModal/SideBar/SideBar';
-@import '../components/Board/ReUsables/ReUsables';
-@import '../components/Board/ReUsables/Members/Members';
-@import '../components/Board/ReUsables/DeleteCard/DeleteCard';
-@import '../components/Board/ReUsables/Labels/Labels';
-@import '../components/Board/ReUsables/AddVideo/AddVideo';
-@import '../components/Board/ReUsables/Attachment/Attachment';
-@import '../components/Board/ReUsables/DueDate/DueDate';
-@import '../components/Board/ReUsables/CheckList/CheckList';
-@import '../components/Board/CardChecklists/CardChecklists';
-@import '../components/Board/Card/CardMenu/CardMenu';
-
-
-//VIEWS
+//PAGES
 @import '../pages/Home/Home';
 @import '../pages/Board/Board';
-@import '../components/Board/CardModal/CardModal';
-@import '../components/Board/CreateBoardModal/CreateBoardModal';
-@import '../components/LoginSignup/LoginSignup';
+@import '../pages/CardModal/CardModal';

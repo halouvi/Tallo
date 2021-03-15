@@ -1,0 +1,20 @@
+&.due-date-section {
+  > p {
+    margin: 0 15px 8px !important;
+  }
+
+  .due-date-form {
+    > :not(:last-child) {
+      margin-bottom: 15px;
+    }
+
+    button {
+      align-self: flex-start;
+      padding: 3px 6px;
+      border-radius: 3px;
+      background-color: royalblue;
+      color: white;
+      width: fit-content;
+    }
+  }
+}

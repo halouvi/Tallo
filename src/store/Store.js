@@ -6,6 +6,6 @@ import { userReducer } from './user/UserReducer'
 
 const rootReducer = combineReducers({
   userReducer,
-  boardReducer,
+  boardReducer
 })
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))

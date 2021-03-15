@@ -1,0 +1,11 @@
+.checklist {
+  .item {
+    width: 100%;
+    @include for-medium-layout {
+      width: 50%;
+      &:nth-child(odd) {
+        margin-inline-end: 16px;
+      }
+    }
+  }
+}

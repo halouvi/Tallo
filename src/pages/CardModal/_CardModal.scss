@@ -1,0 +1,36 @@
+.card.modal-screen {
+  overflow: scroll;
+  @include for-narrow-layout {
+    @include scrollBar(0px, whitesmoke);
+  }
+  @import './CardNav/CardNav';
+
+  > .card-modal {
+    padding: 6px;
+    margin: 0;
+    width: 100vw;
+    border: 1px solid rgb(161, 161, 161);
+    border-radius: 0;
+    grid-template-columns: 1fr;
+    @include for-medium-layout {
+      grid-template-columns: 1fr auto;
+      padding: 16px;
+      margin: 10vh 0;
+      width: 800px;
+      border: none;
+      border-radius: 6px;
+      box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    img.section-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    @import './CardHeader/CardHeader';
+
+    @import './CardMain/CardMain';
+
+    @import './CardAside/CardAside';
+  }
+}

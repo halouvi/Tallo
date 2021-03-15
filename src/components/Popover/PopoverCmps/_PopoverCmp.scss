@@ -1,0 +1,31 @@
+.popover-cmp {
+  padding: 12px;
+  width: 100vw;
+  border-radius: 4px;
+  background-color: $white;
+  box-shadow: $shadow1;
+  &.small {
+    padding: 0;
+  }
+  @include for-medium-layout {
+    width: 300px;
+    &.small {
+      padding: 0;
+      width: fit-content;
+    }
+  }
+
+  .logged-user {
+    cursor: not-allowed;
+    order: -1;
+    &:hover {
+      background-color: transparent !important;
+      filter: none !important;
+    }
+  }
+  @import './Labels/LabelsPopover';
+  @import './AddVideo/VideoPopover';
+  @import './Attachment/AttachmentPopover';
+  @import './DueDate/DueDatePopover';
+  @import './CheckList/CheckListPopover';
+}

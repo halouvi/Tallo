@@ -1,0 +1,9 @@
+> nav {
+  position: fixed;
+  top: 5%;
+  padding: 0 1%;
+  display: none;
+  @include for-medium-layout {
+    display: flex;
+  }
+}

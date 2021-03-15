@@ -1,29 +1,32 @@
 import { useDragLayer } from 'react-dnd'
-import { List } from '../Board/List/List'
-import { Card } from '../Board/Card/Card'
+import { memo } from 'react'
+import { useUpdateEffect } from 'react-use'
+import { List } from 'components/Board/List/List'
+import { CardPreview } from 'components/Board/CardPreview/CardPreview'
 
-export const DragLayer = () => {
-  const { item, pos } = useDragLayer(monitor => ({
-    item: monitor.getItem(),
-    pos: monitor.getSourceClientOffset()
-  }))
+export const DragLayer = memo(() => {
+  const [{ list, card, width, height }, { x, y }] = useDragLayer(mon => [
+    mon.getItem() || {},
+    mon.getSourceClientOffset() || {}
+  ])
 
-  const { type, list, card, width, height } = item || {}
+  useUpdateEffect(() => {
+    document
+      .querySelectorAll('.card-preview')
+      .forEach(el => el.classList.toggle('cancel-pointer', width ? true : false))
+  }, [width])
 
   return (
-    item &&
-    !!pos && (
-      <div
-        className={`drag-layer ${type}`}
-        style={{
-          top: `${pos.y}px`,
-          left: `${pos.x}px`,
-          width: `${width}px`,
-          height: `${height}px`
-        }}>
-        {type === 'LIST' && <List list={list} />}
-        {type === 'CARD' && <Card card={card} />}
-      </div>
-    )
+    <div
+      className={`drag-layer${width ? ' dragging ' : ''}`}
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        top: `${Math.round(y)}px`,
+        left: `${Math.round(x)}px`
+      }}>
+      {list && <List list={list} />}
+      {card && <CardPreview card={card} />}
+    </div>
   )
-}
+})

@@ -1,0 +1,30 @@
+> .add-list {
+  padding: 0 $listPadding;
+  min-width: $listWidth;
+  > button {
+    * {
+      padding: 0 $listPadding;
+      color: $white !important;
+    }
+  }
+  > * {
+    min-height: 50px;
+    padding: $listPadding;
+    input {
+      color: rgb(50, 50, 50);
+      background-color: transparent;
+      padding: 8px 6px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      &:focus {
+        cursor: initial;
+        background-color: white;
+        border-color: rgb(120, 120, 120);
+      }
+    }
+  }
+}

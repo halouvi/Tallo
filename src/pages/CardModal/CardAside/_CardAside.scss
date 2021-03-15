@@ -1,0 +1,12 @@
+> aside {
+  grid-column: 1;
+  @include for-medium-layout {
+    grid-column: 2;
+  }
+  .buttons {
+    grid-template-columns: 1fr 1fr;
+    @include for-medium-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+}
