@@ -65,13 +65,10 @@ export const Popover = () => {
       setState({ DynCmp: cmp })
     } else if (anchorId) {
       ev.nativeEvent.avoidClickAway = true
-      // const prevAnchor = anchorEl
+      const prevAnchor = anchorEl
       setState(initState)
-      setTimeout(() => {
-        const nextAnchor = document.querySelector(`[anchorid=${anchorId}]`)
-        // if (prevAnchor !== nextAnchor || !DynCmp) 
-        setState({ anchorEl: nextAnchor, DynCmp: cmp })
-      }, 0)
+      const nextAnchor = document.querySelector(`[anchorid=${anchorId}]`)
+      nextAnchor !== prevAnchor && setState({ anchorEl: nextAnchor, DynCmp: cmp })
     } else {
       ev.nativeEvent.avoidClickAway = true
       setState({ anchorEl: ev.currentTarget, DynCmp: cmp })
