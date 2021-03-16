@@ -1,13 +1,8 @@
-import { useDrag, useDrop } from 'react-dnd'
-import { useDispatch } from 'react-redux'
-import { HANDLE_DROP } from 'store/board/BoardActions'
-import { useRect } from 'react-use-rect'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { memo, useState } from 'react'
 import { ListHeader } from 'components/Board/List/ListHeader/ListHeader'
 import { CardPreview } from 'components/Board/CardPreview/CardPreview'
 import { AddCard } from 'components/Board/List/AddCard/AddCard'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
-import { useListener } from 'react-bus'
 
 export const List = memo(({ list, idx }) => {
   const { _id: listId, cards } = list
@@ -22,7 +17,7 @@ export const List = memo(({ list, idx }) => {
               <>
                 <div {...droppableProps} ref={innerRef} className="drop-zone" />
                 <div
-                  className={`container gray flex col gb6${
+                  className={`container gray flex col${
                     isDropAnimating ? ' dropping' : isDragging ? ' dragging' : ''
                   }`}>
                   <ListHeader
@@ -30,7 +25,7 @@ export const List = memo(({ list, idx }) => {
                     dragHandleProps={dragHandleProps}
                     setIsTitleBlurred={setIsTitleBlurred}
                   />
-                  <div className="cards flex col">
+                  <div className="cards flex col gb6">
                     {cards.map((card, idx) => (
                       <CardPreview key={card._id} card={card} idx={idx} />
                     ))}

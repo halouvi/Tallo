@@ -10,11 +10,10 @@ import { DragLayer } from 'components/DragLayer/DragLayer'
 import FPSStats from 'react-fps-stats'
 import { Droppable } from 'react-beautiful-dnd'
 
-export const Board = () => {
+export const Board = ({ isDragging }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
-
-  const boards = useSelector(state => state.userReducer.user?.boards)
+  // const history = useHistory()
+  // const boards = useSelector(state => state.userReducer.user?.boards)
   const { _id: boardId = '', lists = [] } = useSelector(state => state.boardReducer.board) || {}
 
   useEffect(() => {
@@ -33,7 +32,7 @@ export const Board = () => {
   return (
     <main className="board fg1 flex col">
       {/* <FPSStats/> */}
-      <BoardHeader />
+      <BoardHeader isDragging={isDragging} />
       {boardId && (
         <Droppable droppableId="board" direction="horizontal" type="LIST">
           {({ droppableProps, placeholder, innerRef }, snapshot) => (

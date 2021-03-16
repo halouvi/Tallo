@@ -3,7 +3,8 @@ import { boardTypes } from './BoardActions'
 const initState = {
   board: null,
   list: null,
-  card: null
+  card: null,
+  isDragging: false
 }
 
 export const boardReducer = (state = initState, { type, payload }) => {
@@ -20,6 +21,11 @@ export const boardReducer = (state = initState, { type, payload }) => {
         ...state,
         list: payload.list,
         card: payload.card
+      }
+    case boardTypes.SET_IS_DRAGGING:
+      return {
+        ...state,
+        isDragging: payload
       }
     default:
       return state

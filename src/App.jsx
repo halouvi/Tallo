@@ -14,7 +14,7 @@ import { Loader } from './components/Loader/Loader'
 import { Popover } from './components/Popover/Popover'
 import './styles/styles.scss'
 import { DragDropContext } from 'react-beautiful-dnd'
-import { HANDLE_DROP } from 'store/board/BoardActions'
+import { boardTypes, HANDLE_DROP } from 'store/board/BoardActions'
 
 export const App = () => {
   const dispatch = useDispatch()
@@ -27,16 +27,22 @@ export const App = () => {
 
   useBeforeunload(socketService.terminate)
 
-  const blurAll = () => document.activeElement.blur()
+  const onDragStart = () => {
+    document.activeElement.blur()
+    dispatch({ type: boardTypes.SET_IS_DRAGGING, payload: true })
+  }
 
-  const handleDrop = res => dispatch(HANDLE_DROP(res))
+  const onDragEnd = res => {
+    dispatch(HANDLE_DROP(res))
+    dispatch({ type: boardTypes.SET_IS_DRAGGING, payload: false })
+  }
 
   const PrivateRoute = props => (user?._id ? <Route {...props} /> : <Redirect to="/" />)
 
   return isLoading ? (
     <Loader />
   ) : (
-    <DragDropContext onDragStart={blurAll} onDragEnd={handleDrop}>
+    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <Header />
       <Switch>
         <PrivateRoute path="/board" component={Board} />

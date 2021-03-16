@@ -1,0 +1,9 @@
+.trash {
+  width: 250px;
+  height: 100%;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 100ms, background-color 100ms;
+}

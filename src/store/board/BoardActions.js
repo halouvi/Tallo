@@ -1,4 +1,4 @@
-import { boardService } from '../../service/BoardService'
+import { boardService } from '../../service/boardService'
 import { socketService, socketTypes } from '../../service/socketService.js'
 import { userTypes } from '../user/UserActions'
 import { cloneDeep as clone } from 'lodash'
@@ -6,7 +6,8 @@ import { cloneDeep as clone } from 'lodash'
 export const boardTypes = {
   RESET_STATE: 'RESET_STATE',
   SET_BOARD: 'SET_BOARD',
-  SET_ITEMS: 'SET_ITEMS'
+  SET_ITEMS: 'SET_ITEMS',
+  SET_IS_DRAGGING: 'SET_IS_DRAGGING'
 }
 
 export const CLEAR_BOARD = () => dispatch => dispatch({ type: boardTypes.RESET_STATE })
@@ -131,7 +132,7 @@ export const HANDLE_DROP = ({ source, destination, type }) => (dispatch, getStat
     const { list: sourceList } = _findItems(nextBoard, source.droppableId)
     const { list: targetList } = _findItems(nextBoard, destination.droppableId)
     const [card] = sourceList.cards.splice(source.index, 1)
-    targetList.cards.splice(destination.index, 0, card)
+    targetList?.cards.splice(destination.index, 0, card)
   }
   dispatch(SAVE_BOARD(nextBoard))
 }

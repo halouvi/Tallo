@@ -52,9 +52,22 @@ export const CardPreview = memo(({ card, idx }) => {
   }
 
   const [menuBtnHovered, setMenuBtnHovered] = useToggle(false)
+
+  const classPicker = ({ isDragging, isDropAnimating, draggingOver }) => {
+    return menuBtnHovered
+      ? ' menu-btn-hovered'
+      : isDropAnimating && draggingOver === 'TRASH'
+      ? ' trashing'
+      : isDropAnimating
+      ? ' dropping'
+      : isDragging
+      ? ' dragging'
+      : ''
+  }
+
   return (
     <Draggable draggableId={cardId} index={idx}>
-      {({ draggableProps, dragHandleProps, innerRef }, { isDragging, isDropAnimating }) => (
+      {({ draggableProps, dragHandleProps, innerRef }, snapshot) => (
         <div
           ref={innerRef}
           {...draggableProps}
@@ -62,15 +75,8 @@ export const CardPreview = memo(({ card, idx }) => {
           className={`card-preview flex col gb8 sbl`}>
           <div
             onClick={openModal}
-            className={`card-container white flex col p12 gb8 sbl rel shdw2${
-              menuBtnHovered
-                ? ' menu-btn-hovered'
-                : isDropAnimating
-                ? ' dropping'
-                : isDragging
-                ? ' dragging'
-                : ''
-            }`}>
+            className={`card-container white flex col p12 gb8 sbl rel shdw2
+            ${classPicker(snapshot)}`}>
             <div className="flex jb ac">
               <span className="title">{title}</span>
               <Button

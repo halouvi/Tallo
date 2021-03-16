@@ -42,7 +42,7 @@ export const ListHeader = ({ list, dragHandleProps, setIsTitleBlurred }) => {
   const disableAltKeyBlur = useDisableAltKeyBlur()
 
   return (
-    <header className="flex ac jb gr2" {...dragHandleProps}>
+    <header className="flex ac jb gr2 mb6" {...dragHandleProps}>
       <input
         onMouseDown={preventOnFirstMouseDown}
         onMouseUp={selectOnFirstMouseUp}
