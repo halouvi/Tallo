@@ -1,6 +1,6 @@
-> .add-list {
+ .add-list {
   padding: 0 $listPadding;
-  min-width: $listWidth;
+  min-width: $listWidth + 0px;
   > button {
     * {
       padding: 0 $listPadding;

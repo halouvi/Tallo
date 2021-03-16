@@ -12,9 +12,8 @@ import { usePopover } from 'components/Popover/Popover'
 import { CardMenu } from 'components/Popover/PopoverCmps/Menus/CardMenu'
 import { VideoPlayer } from 'components/VideoPlayer/VideoPlayer'
 import { CardAvatars } from 'components/Avatars/CardAvatars'
-import { Draggable } from 'react-beautiful-dnd'
 
-export const CardPreview = memo(({ card, idx }) => {
+export const CardPreview = memo(({ card, isDragLayer }) => {
   const dispatch = useDispatch()
 
   const { users, labels: gLabels } = useSelector(state => state.boardReducer.board)
@@ -23,19 +22,19 @@ export const CardPreview = memo(({ card, idx }) => {
 
   const [{ width, height, top }, rectRef] = useRect()
 
-  // const [isDragging, drag] = useDrag({
-  //   collect: mon => mon.isDragging(),
-  //   item: { type: 'CARD', sourceId: cardId, card, height, width }
-  // })
+  const [isDragging, drag] = useDrag({
+    collect: mon => mon.isDragging(),
+    item: { type: 'CARD', sourceId: cardId, card, height, width }
+  })
 
-  // const [[hovHeight, hovPos], drop] = useDrop({
-  //   accept: !isDragLayer ? 'CARD' : '',
-  //   collect: mon => [
-  //     mon.isOver() && mon.getItem().height,
-  //     mon.isOver() && top + height / 2 > mon.getClientOffset().y ? 0 : 1
-  //   ],
-  //   drop: item => dispatch(HANDLE_DROP({ ...item, hovPos, targetId: cardId }))
-  // })
+  const [[hovHeight, hovPos], drop] = useDrop({
+    accept: !isDragLayer ? 'CARD' : '',
+    collect: mon => [
+      mon.isOver() && mon.getItem().height,
+      mon.isOver() && top + height / 2 > mon.getClientOffset().y ? 0 : 1
+    ],
+    drop: item => dispatch(HANDLE_DROP({ ...item, hovPos, targetId: cardId }))
+  })
 
   const togglePopover = usePopover()
   const cardInStore = useSelector(state => state.boardReducer.card)
@@ -53,23 +52,23 @@ export const CardPreview = memo(({ card, idx }) => {
 
   const [menuBtnHovered, setMenuBtnHovered] = useToggle(false)
   return (
-    <Draggable draggableId={cardId} index={idx}>
-      {({ draggableProps, dragHandleProps, innerRef }, { isDragging, isDropAnimating }) => (
-        <div
-          ref={innerRef}
-          {...draggableProps}
-          {...dragHandleProps}
-          className={`card-preview flex col gb8 sbl`}>
+    <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
+      <div ref={rectRef} className="rect-ref flex col">
+        {hovHeight && (
+          <div
+            className="card-placeholder"
+            style={{
+              height: `${hovHeight}px`,
+              order: hovPos,
+              paddingTop: `${hovPos * 6}px`
+            }}
+          />
+        )}
+        <div ref={drag} className="card-preview flex col fast gb8 sbl shdw2">
           <div
             onClick={openModal}
-            className={`card-container white flex col p12 gb8 sbl rel shdw2${
-              menuBtnHovered
-                ? ' menu-btn-hovered'
-                : isDropAnimating
-                ? ' dropping'
-                : isDragging
-                ? ' dragging'
-                : ''
+            className={`container white flex col p12 gb8 sbl rel${
+              menuBtnHovered ? ' menu-btn-hovered' : ''
             }`}>
             <div className="flex jb ac">
               <span className="title">{title}</span>
@@ -104,7 +103,7 @@ export const CardPreview = memo(({ card, idx }) => {
             {(!!dueDate || !!members[0]) && (
               <div className="grid tc-a1a">
                 {!!dueDate && (
-                  <div className="gc1 due-date flex ac">
+                  <div className="gc1 due-date gray flex ac">
                     <img src={clock} alt="" />
                     <p>{moment(dueDate).format('ddd, MMM do')}</p>
                   </div>
@@ -114,7 +113,7 @@ export const CardPreview = memo(({ card, idx }) => {
             )}
           </div>
         </div>
-      )}
-    </Draggable>
+      </div>
+    </div>
   )
 })

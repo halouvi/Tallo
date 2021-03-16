@@ -1,50 +1,41 @@
-$listPadding: 6px;
-
-.list-drop-container {
-  > .rect-ref {
-    border-radius: 4px;
-    padding: 0 $listPadding;
-    > .list-placeholder {
-      position: relative;
-      border-radius: inherit;
-      &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        width: calc(100% - #{$listPadding} * 2);
-        height: 100%;
-        border-radius: inherit;
-        background-color: rgba(0, 0, 0, 0.1);
-      }
+$listPadding: 6;
+$listHeight: 83.5vh;
+.list {
+  padding: 0 $listPadding + 0px;
+  height: fit-content;
+  .dropping {
+    transition: transform 150ms ease-out;
+    transform: rotate(0deg);
+  }
+  .dragging {
+    transition: transform 150ms;
+    transform: rotate(3deg);
+    &.card-container {
+      filter: brightness(0.93) !important;
+      box-shadow: 0 2px 10px 0 rgba($color: #5f5f5f, $alpha: 0.5) !important;
     }
+  }
+  position: relative;
+  > .drop-zone {
+    pointer-events: none;
+    padding: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: $listHeight;
+    width: $listWidth + $listPadding * 2 + 0px;
+  }
+  > .container {
+    width: $listWidth + 0px;
+    border-radius: 4px;
+    max-height: $listHeight;
+    padding: 6px;
+    height: fit-content;
+    @import './ListHeader/ListHeader';
 
-    > .list {
-      max-height: 83.5vh;
-      height: fit-content;
-      width: $listWidth;
-      border-radius: inherit;
-      padding: 6px;
-      cursor: grab;
-
-      @import './ListHeader/ListHeader';
-
-      > .cards {
-        overflow-y: auto;
-        @include scrollBar(6px, #2934624f);
-
-        .card-placeholder {
-          position: relative;
-          &::after {
-            content: '';
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: calc(100% - #{$cardPadding});
-            border-radius: $cardRadius;
-            background-color: rgba(0, 0, 0, 0.1);
-          }
-        }
-      }
+    > .cards {
+      overflow-y: auto;
+      @include scrollBar(6px, #2934624f);
     }
   }
 }

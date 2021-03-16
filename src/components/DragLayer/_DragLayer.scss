@@ -1,6 +1,5 @@
 .drag-layer {
-  position: fixed;
-  pointer-events: none; // CRITICAL!!! Drag events will be killed as soon as they start without this
+  position: absolute;
   will-change: left, top;
   z-index: 1000;
   transition: transform 150ms, box-shadow 150ms;

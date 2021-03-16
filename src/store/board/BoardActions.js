@@ -40,7 +40,6 @@ export const GET_BOARD_BY_ID = id => async dispatch => {
 }
 
 export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
-  name === 'users' && console.log({ name, value })
   const nextBoard = clone(getState().boardReducer.board)
   if (name === 'users') _removeUserFromCards(nextBoard, value)
   nextBoard[name] = value
@@ -118,23 +117,21 @@ export const DELETE_CARD = cardId => (dispatch, getState) => {
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const HANDLE_DROP = ({ type, sourceId, targetId, hovPos }) => (dispatch, getState) => {
+export const HANDLE_DROP = ({ source, destination, type }) => (dispatch, getState) => {
+  if (
+    !destination ||
+    (source.droppableId === destination.droppableId && source.index === destination.index)
+  )
+    return
   const nextBoard = clone(getState().boardReducer.board)
-  if (type === 'list') {
-    const { listIdx: sourceIdx } = _findItems(nextBoard, sourceId)
-    const [list] = nextBoard.lists.splice(sourceIdx, 1)
-    const { listIdx: targetIdx } = _findItems(nextBoard, targetId)
-    nextBoard.lists.splice(targetIdx + hovPos, 0, list)
+  if (type === 'LIST') {
+    const [list] = nextBoard.lists.splice(source.index, 1)
+    nextBoard.lists.splice(destination.index, 0, list)
   } else {
-    const { list: sourceList, cardIdx: sourceIdx } = _findItems(nextBoard, sourceId)
-    const [card] = sourceList.cards.splice(sourceIdx, 1)
-    const { list: targetList, cardIdx: targetIdx } = _findItems(nextBoard, targetId)
-    if (hovPos === null) {
-      // hovPos is set to null when transfering card via menu and not DnD
-      // this calculation needs to happen after the dragged card has been spliced
-      hovPos = sourceList === targetList && targetIdx >= sourceIdx ? 1 : 0
-    }
-    targetList.cards.splice(targetIdx + hovPos, 0, card)
+    const { list: sourceList } = _findItems(nextBoard, source.droppableId)
+    const { list: targetList } = _findItems(nextBoard, destination.droppableId)
+    const [card] = sourceList.cards.splice(source.index, 1)
+    targetList.cards.splice(destination.index, 0, card)
   }
   dispatch(SAVE_BOARD(nextBoard))
 }

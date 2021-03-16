@@ -13,6 +13,8 @@ import { DragLayer } from './components/DragLayer/DragLayer'
 import { Loader } from './components/Loader/Loader'
 import { Popover } from './components/Popover/Popover'
 import './styles/styles.scss'
+import { DragDropContext } from 'react-beautiful-dnd'
+import { HANDLE_DROP } from 'store/board/BoardActions'
 
 export const App = () => {
   const dispatch = useDispatch()
@@ -25,21 +27,24 @@ export const App = () => {
 
   useBeforeunload(socketService.terminate)
 
+  const blurAll = () => document.activeElement.blur()
+
+  const handleDrop = res => dispatch(HANDLE_DROP(res))
+
   const PrivateRoute = props => (user?._id ? <Route {...props} /> : <Redirect to="/" />)
 
   return isLoading ? (
     <Loader />
   ) : (
-    <>
+    <DragDropContext onDragStart={blurAll} onDragEnd={handleDrop}>
       <Header />
       <Switch>
         <PrivateRoute path="/board" component={Board} />
         <Route path="/" component={Home} />
       </Switch>
-      <PrivateRoute path="/board/modal/:cardId" component={CardModal} />
+      <PrivateRoute path="/board/card/:cardId" component={CardModal} />
       <Route path="/login-signup" component={LoginSingup} />
       <Popover />
-      <DragLayer />
-    </>
+    </DragDropContext>
   )
 }

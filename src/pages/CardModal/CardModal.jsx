@@ -35,7 +35,7 @@ export const CardModal = () => {
   }
   useKey('Escape', ev => setTimeout(() => closeModal(ev), 0))
 
-  const handleEdit = ({ currentTarget: { name, value } }) => {
+  const handleEdit = ({ target: { name, value } }) => {
     clearTimeout(timer)
     setEditables({
       [name]: value,
@@ -51,9 +51,9 @@ export const CardModal = () => {
         <ClickAwayListener onClickAway={closeModal}>
           <section className="card-modal white grid g16">
             <CardHeader title={title} handleEdit={handleEdit} closeModal={closeModal} />
-            <main className="flex wrap gb16  ">
-              {members[0] && <CardMembers members={members} />}
-              {labels[0] && <CardLabels labels={labels} />}
+            <main className="flex wrap gb16">
+              <CardMembers members={members} />
+              <CardLabels labels={labels} />
               {cardVideo && <CardVideo cardVideo={cardVideo} />}
               {attachments[0] && <CardAttachments attachments={attachments} />}
               <CardDescription desc={desc} handleEdit={handleEdit} />

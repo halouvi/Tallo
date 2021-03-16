@@ -12,21 +12,22 @@ export const DragLayer = memo(() => {
 
   useUpdateEffect(() => {
     document
-      .querySelectorAll('.card-preview')
-      .forEach(el => el.classList.toggle('cancel-pointer', width ? true : false))
+      .querySelectorAll(`.list-drop-container *:not(.card-drop-contsainer)`)
+      .forEach(el => el.classList.toggle('no-hover', width ? true : false))
   }, [width])
 
   return (
     <div
       className={`drag-layer${width ? ' dragging ' : ''}`}
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
-        top: `${Math.round(y)}px`,
-        left: `${Math.round(x)}px`
+        width: `${width || 0}px`,
+        height: `${height || 0}px`,
+        top: `${Math.round(y || 0)}px`,
+        left: `${Math.round(x || 0)}px`,
+        pointerEvents: 'none'
       }}>
-      {list && <List list={list} />}
-      {card && <CardPreview card={card} />}
+      {list && <List list={list} isDragLayer={true} />}
+      {card && <CardPreview card={card} isDragLayer={true} />}
     </div>
   )
 })
