@@ -10,7 +10,7 @@ import { Button } from '@material-ui/core'
 import { usePopover } from '../../../components/Popover/Popover'
 
 export const CardAside = () => {
-  const togglePopover = usePopover()
+  const { togglePopover } = usePopover()
 
   const cmpMap = {
     Add_To_Card: {
@@ -40,7 +40,7 @@ export const CardAside = () => {
                 className="gray flex js"
                 onClick={ev => togglePopover(ev, cmp)}
                 key={name}>
-                <img className="icon" src={process.env.PUBLIC_URL + `/${name}.png`} alt="" />
+                <img className="icon mr10" src={process.env.PUBLIC_URL + `/${name}.png`} alt="" />
                 <span>{format(name)}</span>
               </Button>
             ))}

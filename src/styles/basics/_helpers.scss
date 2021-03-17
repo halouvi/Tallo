@@ -123,6 +123,30 @@
 .ml32 {
   margin-left: 32px;
 }
+.mr2 {
+  margin-right: 2px;
+}
+.mr4 {
+  margin-right: 4px;
+}
+.mr6 {
+  margin-right: 6px;
+}
+.mr8 {
+  margin-right: 8px;
+}
+.mr10 {
+  margin-right: 10px;
+}
+.mr12 {
+  margin-right: 12px;
+}
+.mr14 {
+  margin-right: 14px;
+}
+.mr16 {
+  margin-right: 16px;
+}
 .mr18 {
   margin-right: 18px;
 }
@@ -226,6 +250,16 @@
   > *:not(:last-child) {
     margin-bottom: 20px !important;
   }
+}
+
+// Order
+
+.first {
+  order: -1;
+}
+
+.last {
+  order: 1000000000;
 }
 
 //Strech Before Last
@@ -542,7 +576,7 @@
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .invisible {
@@ -705,10 +739,16 @@
   }
 }
 .white {
-  color: $black !important;
-  background-color: $white !important;
-  &.MuiButton-root:hover {
-    background-color: darken($white, 7%) !important;
+  &:not(.svg) {
+    color: $black !important;
+    background-color: $white !important;
+    &.MuiButton-root:hover {
+      background-color: darken($white, 7%) !important;
+    }
+  }
+  > svg {
+    fill: white;
+    // stroke: white;
   }
 }
 .gray {
@@ -787,10 +827,7 @@
 }
 
 .no-hover {
-  pointer-events: none !important;
-  * {
-    pointer-events: auto;
-  }
+  pointer-events: none;
 }
 
 // Aspect ratios

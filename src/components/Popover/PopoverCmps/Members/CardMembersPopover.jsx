@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { CardAvatar } from '../../../Avatars/CardAvatar'
 import { PopoverHeader } from '../../PopoverHeader'
+import x from 'assets/x.svg'
 
 export const CardMembersPopover = () => {
   const dispatch = useDispatch()
@@ -19,15 +20,13 @@ export const CardMembersPopover = () => {
   const updateState = ev => {
     setState({
       activeMembers: users.filter(({ _id }) => members.includes(_id)),
-      searchTerm: ev ? ev.target.value : searchTerm,
+      searchTerm: ev?.target.value ?? searchTerm,
       searchRes: users.filter(
         ({ _id, name }) =>
-          !members.includes(_id) && RegExp(ev ? ev.target.value : searchTerm, 'i').test(name)
+          !members.includes(_id) && RegExp(ev?.target.value ?? searchTerm, 'i').test(name)
       )
     })
   }
-
-  useEffect(updateState, [users, members])
 
   const toggleMember = userId => {
     dispatch(
@@ -40,6 +39,8 @@ export const CardMembersPopover = () => {
       })
     )
   }
+
+  useEffect(updateState, [users, members])
 
   return (
     <div className="popover-cmp flex col gb6">
@@ -59,7 +60,7 @@ export const CardMembersPopover = () => {
             onClick={() => toggleMember(user._id)}>
             <CardAvatar user={user} size="small" />
             <span className="capital tas">{user.name}</span>
-            <span>X</span>
+            <img src={x} alt="" className="icon small" />{' '}
           </Button>
         ))}
       </div>

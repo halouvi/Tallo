@@ -23,16 +23,6 @@ $listHeight: 83.5vh;
       box-shadow: $shadow3 !important;
     }
   }
-  position: relative;
-  > .drop-zone {
-    pointer-events: none;
-    padding: inherit;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: $listHeight;
-    width: $listWidth + $listPadding * 2 + 0px;
-  }
   > .container {
     width: $listWidth + 0px;
     border-radius: 4px;
@@ -44,6 +34,7 @@ $listHeight: 83.5vh;
     @import './AddCard/AddCard';
 
     > .cards {
+      min-height: 0.1px;
       overflow-y: auto;
       @include scrollBar(6px, #2934624f);
     }

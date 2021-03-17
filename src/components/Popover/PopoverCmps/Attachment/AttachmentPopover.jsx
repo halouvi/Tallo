@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { mediaService } from '../../../../service/mediaService.js'
+import { mediaService } from '../../../../pages/service/mediaService.js'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions.js'
 
 export const AttachmentPopover = ({ togglePopover }) => {

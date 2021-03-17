@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useToggle } from 'react-use'
-import { mediaService } from '../../../../service/mediaService.js'
+import { mediaService } from '../../../../pages/service/mediaService.js'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions.js'
 
 export const AddVideoPopover = ({ togglePopover }) => {

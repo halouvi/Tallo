@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core'
 import { useDisableAltKeyBlur } from 'hooks/useDisableAltKeyBlur'
 import { useSelector } from 'react-redux'
+import x from 'assets/x.svg'
 
 export const CardHeader = ({ title, handleEdit, closeModal }) => {
   const listTitle = useSelector(state => state.boardReducer.list.title)
@@ -22,7 +23,7 @@ export const CardHeader = ({ title, handleEdit, closeModal }) => {
         onChange={handleEdit}
       />
       <Button className="gc4 " size="large" onClick={closeModal}>
-        X
+        <img src={x} alt="" className="icon" />
       </Button>
       <span className="gc2">
         in list <u>{listTitle}</u>

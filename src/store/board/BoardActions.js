@@ -1,5 +1,5 @@
-import { boardService } from '../../service/boardService'
-import { socketService, socketTypes } from '../../service/socketService.js'
+import { boardService } from '../../pages/service/boardService'
+import { socketService, socketTypes } from '../../pages/service/socketService.js'
 import { userTypes } from '../user/UserActions'
 import { cloneDeep as clone } from 'lodash'
 
@@ -7,7 +7,7 @@ export const boardTypes = {
   RESET_STATE: 'RESET_STATE',
   SET_BOARD: 'SET_BOARD',
   SET_ITEMS: 'SET_ITEMS',
-  SET_IS_DRAGGING: 'SET_IS_DRAGGING'
+  SET_DRAG_TYPE: 'SET_DRAG_TYPE'
 }
 
 export const CLEAR_BOARD = () => dispatch => dispatch({ type: boardTypes.RESET_STATE })
@@ -64,7 +64,7 @@ export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
       if (itemId) dispatch(GET_BY_ID(itemId))
       console.error('Could not update board', err)
     }
-  }, 2500)
+  }, 1500)
 }
 
 export const ADD_LIST = title => (dispatch, getState) => {

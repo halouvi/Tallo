@@ -1,10 +1,11 @@
 import { useSetState, useUpdateEffect } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
-import { userService } from '../../../../service/userService'
+import { userService } from '../../../../pages/service/userService'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 import { CardAvatar } from '../../../Avatars/CardAvatar'
-import { Button, MenuList, TextField } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import { PopoverHeader } from '../../PopoverHeader'
+import x from 'assets/x.svg'
 
 export const BoardMembersPopover = ({ setAnchorEl }) => {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ export const BoardMembersPopover = ({ setAnchorEl }) => {
   }, [searchTerm])
 
   useUpdateEffect(() => {
-    setState({ filteredRes: searchRes.filter(res => !users.some(user => res._id === user._id)) })
+    setState({ filteredRes: searchRes.filter(res => users.every(user => res._id !== user._id)) })
   }, [searchRes, users])
 
   const toggleUser = user => {
@@ -50,13 +51,14 @@ export const BoardMembersPopover = ({ setAnchorEl }) => {
       <div className="flex col gb6 ">
         {users.map(user => (
           <Button
-            className={isMe(user._id) ? 'logged-user' : ''}
+            className={isMe(user._id) ? 'first' : ''}
             classes={{ label: 'flex ac js gr10 sbl' }}
             key={user._id}
-            onClick={() => isMe(user._id) || toggleUser(user)}>
+            disabled={isMe(user._id)}
+            onClick={() => toggleUser(user)}>
             <CardAvatar user={user} size="small" />
             <span className="capital tas">{user.name}</span>
-            <span>{isMe(user._id) ? '(You)' : 'X'}</span>
+            {isMe(user._id) ? <b>(You)</b> : <img src={x} alt="" className="icon small" />}
           </Button>
         ))}
       </div>

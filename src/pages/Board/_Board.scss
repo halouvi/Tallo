@@ -1,18 +1,6 @@
 .board {
   position: relative;
   overflow-x: scroll;
-  // @include scrollBar(14px, #2934624f);
-
-  // @include for-narrow-layout {
-  //   height: 90vh;
-  // }
-
-  h3 {
-    margin: 0 0 0 0.5rem;
-  }
-  > .lists {
-    // overflow: none;
-    // height: 100%;
-  }
+  
   @import '../../components/Board/AddList/AddList';
 }

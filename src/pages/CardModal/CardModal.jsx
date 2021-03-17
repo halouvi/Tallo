@@ -14,6 +14,8 @@ import { CardNav } from './CardNav/CardNav'
 import { CardMembers } from './CardMain/CardMembers'
 import { CardLabels } from './CardMain/CardLabels'
 import { ClickAwayListener } from '@material-ui/core'
+import { usePopper } from 'react-popper'
+import { usePopover } from 'components/Popover/Popover'
 
 export const CardModal = () => {
   const history = useHistory()
@@ -28,12 +30,14 @@ export const CardModal = () => {
   const updateEditablesOnCardNav = () => setEditables({ title: card.title, desc: card.desc })
   useUpdateEffect(updateEditablesOnCardNav, [card?._id])
 
+  const { isRedundantClickAway } = usePopover()
+
   const closeModal = ev => {
-    if (ev.avoidCardModal || (ev.target === document.body && ev.type === 'click')) return
+    if (isRedundantClickAway(ev)) return
     history.push('/board')
     dispatch(CLEAR_ITEMS())
   }
-  useKey('Escape', ev => setTimeout(() => closeModal(ev), 0))
+  useKey('Escape', ev => setTimeout(() => !ev.avoidCardModal && closeModal(ev), 0))
 
   const handleEdit = ({ target: { name, value } }) => {
     clearTimeout(timer)
@@ -48,17 +52,17 @@ export const CardModal = () => {
     <div className="card modal-screen">
       <CardNav />
       {card && (
-        <ClickAwayListener onClickAway={closeModal}>
+        <ClickAwayListener onClickAway={closeModal} mouseEvent="onClick">
           <section className="card-modal white grid g16">
             <CardHeader title={title} handleEdit={handleEdit} closeModal={closeModal} />
             <main className="flex wrap gb16">
               <CardMembers members={members} />
               <CardLabels labels={labels} />
               {cardVideo && <CardVideo cardVideo={cardVideo} />}
-              {attachments[0] && <CardAttachments attachments={attachments} />}
+              {attachments?.[0] && <CardAttachments attachments={attachments} />}
               <CardDescription desc={desc} handleEdit={handleEdit} />
-              {checklists[0] && <CardChecklists checklists={checklists} />}
-              {activity && <CardActivity activity={activity} />}
+              {checklists?.[0] && <CardChecklists checklists={checklists} />}
+              {activity?.[0] && <CardActivity activity={activity} />}
             </main>
             <CardAside />
           </section>

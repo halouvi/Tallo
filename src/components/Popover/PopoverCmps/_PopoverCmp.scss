@@ -15,14 +15,6 @@
     }
   }
 
-  .logged-user {
-    cursor: not-allowed;
-    order: -1;
-    &:hover {
-      background-color: transparent !important;
-      filter: none !important;
-    }
-  }
   @import './Labels/LabelsPopover';
   @import './AddVideo/VideoPopover';
   @import './Attachment/AttachmentPopover';

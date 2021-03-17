@@ -6,23 +6,18 @@ import { LabelsPopover } from '../../../components/Popover/PopoverCmps/Labels/La
 
 export const CardLabels = ({ labels }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
-  const activelabels = gLabels.filter(({ _id }) => labels.includes(_id))
-  const togglePopover = usePopover()
-  const anchorId = 'CardLabelsAnchor'
-  const [{ left, width, bottom }, setRect] = useState({})
+  const activeLabels = gLabels.filter(({ _id }) => labels.includes(_id))
+  const { togglePopover } = usePopover()
 
-  const openPopover = ev => {
-    setRect(ev.currentTarget.getBoundingClientRect())
-    togglePopover(ev, LabelsPopover, false, anchorId)
-  }
+  const openPopover = ev => togglePopover(ev, LabelsPopover, false)
 
   return (
     <div className="fg1">
-      {activelabels[0] && (
+      {activeLabels[0] && (
         <div className={`ml32 wfc`}>
           <h4>Labels</h4>
           <div className="flex gr6 wfc wrap">
-            {activelabels.map(({ _id, color, title }) => (
+            {activeLabels.map(({ _id, color, title }) => (
               <Button size="large" className={`mt6 ${color}`} key={_id} onClick={openPopover}>
                 {title}
               </Button>
@@ -33,12 +28,6 @@ export const CardLabels = ({ labels }) => {
           </div>
         </div>
       )}
-      <Portal>
-        <div
-          style={{ position: 'absolute', top: `${bottom}px`, left: `${left + width / 2}px` }}
-          anchorid={anchorId}
-        />
-      </Portal>
     </div>
   )
 }

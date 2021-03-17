@@ -7,7 +7,7 @@ export const BoardSelect = () => {
   const boardId = useSelector(state => state.boardReducer.board._id)
   const boards = useSelector(state => state.userReducer.user.boards)
   const dispatch = useDispatch()
-  const togglePopover = usePopover()
+  const { togglePopover } = usePopover()
 
   const selectBoard = (ev, selectedBoard) => {
     if (selectedBoard !== boardId) {

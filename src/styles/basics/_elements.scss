@@ -26,12 +26,12 @@
 .MuiButton-root {
   &.MuiButtonBase-root {
     font-family: inherit;
-    text-transform: capitalize ;
+    text-transform: capitalize;
     transition: 180ms;
     font-size: 1rem;
     height: 30px;
     min-width: 30px;
-    &:hover{
+    &:hover {
       background-color: rgba(0, 0, 0, 0.15);
     }
   }
@@ -48,9 +48,29 @@
   }
 }
 
-img.icon {
+.svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img.icon,
+.svg {
+  width: 1rem;
   height: 1rem;
-  margin: 0 10px 0 0;
+  &.small {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+  &.large {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+svg {
+  width: 100%;
+  height: 100%;
 }
 
 .avatar {

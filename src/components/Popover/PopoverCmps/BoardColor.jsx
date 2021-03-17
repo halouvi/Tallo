@@ -9,7 +9,7 @@ export const BoardColor = () => {
   }
 
   return (
-    <div className="popover-cmp flex col">
+    <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Choose Color" />
       <ColorPicker className="" onClick={onColorPick} />
     </div>

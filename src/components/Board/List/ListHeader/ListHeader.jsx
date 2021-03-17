@@ -32,7 +32,7 @@ export const ListHeader = ({ list, dragHandleProps, setIsTitleBlurred }) => {
     })
   }
 
-  const togglePopover = usePopover()
+  const { togglePopover } = usePopover()
   const { list: listInStore, card: cardInStore } = useSelector(state => state.boardReducer)
   const toggleMenu = ev => {
     if (listInStore?._id !== listId || cardInStore) dispatch(GET_BY_ID(listId))
