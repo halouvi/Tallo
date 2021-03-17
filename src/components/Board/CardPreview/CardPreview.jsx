@@ -1,8 +1,8 @@
-import { memo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { Button } from '@material-ui/core'
+import { Button, Tooltip } from '@material-ui/core'
 import { useToggle } from 'react-use'
 import moment from 'moment'
 import { useRect } from 'react-use-rect'
@@ -12,8 +12,9 @@ import { usePopover } from 'components/Popover/Popover'
 import { CardMenu } from 'components/Popover/PopoverCmps/Menus/CardMenu'
 import { VideoPlayer } from 'components/VideoPlayer/VideoPlayer'
 import { CardAvatars } from 'components/Avatars/CardAvatars'
+import { Draggable } from 'react-beautiful-dnd'
 
-export const CardPreview = memo(({ card }) => {
+export const CardPreview = memo(({ card, idx }) => {
   const dispatch = useDispatch()
 
   const { users, labels: gLabels } = useSelector(state => state.boardReducer.board)
@@ -22,18 +23,19 @@ export const CardPreview = memo(({ card }) => {
 
   const [{ width, height, top }, rectRef] = useRect()
 
-  const [isDragging, drag] = useDrag({
-    collect: mon => mon.isDragging(),
-    item: { type: 'card', sourceId: cardId, card, height, width }
-  })
+  // const [isDragging, drag] = useDrag({
+  //   collect: mon => mon.isDragging(),
+  //   item: { type: 'CARD', sourceId: cardId, card, height, width }
+  // })
 
-  const [hovPos, setHovPos] = useState(0)
-  const [hovHeight, drop] = useDrop({
-    accept: 'card',
-    collect: mon => mon.isOver({ shallow: true }) && mon.getItem().height,
-    hover: (_, mon) => hovHeight && setHovPos(top + height / 2 > mon.getClientOffset().y ? 0 : 1),
-    drop: item => dispatch(HANDLE_DROP({ ...item, hovPos, targetId: cardId }))
-  })
+  // const [[hovHeight, hovPos], drop] = useDrop({
+  //   accept: !isDragLayer ? 'CARD' : '',
+  //   collect: mon => [
+  //     mon.isOver() && mon.getItem().height,
+  //     mon.isOver() && top + height / 2 > mon.getClientOffset().y ? 0 : 1
+  //   ],
+  //   drop: item => dispatch(HANDLE_DROP({ ...item, hovPos, targetId: cardId }))
+  // })
 
   const togglePopover = usePopover()
   const cardInStore = useSelector(state => state.boardReducer.card)
@@ -46,41 +48,47 @@ export const CardPreview = memo(({ card }) => {
   const history = useHistory()
   const openModal = ev => {
     if (ev.avoidModal) return
-    history.push(`/board/modal/${cardId}`)
+    history.push(`/board/card/${cardId}`)
   }
 
   const [menuBtnHovered, setMenuBtnHovered] = useToggle(false)
+
+  const classPicker = ({ isDragging, isDropAnimating, draggingOver }) => {
+    return menuBtnHovered
+      ? ' menu-btn-hovered'
+      : isDropAnimating && draggingOver === 'TRASH'
+      ? ' trashing'
+      : isDropAnimating
+      ? ' dropping'
+      : isDragging
+      ? ' dragging'
+      : ''
+  }
+
   return (
-    <div ref={drop} className={`card-drop-container${isDragging ? ' hidden' : ''}`}>
-      <div ref={rectRef} className="rect-ref flex col">
-        {hovHeight && (
-          <div
-            className="card-placeholder"
-            style={{
-              height: `${hovHeight}px`,
-              order: hovPos,
-              paddingTop: `${hovPos * 6}px`
-            }}
-          />
-        )}
-        <div ref={drag} className="card-preview flex col fast gb8 sbl shdw2">
+    <Draggable draggableId={cardId} index={idx}>
+      {({ draggableProps, dragHandleProps, innerRef }, snapshot) => (
+        <div
+          ref={innerRef}
+          {...draggableProps}
+          {...dragHandleProps}
+          className={`card-preview flex col gb8 sbl`}>
           <div
             onClick={openModal}
-            className={`container white flex col p12 gb8 sbl rel${
-              menuBtnHovered ? ' menu-btn-hovered' : ''
-            }`}>
+            className={`card-container white flex col p12 gb8 sbl rel shdw2
+            ${classPicker(snapshot)}`}>
             <div className="flex jb ac">
               <span className="title">{title}</span>
               <Button
+                anchorid={cardId}
                 size="small"
-                className=""
                 onMouseEnter={() => setMenuBtnHovered(true)}
                 onMouseLeave={() => setMenuBtnHovered(false)}
                 onClick={toggleMenu}>
                 ···
               </Button>
             </div>
-            <span className="desc fw">{desc}</span>
+            {/* <span className="desc fw">{desc}</span> */}
             {cardVideo && <VideoPlayer videoUrl={cardVideo} isGrouped={true} />}
             {attachments[0] && (
               <div className="attachments">
@@ -92,7 +100,9 @@ export const CardPreview = memo(({ card }) => {
                 {gLabels.map(
                   gLabel =>
                     labels.some(label => label === gLabel._id) && (
-                      <div className={`label ${gLabel.color}`} key={gLabel._id} />
+                      <Tooltip title={gLabel.title} key={gLabel._id}>
+                        <div className={`label ${gLabel.color}`} />
+                      </Tooltip>
                     )
                 )}
               </div>
@@ -110,7 +120,7 @@ export const CardPreview = memo(({ card }) => {
             )}
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </Draggable>
   )
 })

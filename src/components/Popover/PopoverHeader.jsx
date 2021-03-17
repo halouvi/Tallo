@@ -8,7 +8,7 @@ import { usePopover } from './Popover'
 export const PopoverHeader = ({ title, onBack }) => {
   const card = useSelector(state => state.boardReducer.card)
   const list = useSelector(state => state.boardReducer.list)
-  const inModal = useLocation().pathname.includes('board/modal')
+  const inModal = useLocation().pathname.includes('board/card')
 
   const togglePopover = usePopover()
 

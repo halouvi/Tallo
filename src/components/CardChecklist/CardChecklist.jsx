@@ -73,7 +73,7 @@ export const CardChecklist = ({ checklist, checklists }) => {
         <ProgressBar progress={progressStatus()} />
         <div className="flex wrap">
           {checklist.items.map((item, idx) => (
-            <div key={idx} className="item flex ac sbl ml-12">
+            <div key={item._id} className="item flex ac sbl ml-12">
               <Checkbox
                 color="primary"
                 inputProps={{ 'aria-label': 'checkbox' }}

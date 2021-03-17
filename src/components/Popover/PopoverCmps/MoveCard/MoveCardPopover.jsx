@@ -1,8 +1,10 @@
-import { useUpdateEffect, useSetState, useToggle } from 'react-use'
+import { useUpdateEffect, useSetState } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
-import { HANDLE_DROP } from '../../../../store/board/BoardActions'
+import { HANDLE_DROP } from 'store/board/BoardActions'
 import { Button, InputLabel, MenuItem, Select } from '@material-ui/core'
-import { PopoverHeader } from '../../PopoverHeader'
+import { PopoverHeader } from 'components/Popover/PopoverHeader'
+import { usePopover } from 'components/Popover/Popover'
+import { useLocation } from 'react-router'
 
 export const MoveCardPopover = () => {
   const dispatch = useDispatch()
@@ -10,68 +12,58 @@ export const MoveCardPopover = () => {
   const list = useSelector(state => state.boardReducer.list) || {}
   const lists = useSelector(state => state.boardReducer.board.lists)
 
-  const initState = { targetList: list, targetPos: card._id }
-  const [{ targetPos, targetList }, setTarget] = useSetState(initState)
+  const cardIdx = list.cards?.findIndex(({ _id }) => _id === card._id)
+  const initState = { targetList: list, targetIdx: cardIdx }
+  const [{ targetIdx, targetList }, setTarget] = useSetState(initState)
   useUpdateEffect(() => setTarget(initState), [lists])
 
-  const handleInput = ({ target: { name, value } }) => {
-    name === 'targetPos'
-      ? setTarget({ targetPos: value })
-      : setTarget({
-          targetList: lists.find(({ _id }) => _id === value),
-          targetPos: value === list._id ? card._id : value
-        })
-  }
+  const handleInput = ({ target: { name, value } }) => setTarget({ [name]: value })
 
-  const moveCard = () => {
-    if (targetPos === card._id) return
+  useUpdateEffect(() => {
+    setTarget({ targetIdx: targetList === list ? cardIdx : targetList.cards.length })
+  }, [targetList])
+
+  const togglePopover = usePopover()
+  const inModal = useLocation().pathname.includes('board/card')
+  const moveCard = ev => {
     dispatch(
       HANDLE_DROP({
-        type: 'card',
-        hovPos: null,
-        sourceId: card._id,
-        targetId: targetPos
+        source: {
+          droppableId: list._id,
+          index: cardIdx
+        },
+        destination: {
+          droppableId: targetList._id,
+          index: targetIdx
+        }
       })
     )
-    setTarget(initState)
+    if (!inModal) togglePopover(ev)
   }
 
   return (
     <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Move Card" />
       <InputLabel htmlFor="targetList">To List:</InputLabel>
-      <Select
-        value={targetList._id}
-        onChange={handleInput}
-        inputProps={{
-          name: 'targetList',
-          id: 'targetList'
-        }}>
+      <Select value={targetList} onChange={handleInput} inputProps={{ name: 'targetList' }}>
         {lists.map(currList => (
-          <MenuItem value={currList._id} key={currList._id}>
+          <MenuItem value={currList} key={currList._id}>
             {`${currList.title} ${currList === list ? '(Current)' : ''}`}
           </MenuItem>
         ))}
       </Select>
-      <InputLabel htmlFor="targetPos">Position:</InputLabel>
-      <Select
-        onOpen={ev => console.log(ev)}
-        value={targetPos}
-        onChange={handleInput}
-        inputProps={{
-          name: 'targetPos',
-          id: 'targetPos'
-        }}>
+      <InputLabel htmlFor="targetIdx">Position:</InputLabel>
+      <Select value={targetIdx} onChange={handleInput} inputProps={{ name: 'targetIdx' }}>
         {targetList.cards.map((currCard, idx) => (
-          <MenuItem value={currCard._id} key={currCard._id}>
+          <MenuItem value={idx} key={currCard._id}>
             {`${idx + 1} ${card._id === currCard._id ? '(Current)' : ''}`}
           </MenuItem>
         ))}
-        {list._id !== targetList._id && (
-          <MenuItem value={targetList._id}>{targetList.cards.length + 1}</MenuItem>
+        {list !== targetList && (
+          <MenuItem value={targetList.cards.length}>{targetList.cards.length + 1}</MenuItem>
         )}
       </Select>
-      <Button size="large" className="green" onClick={moveCard}>
+      <Button size="large" className="green" onClick={moveCard} disabled={targetIdx === card._id}>
         Move
       </Button>
     </div>

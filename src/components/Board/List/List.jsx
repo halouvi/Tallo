@@ -1,60 +1,43 @@
-import { useDrag, useDrop } from 'react-dnd'
-import { useDispatch } from 'react-redux'
-import { HANDLE_DROP } from 'store/board/BoardActions'
-import { useRect } from 'react-use-rect'
 import { memo, useState } from 'react'
 import { ListHeader } from 'components/Board/List/ListHeader/ListHeader'
 import { CardPreview } from 'components/Board/CardPreview/CardPreview'
 import { AddCard } from 'components/Board/List/AddCard/AddCard'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 
-export const List = memo(({ list }) => {
-  const dispatch = useDispatch()
-
+export const List = memo(({ list, idx }) => {
   const { _id: listId, cards } = list
 
-  const [{ width, height, left }, rectRef] = useRect()
-
-  const [isDragging, drag] = useDrag({
-    collect: mon => mon.isDragging(),
-    item: { type: 'list', sourceId: listId, list, width, height }
-  })
-
-  const [hovPos, setHovPos] = useState(0)
-  const [{ type: hovType, width: hovWidth, height: hovHeight }, drop] = useDrop({
-    accept: ['list', 'card'],
-    collect: mon => (mon.isOver({ shallow: true }) ? mon.getItem() : {}),
-    hover: (_, mon) => hovHeight && setHovPos(left + width / 2 > mon.getClientOffset().x ? 0 : 1),
-    canDrop: () => hovType,
-    drop: item => dispatch(HANDLE_DROP({ ...item, hovPos, targetId: listId }))
-  })
-
+  const [isTitleBlurred, setIsTitleBlurred] = useState(true)
   return (
-    <div ref={drop} className={`list-drop-container${isDragging ? ' hidden' : ''}`}>
-      <div ref={rectRef} className="rect-ref flex">
-        {hovType === 'list' && (
-          <div
-            className="list-placeholder"
-            style={{
-              order: hovPos,
-              paddingLeft: `${hovPos * 12}px`,
-              width: `${hovWidth}px`,
-              height: `${hovHeight}px`
-            }}
-          />
-        )}
-        <div ref={drag} className={`list gray flex col gb6`}>
-          <ListHeader list={list} />
-          <div className="cards flex col">
-            {cards.map(card => (
-              <CardPreview key={card._id} card={card} />
-            ))}
-            {hovType === 'card' && (
-              <div className="card-placeholder" style={{ height: `${hovHeight}px` }} />
+    <Draggable draggableId={listId} index={idx} disableInteractiveElementBlocking={isTitleBlurred}>
+      {({ draggableProps, dragHandleProps, innerRef }, { isDragging, isDropAnimating }) => (
+        <div {...draggableProps} ref={innerRef} className={`list`}>
+          <Droppable droppableId={listId} type="CARD">
+            {({ droppableProps, placeholder, innerRef }, { isDraggingOver }) => (
+              <>
+                <div {...droppableProps} ref={innerRef} className="drop-zone" />
+                <div
+                  className={`container gray flex col${
+                    isDropAnimating ? ' dropping' : isDragging ? ' dragging' : ''
+                  }`}>
+                  <ListHeader
+                    list={list}
+                    dragHandleProps={dragHandleProps}
+                    setIsTitleBlurred={setIsTitleBlurred}
+                  />
+                  <div className="cards flex col gb6">
+                    {cards.map((card, idx) => (
+                      <CardPreview key={card._id} card={card} idx={idx} />
+                    ))}
+                    <div className={!isDraggingOver ? 'hidden' : ''}>{placeholder}</div>
+                  </div>
+                  <AddCard listId={listId} />
+                </div>
+              </>
             )}
-          </div>
-          <AddCard listId={listId} />
+          </Droppable>
         </div>
-      </div>
-    </div>
+      )}
+    </Draggable>
   )
 })

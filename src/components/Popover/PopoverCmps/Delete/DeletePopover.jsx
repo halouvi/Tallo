@@ -9,7 +9,7 @@ export const DeletePopover = ({ togglePopover }) => {
   const listId = useSelector(state => state.boardReducer.list?._id)
   const dispatch = useDispatch()
   const history = useHistory()
-  const inModal = useLocation().pathname.includes('board/modal')
+  const inModal = useLocation().pathname.includes('board/card')
 
   const deleteItem = ev => {
     dispatch(cardId ? DELETE_CARD(cardId) : DELETE_LIST(listId))

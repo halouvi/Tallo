@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_LIST } from 'store/board/BoardActions'
 
-export const AddList = () => {
+export const AddList = ({ idx }) => {
   const dispatch = useDispatch()
 
   const [isAddList, toggleAddList] = useToggle(false)

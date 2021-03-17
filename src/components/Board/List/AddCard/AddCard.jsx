@@ -22,9 +22,9 @@ export const AddCard = ({ listId }) => {
 
   return isAddCard ? (
     <ClickAwayListener onClickAway={toggleAddCard}>
-      <form className="fw gb6" onSubmit={addCard}>
+      <form className="add-card fw" onSubmit={addCard}>
         <input
-          className="shdw2 rem p10 fw br4 white"
+          className="shdw2 rem fw mb6 br4 white"
           autoFocus
           autoComplete="off"
           placeholder="Enter a title for this card..."
@@ -41,7 +41,7 @@ export const AddCard = ({ listId }) => {
     </ClickAwayListener>
   ) : (
     <>
-      <Button className="flex ac js" onClick={toggleAddCard}>
+      <Button  className="flex ac js" onClick={toggleAddCard}>
         + Add another card
       </Button>
     </>

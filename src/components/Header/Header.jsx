@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core'
+import { Trash } from 'components/Header/Trash/Trash'
 import { useSelector } from 'react-redux'
 import { Link, NavLink, useHistory, useLocation } from 'react-router-dom'
 import { useToggle } from 'react-use'
@@ -33,6 +34,7 @@ export const Header = () => {
           </svg>
           <span>Tallo</span>
         </Link>
+        <Trash />
         <nav className="flex ae gr10">
           {user?._id && (
             <Button size="large" className="trans" onClick={toggleModal}>

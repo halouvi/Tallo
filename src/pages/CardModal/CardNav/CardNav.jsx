@@ -9,7 +9,7 @@ export const CardNav = () => {
   const history = useHistory()
 
   const cycleCards = ev => {
-    ev.stopPropagation()
+    ev.nativeEvent.avoidCardModal = true
     const cardIdx = cards.findIndex(currCard => currCard._id === cardId)
     const nextCardId = cardIdx > -1 && cards[cardIdx + +ev.currentTarget.value]?._id
     if (nextCardId) history.push(nextCardId)

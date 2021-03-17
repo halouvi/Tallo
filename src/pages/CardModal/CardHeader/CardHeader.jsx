@@ -1,10 +1,12 @@
 import { Button } from '@material-ui/core'
+import { useDisableAltKeyBlur } from 'hooks/useDisableAltKeyBlur'
 import { useSelector } from 'react-redux'
 
 export const CardHeader = ({ title, handleEdit, closeModal }) => {
   const listTitle = useSelector(state => state.boardReducer.list.title)
 
   const blurTitle = ({ key, target }) => key === 'Enter' && target.blur()
+  const disableAltKeyBlur = useDisableAltKeyBlur()
 
   return (
     <header className="fw grid tc-a1aa g8">
@@ -15,6 +17,7 @@ export const CardHeader = ({ title, handleEdit, closeModal }) => {
         name="title"
         value={title}
         onKeyPress={blurTitle}
+        onKeyUp={disableAltKeyBlur}
         onFocus={ev => ev.target.select()}
         onChange={handleEdit}
       />
