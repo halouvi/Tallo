@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import jwtDecode from 'jwt-decode'
-const BASE_URL = process.env.NODE_ENV !== 'development' ? '/api/' : 'http://192.168.1.3:3030/api/'
+const BASE_URL = process.env.NODE_ENV !== 'development' ? '/api/' : 'http://localhost:3030/api/'
 var axios = Axios.create({
   withCredentials: true
 })

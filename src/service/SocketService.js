@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-const BASE_URL = process.env.NODE_ENV === 'production' ? '/' : 'http://192.168.1.3:3030'
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3030'
 export var socket
 
 export const socketTypes = {

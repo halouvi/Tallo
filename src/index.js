@@ -7,11 +7,6 @@ import { store } from 'store/Store'
 import { App } from 'App.jsx'
 import { DndProvider } from 'react-dnd'
 import { TouchBackend } from 'react-dnd-touch-backend'
-<<<<<<< HEAD
-import { App } from './App.jsx'
-
-=======
->>>>>>> 3e5a53644e4a731c3c00320db2ceaa072f638425
 
 render(
   // <StrictMode>
