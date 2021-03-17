@@ -30,10 +30,11 @@ export const CardModal = () => {
   const updateEditablesOnCardNav = () => setEditables({ title: card.title, desc: card.desc })
   useUpdateEffect(updateEditablesOnCardNav, [card?._id])
 
-  const { isRedundantClickAway } = usePopover()
+  const { togglePopover, isRedundantClickAway } = usePopover()
 
   const closeModal = ev => {
     if (isRedundantClickAway(ev)) return
+    togglePopover(ev)
     history.push('/board')
     dispatch(CLEAR_ITEMS())
   }

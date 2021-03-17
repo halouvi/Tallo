@@ -17,7 +17,7 @@ export const MoveCardPopover = () => {
   const initState = { targetList: list, targetIdx: cardIdx }
 
   const [{ targetIdx, targetList }, setTarget] = useSetState(initState)
-  
+
   useUpdateEffect(() => setTarget(initState), [card])
 
   const handleInput = ({ target: { name, value } }) => {
@@ -49,6 +49,8 @@ export const MoveCardPopover = () => {
     if (!inModal) togglePopover(ev)
   }
 
+  const isHere =  card._id === targetList.cards[targetIdx]?._id
+
   return (
     <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Move Card" />
@@ -75,9 +77,9 @@ export const MoveCardPopover = () => {
       </Select>
       <Button
         size="large"
-        className="green"
         onClick={moveCard}
-        disabled={card._id === targetList.cards[targetIdx]?._id}>
+        disabled={isHere}
+        className={isHere ? 'gray' : 'green'}>
         Move
       </Button>
     </div>
