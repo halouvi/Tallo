@@ -38,7 +38,7 @@ export const boardService = {
     title,
     activity: [],
     attachments: [],
-    checklist: [],
+    checklists: [],
     desc: '',
     dueDate: '',
     labels: [],

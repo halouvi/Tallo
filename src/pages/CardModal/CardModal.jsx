@@ -57,7 +57,7 @@ export const CardModal = () => {
               {cardVideo && <CardVideo cardVideo={cardVideo} />}
               {attachments[0] && <CardAttachments attachments={attachments} />}
               <CardDescription desc={desc} handleEdit={handleEdit} />
-              {checklists[0] && <CardChecklists checklists={checklists} />}
+              {checklists?.[0] && <CardChecklists checklists={checklists} />}
               {activity && <CardActivity activity={activity} />}
             </main>
             <CardAside />
