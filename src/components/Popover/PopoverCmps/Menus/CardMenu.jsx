@@ -1,24 +1,25 @@
-import { LabelsPopover } from '../../../Popover/PopoverCmps/Labels/LabelsPopover'
-import { CardMembersPopover } from '../../../Popover/PopoverCmps/Members/CardMembersPopover'
-import { DeletePopover } from '../../../Popover/PopoverCmps/Delete/DeletePopover'
-import { MoveCardPopover } from '../../../Popover/PopoverCmps/MoveCard/MoveCardPopover'
+import { LabelsPopover } from 'components/Popover/PopoverCmps/Labels/LabelsPopover'
+import { CardMembersPopover } from 'components/Popover/PopoverCmps/Members/CardMembersPopover'
+import { DeletePopover } from 'components/Popover/PopoverCmps/Delete/DeletePopover'
+import { MoveCardPopover } from 'components/Popover/PopoverCmps/MoveCard/MoveCardPopover'
 import { MenuItem, MenuList } from '@material-ui/core'
+import { ReactSVG } from 'react-svg'
+import { img } from 'assets/img'
 
 export const CardMenu = ({ togglePopover }) => {
-  const Menu = {
-    Labels: LabelsPopover,
-    Members: CardMembersPopover,
-    Move_Card: MoveCardPopover,
-    Delete_Card: DeletePopover
-  }
-  const format = str => str.split('_').join(' ')
+  const menu = [
+    ['Labels', LabelsPopover, img.labels],
+    ['Members', CardMembersPopover, img.members],
+    ['Move Card', MoveCardPopover, img.move],
+    ['Delete Card', DeletePopover, img.trash]
+  ]
 
   return (
     <MenuList className="popover-cmp small flex col list-br">
-      {Object.entries(Menu).map(([name, cmp]) => (
+      {menu.map(([name, cmp, img]) => (
         <MenuItem key={name} onClick={ev => togglePopover(ev, cmp, true)}>
-          <img className="icon mr10" src={process.env.PUBLIC_URL + `/${name}.png`} alt="" />
-          {format(name)}
+          <img className="mr10 icon" src={img}  alt=""/>
+          {name}
         </MenuItem>
       ))}
     </MenuList>

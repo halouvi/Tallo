@@ -1,6 +1,9 @@
 .board {
   position: relative;
-  overflow-x: scroll;
-  
-  @import '../../components/Board/AddList/AddList';
+  overflow: hidden;
+  .lists {
+    overflow-x: auto;
+    padding-bottom: 6px ;
+    @import '../../components/Board/AddList/AddList';
+  }
 }

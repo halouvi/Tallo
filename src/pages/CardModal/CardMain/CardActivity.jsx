@@ -2,6 +2,8 @@ import { CardAvatar } from '../../../components/Avatars/CardAvatar'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react'
+import { img } from 'assets/img'
+
 
 export const CardActivity = ({ activity }) => {
   const users = useSelector(state => state.boardReducer.board.users)
@@ -17,7 +19,7 @@ export const CardActivity = ({ activity }) => {
 
   return (
     <div className="activity fw grid tc-aaaa1 g8">
-      <img className="section-icon" src={process.env.PUBLIC_URL + `/Activity.png`} alt="" />
+      <img className="section-icon" src={img.activity} alt="" />
       <h3 className="gc2-6">Activity</h3>
       {activityWithUserData.slice(0, 10).map((item, idx) => (
         <Fragment key={item.createdAt}>

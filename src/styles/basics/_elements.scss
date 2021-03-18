@@ -55,7 +55,7 @@
 }
 
 img.icon,
-.svg {
+.svg.icon {
   width: 1rem;
   height: 1rem;
   &.small {
@@ -88,5 +88,96 @@ svg {
     font-size: 10%;
     height: 40px;
     width: 40px;
+  }
+}
+
+.trashcan {
+  box-sizing: initial;
+  transform: scale(0.18);
+  border: 9px solid $white;
+  width: 66px;
+  height: 80px;
+  display: inline-block;
+  margin: 4px -25px 0;
+
+  position: relative;
+  -webkit-border-bottom-right-radius: 12px;
+  -webkit-border-bottom-left-radius: 12px;
+  -moz-border-radius-bottomright: 12px;
+  -moz-border-radius-bottomleft: 12px;
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+
+  &:after {
+    position: absolute;
+    left: -99px;
+    right: 0;
+    bottom: -50px;
+    width: 300px;
+  }
+  & span {
+    position: absolute;
+    height: 12px;
+    background: $white;
+    top: -27px;
+    left: -15px;
+    right: -15px;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    transform: rotate(0deg);
+    transition: transform 250ms;
+    transform-origin: 19% 100%;
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 27px;
+      height: 8px;
+      background: $white;
+      top: -12px;
+
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      transform: rotate(0deg);
+      transition: transform 250ms;
+      transform-origin: 19% 100%;
+      left: 32px;
+    }
+  }
+
+  & i {
+    position: relative;
+    width: 8px;
+    height: 50px;
+    background: $white;
+    display: block;
+    margin: 14px auto;
+    border-radius: 5px;
+
+    &:after {
+      content: '';
+      width: 8px;
+      height: 50px;
+      background: $white;
+      position: absolute;
+      left: -18px;
+      border-radius: 5px;
+    }
+
+    &:before {
+      content: '';
+      width: 8px;
+      height: 50px;
+      background: $white;
+      position: absolute;
+      right: -18px;
+      border-radius: 5px;
+    }
+  }
+
+  &.hovererd span {
+    transform: rotate(-30deg);
+    transition: transform 250ms;
   }
 }

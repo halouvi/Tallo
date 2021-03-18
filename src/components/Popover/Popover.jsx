@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 7,
     width: '3em',
     height: '3em',
+    zIndex: 1,
     '&::before': {
       content: '""',
       margin: 'auto',
@@ -58,7 +59,7 @@ export const Popover = () => {
 
   const dispatch = useDispatch()
 
-  const initState = { anchorEl: null, DynCmp: null, rect: {} }
+  const initState = { anchorEl: null, DynCmp: null, rect: null }
   const [{ anchorEl, DynCmp, rect }, setState] = useSetState(initState)
   const list = useSelector(state => state.boardReducer.list)
 
@@ -85,13 +86,6 @@ export const Popover = () => {
     }
   }
 
-  // useEffect(() => {
-  //   window.addEventListener('wheel', togglePopover)
-  //   return () => {
-  //     window.removeEventListener('wheel', togglePopover)
-  //   }
-  // }, [])
-
   useKey(
     'Escape',
     ev => {
@@ -105,8 +99,9 @@ export const Popover = () => {
 
   const [arrowRef, setArrowRef] = useState(null)
   const classes = useStyles()
+
   const anchorRef = useRef()
-  const { left, width, bottom } = rect
+  const { left, width, bottom } = rect || {}
 
   return (
     <>
@@ -130,7 +125,10 @@ export const Popover = () => {
           {({ TransitionProps }) => (
             <Grow {...TransitionProps} timeout={80}>
               <div onClick={ev => ev.stopPropagation()}>
-                <span className={classes.arrow} ref={setArrowRef} />
+                <span
+                  className={`${classes.arrow} ${!anchorEl ? ' hidden' : ''}`}
+                  ref={setArrowRef}
+                />
                 {DynCmp && <DynCmp togglePopover={togglePopover} />}
               </div>
             </Grow>
@@ -140,7 +138,12 @@ export const Popover = () => {
       <div
         ref={anchorRef}
         className="popover-anchor"
-        style={{ position: 'absolute', top: `${bottom}px`, left: `${left + width / 2}px` }}
+        style={{
+          position: 'absolute',
+          top: bottom || 0,
+          left: (left || 0) + (width || 0) / 2,
+          minWidth: 0.1
+        }}
       />
     </>
   )

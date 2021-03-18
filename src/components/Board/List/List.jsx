@@ -1,9 +1,10 @@
-import { memo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { ListHeader } from 'components/Board/List/ListHeader/ListHeader'
 import { CardPreview } from 'components/Board/CardPreview/CardPreview'
 import { AddCard } from 'components/Board/List/AddCard/AddCard'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { usePopover } from 'components/Popover/Popover'
+import { useSelector } from 'react-redux'
 
 export const List = memo(({ list, idx }) => {
   const { _id: listId, cards } = list
@@ -24,7 +25,7 @@ export const List = memo(({ list, idx }) => {
     <Draggable draggableId={listId} index={idx} disableInteractiveElementBlocking={isTitleBlurred}>
       {({ draggableProps, dragHandleProps, innerRef }, snapshot) => (
         <div {...draggableProps} ref={innerRef} className={`list flex col`}>
-          <div className={`container gray flex col${dragClass(snapshot)}`}>
+          <div className={`list-container gray gb6 flex col${dragClass(snapshot)}`}>
             <ListHeader
               list={list}
               dragHandleProps={dragHandleProps}

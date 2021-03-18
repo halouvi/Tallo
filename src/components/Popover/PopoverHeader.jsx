@@ -4,7 +4,7 @@ import { useLocation } from 'react-router'
 import { CardMenu } from './PopoverCmps/Menus/CardMenu'
 import { ListMenu } from './PopoverCmps/Menus/ListMenu'
 import { usePopover } from './Popover'
-import x from 'assets/x.svg'
+import x from 'assets/img/x.svg'
 
 export const PopoverHeader = ({ title, onBack }) => {
   const card = useSelector(state => state.boardReducer.card)

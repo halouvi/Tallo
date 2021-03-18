@@ -1,32 +1,24 @@
-$listPadding: 6;
-$listHeight: 83.5vh;
 .list {
   padding: 0 $listPadding + 0px;
-  height: fit-content;
+  min-width: $listWidth + 0px;
+  max-width: $listWidth + 0px;
   .trashing {
-    transition: 450ms ease-in;
+    transition: 450ms ease-in !important;
     transform: rotate(-10deg) scale(0);
     opacity: 0;
     filter: blur(8px);
   }
   .dropping {
-    transition: 150ms ease-out;
     transform: rotate(0deg);
-    &.card-container {
-      box-shadow: $shadow2 !important;
-    }
   }
   .dragging {
-    transition: 150ms;
-    transform: rotate(3deg);
-    &.card-container {
-      box-shadow: $shadow3 !important;
-    }
+    transform: rotate(3deg) !important;
+    box-shadow: $shadow3 !important;
   }
-  > .container {
-    width: $listWidth + 0px;
+  > .list-container {
+    transition: 150ms ease-out;
     border-radius: 4px;
-    max-height: $listHeight;
+    max-height: 100%;
     padding: 6px;
     height: fit-content;
 

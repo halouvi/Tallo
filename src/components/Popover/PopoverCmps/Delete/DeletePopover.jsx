@@ -1,7 +1,9 @@
 import { Button } from '@material-ui/core'
+import { img } from 'assets/img'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
-import { DELETE_CARD, DELETE_LIST } from '../../../../store/board/BoardActions'
+import { ReactSVG } from 'react-svg'
+import { DELETE_CARD, DELETE_LIST } from 'store/board/BoardActions'
 import { PopoverHeader } from '../../PopoverHeader'
 
 export const DeletePopover = ({ togglePopover }) => {
@@ -21,7 +23,8 @@ export const DeletePopover = ({ togglePopover }) => {
     <div className="popover-cmp gb6">
       <PopoverHeader title={`Delete ${cardId ? 'Card' : 'List'}?`} />
       <div className="flex jb sbl gr6">
-        <Button size="large" className="red" onClick={deleteItem}>
+        <Button size="large" classes={{ root: 'red', label: 'flex ae' }} onClick={deleteItem}>
+          <ReactSVG alt="" src={img.trash} className="svg icon white mr6" />
           Delete
         </Button>
         <Button size="large" className="gray" onClick={togglePopover}>

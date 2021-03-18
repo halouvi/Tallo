@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router';
-import patternThree from '../../../assets/bg-pattern-home-3.svg';
+import patternThree from '../../../assets/img/bg-pattern-home-3.svg';
 
 
 export const HomeGetStarted = () => {

@@ -15,8 +15,11 @@ body {
   position: relative;
   color: $black;
   background: linear-gradient(rgb(0, 111, 131), rgb(0, 174, 204));
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 b {

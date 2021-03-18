@@ -1,7 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import facebookImg from '../../../assets/icon-facebook.svg';
-import linkedinImg from '../../../assets/icon-linkedin.svg';
-import twitterImg from '../../../assets/icon-twitter.svg';
+import { img } from 'assets/img'
 
 
 export const HomeFooter = () => {
@@ -29,9 +27,9 @@ export const HomeFooter = () => {
         </nav>
         <div className="right-footer-container">
           <div className="social-container">
-            <img src={facebookImg} alt="" />
-            <img src={linkedinImg} alt="" />
-            <img src={twitterImg} alt="" />
+            <img src={img.facebook} alt="" />
+            <img src={img.linkedin} alt="" />
+            <img src={img.twitter} alt="" />
           </div>
           <p>Copyright 2020. All Rights Reserved</p>
         </div>

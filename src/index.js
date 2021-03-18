@@ -5,7 +5,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { Provider as EventBusProvider } from 'react-bus'
 import { store } from 'store/Store'
 import { App } from 'App.jsx'
-import { DndProvider } from 'pages/service/dndService'
+import { DndProvider } from 'service/dndService'
 
 render(
   // <StrictMode>

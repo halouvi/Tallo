@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core'
 import { useDisableAltKeyBlur } from 'hooks/useDisableAltKeyBlur'
 import { useSelector } from 'react-redux'
-import x from 'assets/x.svg'
+import { img } from 'assets/img'
 
 export const CardHeader = ({ title, handleEdit, closeModal }) => {
   const listTitle = useSelector(state => state.boardReducer.list.title)
@@ -11,7 +11,7 @@ export const CardHeader = ({ title, handleEdit, closeModal }) => {
 
   return (
     <header className="fw grid tc-a1aa g8">
-      <img className="section-icon asc gc1" src={`${process.env.PUBLIC_URL}/Card.png`} alt="" />
+      <img className="section-icon asc gc1" src={img.card} alt="" />
       <input
         className="gc2 title pointer"
         autoComplete="off"
@@ -23,7 +23,7 @@ export const CardHeader = ({ title, handleEdit, closeModal }) => {
         onChange={handleEdit}
       />
       <Button className="gc4 " size="large" onClick={closeModal}>
-        <img src={x} alt="" className="icon" />
+        <img src={img.x} alt="" className="icon" />
       </Button>
       <span className="gc2">
         in list <u>{listTitle}</u>

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { Button, Tooltip } from '@material-ui/core'
 import { useToggle } from 'react-use'
 import moment from 'moment'
-import clock from 'assets/clock.svg'
+import clock from 'assets/img/clock.svg'
 import { usePopover } from 'components/Popover/Popover'
 import { CardMenu } from 'components/Popover/PopoverCmps/Menus/CardMenu'
 import { VideoPlayer } from 'components/VideoPlayer/VideoPlayer'
@@ -91,7 +91,7 @@ export const CardPreview = memo(({ card, idx }) => {
               <div className="grid tc-a1a">
                 {!!dueDate && (
                   <div className="gc1 due-date flex ac">
-                    <ReactSVG src={clock} className="svg small mr2" />
+                    <ReactSVG src={clock} className="svg icon small mr2" />
                     <p>{moment(dueDate).format('MMM Do')}</p>
                   </div>
                 )}

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_LIST } from 'store/board/BoardActions'
 import { ReactSVG } from 'react-svg'
-import plus from 'assets/+.svg'
+import { img } from 'assets/img'
 
 export const AddList = () => {
   const dispatch = useDispatch()
@@ -26,26 +26,29 @@ export const AddList = () => {
     <div className="add-list">
       {isAddList ? (
         <ClickAwayListener onClickAway={toggleAddList} mouseEvent="onMouseDown">
-          <form className="fw gray gb6 br4" onSubmit={addList}>
+          <form className="fw gray gb6 p6 br4" onSubmit={addList}>
             <input
-              className="rem fw white"
+              required
               autoFocus
               autoComplete="off"
-              placeholder="Enter a title for this list..."
               value={newListTitle}
+              className="fw white br6"
+              placeholder="Enter a title for this list..."
               onChange={ev => setNewListTitle(ev.target.value)}
             />
             <div className="flex jb">
-              <Button className="green" type="submit">
+              <Button className="green" type="submit" disableTouchRipple={!newListTitle}>
                 Add List
               </Button>
-              <Button onClick={toggleAddList}>X</Button>
+              <Button onClick={toggleAddList}>
+                <ReactSVG src={img.x} className="svg icon small" />
+              </Button>
             </div>
           </form>
         </ClickAwayListener>
       ) : (
         <Button className="fp flex ac js trans br4" onClick={toggleAddList}>
-          <ReactSVG src={plus} className="svg small white mr10" />
+          <ReactSVG src={img.plus} className="svg icon small white mr10" />
           Add another list
         </Button>
       )}

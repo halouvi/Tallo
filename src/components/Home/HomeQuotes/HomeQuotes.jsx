@@ -1,5 +1,5 @@
-import patternOne from '../../../assets/bg-pattern-home-4-about-3.svg';
-import patternTwo from '../../../assets/bg-pattern-home-5.svg';
+import patternOne from '../../../assets/img/bg-pattern-home-4-about-3.svg';
+import patternTwo from '../../../assets/img/bg-pattern-home-5.svg';
 
 
 export const HomeQuotes = () => {

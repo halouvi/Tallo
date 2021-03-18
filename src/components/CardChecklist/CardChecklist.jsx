@@ -2,9 +2,10 @@ import { Button, Checkbox } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from 'store/board/BoardActions'
 import { useToggle, useSetState } from 'react-use'
-import { makeId } from 'pages/service/utilService'
+import { makeId } from 'service/utilService'
 import { ProgressBar } from 'components/CardChecklist/ProgressBar'
 import { cloneDeep as clone } from 'lodash'
+import { img } from 'assets/img'
 
 export const CardChecklist = ({ checklist, checklists }) => {
   const dispatch = useDispatch()
@@ -63,7 +64,7 @@ export const CardChecklist = ({ checklist, checklists }) => {
   return (
     <div className="checklist gb6">
       <div className="flex ac gr10 sbl ">
-        <img className="section-icon" src={process.env.PUBLIC_URL + `/Check_List.png`} alt="" />
+        <img className="section-icon" src={img.checkList} alt="" />
         <h3>{checklist.title}</h3>
         <Button className="gray" onClick={removeList}>
           Delete

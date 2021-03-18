@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { LabelEditor } from './LabelEditor'
-import { boardService } from '../../../../pages/service/boardService'
+import { boardService } from '../../../../service/boardService'
 import { PopoverHeader } from '../../PopoverHeader'
 import { useSetState, useUpdateEffect } from 'react-use'
 

@@ -1,11 +1,11 @@
 import { useSetState, useUpdateEffect } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
-import { userService } from '../../../../pages/service/userService'
+import { userService } from '../../../../service/userService'
 import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
 import { CardAvatar } from '../../../Avatars/CardAvatar'
 import { Button, TextField } from '@material-ui/core'
 import { PopoverHeader } from '../../PopoverHeader'
-import x from 'assets/x.svg'
+import x from 'assets/img/x.svg'
 
 export const BoardMembersPopover = ({ setAnchorEl }) => {
   const dispatch = useDispatch()

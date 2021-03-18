@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { CardAvatar } from '../../../Avatars/CardAvatar'
 import { PopoverHeader } from '../../PopoverHeader'
-import x from 'assets/x.svg'
+import x from 'assets/img/x.svg'
 
 export const CardMembersPopover = () => {
   const dispatch = useDispatch()

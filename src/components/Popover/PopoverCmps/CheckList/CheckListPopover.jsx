@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
-import { makeId } from '../../../../pages/service/utilService'
+import { makeId } from '../../../../service/utilService'
 import { useSetState } from 'react-use'
 
 export const CheckListPopover = ({ togglePopover }) => {

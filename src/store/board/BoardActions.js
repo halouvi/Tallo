@@ -1,5 +1,5 @@
-import { boardService } from '../../pages/service/boardService'
-import { socketService, socketTypes } from '../../pages/service/socketService.js'
+import { boardService } from '../../service/boardService'
+import { socketService, socketTypes } from '../../service/socketService.js'
 import { userTypes } from '../user/UserActions'
 import { cloneDeep as clone } from 'lodash'
 

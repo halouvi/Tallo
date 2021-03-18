@@ -6,8 +6,7 @@ import { BoardSelect } from 'components/Popover/PopoverCmps/Menus/BoardSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { CLEAR_ITEMS } from 'store/board/BoardActions'
 import { ReactSVG } from 'react-svg'
-import pallete from 'assets/color-pallete.svg'
-
+import { img } from 'assets/img'
 
 export const BoardHeader = () => {
   const dispatch = useDispatch()
@@ -32,7 +31,7 @@ export const BoardHeader = () => {
           Users ▼
         </Button>
         <Button size="large" className="trans" onClick={ev => toggleMenu(ev, BoardColor)}>
-          <ReactSVG src={pallete} className="svg white large" />
+          <ReactSVG src={img.pallete} className="svg icon white large" />
         </Button>
       </div>
     </header>

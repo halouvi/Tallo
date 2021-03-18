@@ -1,19 +1,17 @@
 import { DeletePopover } from '../Delete/DeletePopover'
 import { MenuItem, MenuList } from '@material-ui/core'
+import { ReactSVG } from 'react-svg'
+import { img } from 'assets/img'
 
 export const ListMenu = ({ togglePopover }) => {
-  const Menu = {
-    Delete_List: DeletePopover
-  }
-  
-  const format = str => str.split('_').join(' ')
+  const menu = [['Delete List', DeletePopover, img.trash]]
 
   return (
     <MenuList className="popover-cmp small flex col list-br">
-      {Object.entries(Menu).map(([name, cmp]) => (
+      {menu.map(([name, cmp, img]) => (
         <MenuItem key={name} onClick={ev => togglePopover(ev, cmp, true)}>
-          <img className="icon small mr10" src={process.env.PUBLIC_URL + `/${name}.png`} alt="" />
-          {format(name)}
+          <img className="mr10 icon" src={img} alt="" />
+          {name}
         </MenuItem>
       ))}
     </MenuList>

@@ -1,9 +1,11 @@
 import { TextField } from '@material-ui/core'
+import { img } from 'assets/img'
+
 
 export const CardDescription = ({ desc, handleEdit = () => {} }) => {
   return (
     <div className="description fw grid tc-a1 g8">
-      <img className="section-icon" src={process.env.PUBLIC_URL + `/Description.png`} alt="" />
+      <img className="section-icon" src={img.description} alt="" />
       <h3 className="gc2">Description</h3>
       <TextField
         className="gc2"

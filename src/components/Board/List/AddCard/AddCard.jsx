@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_CARD } from 'store/board/BoardActions'
-import x from 'assets/x.svg'
-import plus from 'assets/+.svg'
+import { img } from 'assets/img'
+import { ReactSVG } from 'react-svg'
 
 export const AddCard = ({ listId }) => {
   const dispatch = useDispatch()
@@ -30,17 +30,18 @@ export const AddCard = ({ listId }) => {
         <input
           className="shdw2 rem fw mb6 br4 white"
           autoFocus
+          required
           autoComplete="off"
           placeholder="Enter a title for this card..."
           value={newCardTitle}
           onChange={ev => setNewCardTitle(ev.target.value)}
         />
         <div className="flex jb">
-          <Button className="green" type="submit">
+          <Button disableTouchRipple={!newCardTitle} className="green" type="submit">
             Add Card
           </Button>
           <Button onClick={toggleAddCard}>
-            <img src={x} alt="" className="icon small" />
+            <ReactSVG src={img.x} className="svg icon small" />
           </Button>
         </div>
       </form>
@@ -48,7 +49,7 @@ export const AddCard = ({ listId }) => {
   ) : (
     <>
       <Button className={`flex js${dragType ? ' no-hover' : ''}`} onClick={toggleAddCard}>
-        <img src={plus} alt="" className="icon small mr10" />
+        <ReactSVG src={img.plus} className="svg icon small mr10" />
         Add another card
       </Button>
     </>

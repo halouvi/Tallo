@@ -288,6 +288,10 @@
 
 // overflow
 
+.ofy-a {
+  overflow-y: auto;
+}
+
 .ofy-h {
   overflow-y: hidden;
 }
@@ -732,10 +736,15 @@
   }
 }
 .black {
-  color: $white !important;
-  background-color: $black !important;
-  &.MuiButton-root:hover {
-    background-color: darken($black, 7%) !important;
+  &:not(.svg) {
+    color: $white !important;
+    background-color: $black !important;
+    &.MuiButton-root:hover {
+      background-color: darken($black, 7%) !important;
+    }
+  }
+  > svg, path {
+    fill: $black;
   }
 }
 .white {
@@ -746,9 +755,9 @@
       background-color: darken($white, 7%) !important;
     }
   }
-  > svg {
-    fill: white;
-    // stroke: white;
+  > svg,
+  path {
+    fill: $white;
   }
 }
 .gray {

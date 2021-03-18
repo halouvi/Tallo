@@ -1,5 +1,5 @@
-import leftImg from '../../../assets/bg-pattern-home-1.svg';
-import rightImg from '../../../assets/bg-pattern-home-2.svg';
+import leftImg from '../../../assets/img/bg-pattern-home-1.svg';
+import rightImg from '../../../assets/img/bg-pattern-home-2.svg';
 
 
 export const HomeHero = () => {
