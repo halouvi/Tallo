@@ -1,43 +1,27 @@
-import { memo, useEffect, useState } from 'react'
-import { useDrag, useDrop } from 'react-dnd'
+import { memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Button, Tooltip } from '@material-ui/core'
 import { useToggle } from 'react-use'
 import moment from 'moment'
-import { useRect } from 'react-use-rect'
 import clock from 'assets/clock.svg'
-import { GET_BY_ID, HANDLE_DROP } from 'store/board/BoardActions'
 import { usePopover } from 'components/Popover/Popover'
 import { CardMenu } from 'components/Popover/PopoverCmps/Menus/CardMenu'
 import { VideoPlayer } from 'components/VideoPlayer/VideoPlayer'
 import { CardAvatars } from 'components/Avatars/CardAvatars'
 import { Draggable } from 'react-beautiful-dnd'
+import { GET_BY_ID } from 'store/board/BoardActions'
+import { ReactSVG } from 'react-svg'
 
 export const CardPreview = memo(({ card, idx }) => {
   const dispatch = useDispatch()
 
-  const { users, labels: gLabels } = useSelector(state => state.boardReducer.board)
-  const { _id: cardId, title, attachments, desc, dueDate, labels, cardVideo } = card
-  const members = users.filter(({ _id }) => card.members.includes(_id))
+  const { labels: gLabels, users } = useSelector(state => state.boardReducer.board)
+  const { _id: cardId, title, members, attachments, dueDate, labels, cardVideo } = card
+  const activeMembers = users.filter(({ _id }) => members.includes(_id))
+  const activeLabels = gLabels.filter(({ _id }) => labels.includes(_id))
 
-  const [{ width, height, top }, rectRef] = useRect()
-
-  // const [isDragging, drag] = useDrag({
-  //   collect: mon => mon.isDragging(),
-  //   item: { type: 'CARD', sourceId: cardId, card, height, width }
-  // })
-
-  // const [[hovHeight, hovPos], drop] = useDrop({
-  //   accept: !isDragLayer ? 'CARD' : '',
-  //   collect: mon => [
-  //     mon.isOver() && mon.getItem().height,
-  //     mon.isOver() && top + height / 2 > mon.getClientOffset().y ? 0 : 1
-  //   ],
-  //   drop: item => dispatch(HANDLE_DROP({ ...item, hovPos, targetId: cardId }))
-  // })
-
-  const togglePopover = usePopover()
+  const { togglePopover } = usePopover()
   const cardInStore = useSelector(state => state.boardReducer.card)
   const toggleMenu = ev => {
     ev.avoidModal = true
@@ -75,7 +59,7 @@ export const CardPreview = memo(({ card, idx }) => {
           className={`card-preview flex col gb8 sbl`}>
           <div
             onClick={openModal}
-            className={`card-container white flex col p12 gb8 sbl rel shdw2
+            className={`card-container white flex col p8 gb8 sbl rel shdw2
             ${classPicker(snapshot)}`}>
             <div className="flex jb ac">
               <span className="title">{title}</span>
@@ -88,34 +72,30 @@ export const CardPreview = memo(({ card, idx }) => {
                 ···
               </Button>
             </div>
-            {/* <span className="desc fw">{desc}</span> */}
             {cardVideo && <VideoPlayer videoUrl={cardVideo} isGrouped={true} />}
             {attachments[0] && (
               <div className="attachments">
                 <img src={attachments[0]} alt="" />
               </div>
             )}
-            {labels[0] && (
+            {activeLabels[0] && (
               <div className="labels flex">
-                {gLabels.map(
-                  gLabel =>
-                    labels.some(label => label === gLabel._id) && (
-                      <Tooltip title={gLabel.title} key={gLabel._id}>
-                        <div className={`label ${gLabel.color}`} />
-                      </Tooltip>
-                    )
-                )}
+                {activeLabels.map(label => (
+                  <Tooltip title={label.title} key={label._id}>
+                    <div className={`label ${label.color}`} />
+                  </Tooltip>
+                ))}
               </div>
             )}
-            {(!!dueDate || !!members[0]) && (
+            {(!!dueDate || !!activeMembers[0]) && (
               <div className="grid tc-a1a">
                 {!!dueDate && (
                   <div className="gc1 due-date flex ac">
-                    <img src={clock} alt="" />
-                    <p>{moment(dueDate).format('ddd, MMM do')}</p>
+                    <ReactSVG src={clock} className="svg small mr2" />
+                    <p>{moment(dueDate).format('MMM Do')}</p>
                   </div>
                 )}
-                {members[0] && <CardAvatars className="gc3" max={4} users={members} />}
+                {activeMembers[0] && <CardAvatars className="gc3" max={4} users={activeMembers} />}
               </div>
             )}
           </div>

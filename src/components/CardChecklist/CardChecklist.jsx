@@ -2,7 +2,7 @@ import { Button, Checkbox } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from 'store/board/BoardActions'
 import { useToggle, useSetState } from 'react-use'
-import { makeId } from 'service/utilService'
+import { makeId } from 'pages/service/utilService'
 import { ProgressBar } from 'components/CardChecklist/ProgressBar'
 import { cloneDeep as clone } from 'lodash'
 

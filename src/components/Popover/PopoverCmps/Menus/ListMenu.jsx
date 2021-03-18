@@ -12,7 +12,7 @@ export const ListMenu = ({ togglePopover }) => {
     <MenuList className="popover-cmp small flex col list-br">
       {Object.entries(Menu).map(([name, cmp]) => (
         <MenuItem key={name} onClick={ev => togglePopover(ev, cmp, true)}>
-          <img className="icon" src={process.env.PUBLIC_URL + `/${name}.png`} alt="" />
+          <img className="icon small mr10" src={process.env.PUBLIC_URL + `/${name}.png`} alt="" />
           {format(name)}
         </MenuItem>
       ))}

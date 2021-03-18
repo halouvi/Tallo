@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { LabelEditor } from './LabelEditor'
-import { boardService } from '../../../../service/boardService'
+import { boardService } from '../../../../pages/service/boardService'
 import { PopoverHeader } from '../../PopoverHeader'
 import { useSetState, useUpdateEffect } from 'react-use'
 
@@ -59,12 +59,12 @@ export const LabelsPopover = () => {
             <span>{gLabel.title}</span>
             <span>{labels.includes(gLabel._id) && 'V'}</span>
           </Button>
-          <Button size="large" className=" gcl" onClick={() => editLabel(gLabel)}>
+          <Button size="large" className="gcl" onClick={() => editLabel(gLabel)}>
             Edit
           </Button>
         </Fragment>
       ))}
-      <Button size="large" className="gcf " onClick={createNewLabel}>
+      <Button size="large" className="gcf gray" onClick={createNewLabel}>
         Add Label
       </Button>
     </div>

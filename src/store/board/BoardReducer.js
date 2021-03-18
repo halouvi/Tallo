@@ -4,7 +4,7 @@ const initState = {
   board: null,
   list: null,
   card: null,
-  isDragging: false
+  dragType: null
 }
 
 export const boardReducer = (state = initState, { type, payload }) => {
@@ -22,10 +22,10 @@ export const boardReducer = (state = initState, { type, payload }) => {
         list: payload.list,
         card: payload.card
       }
-    case boardTypes.SET_IS_DRAGGING:
+    case boardTypes.SET_DRAG_TYPE:
       return {
         ...state,
-        isDragging: payload
+        dragType: payload
       }
     default:
       return state

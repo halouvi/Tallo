@@ -1,4 +1,4 @@
-import { userService } from '../../service/userService.js'
+import { userService } from '../../pages/service/userService.js'
 import { boardTypes, CLEAR_BOARD } from '../board/BoardActions.js'
 
 export const userTypes = {

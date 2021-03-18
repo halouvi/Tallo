@@ -11,20 +11,20 @@ export const boardService = {
   createNewBoard: (title, userId) => ({
     title,
     users: [userId],
-    activity: [],
-    lists: [
-      { _id: makeId(), title: 'To Do', cards: [] },
-      { _id: makeId(), title: 'Doing', cards: [] },
-      { _id: makeId(), title: 'Done', cards: [] },
-      { _id: makeId(), title: 'QA', cards: [] }
-    ],
     labels: [
       { _id: makeId(), title: 'Not Started', color: 'red' },
       { _id: makeId(), title: 'In Progress', color: 'orange' },
       { _id: makeId(), title: 'QA', color: 'yellow' },
       { _id: makeId(), title: 'Done', color: 'green' },
       { _id: makeId(), title: 'Production', color: 'blue' }
-    ]
+    ],
+    lists: [
+      { _id: makeId(), title: 'To Do', cards: [] },
+      { _id: makeId(), title: 'Doing', cards: [] },
+      { _id: makeId(), title: 'Done', cards: [] },
+      { _id: makeId(), title: 'QA', cards: [] }
+    ],
+    activity: []
   }),
 
   createNewList: title => ({
@@ -36,13 +36,13 @@ export const boardService = {
   createNewCard: title => ({
     _id: makeId(),
     title,
-    activity: [],
-    attachments: [],
-    checklists: [],
     desc: '',
     dueDate: '',
+    members: [],
     labels: [],
-    members: []
+    attachments: [],
+    checklists: [],
+    activity: []
   }),
 
   createNewLabel: title => ({

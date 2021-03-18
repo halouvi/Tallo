@@ -1,4 +1,4 @@
-import { useUpdateEffect, useSetState } from 'react-use'
+import { useUpdateEffect, useSetState, useUpdate } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
 import { HANDLE_DROP } from 'store/board/BoardActions'
 import { Button, InputLabel, MenuItem, Select } from '@material-ui/core'
@@ -12,18 +12,26 @@ export const MoveCardPopover = () => {
   const list = useSelector(state => state.boardReducer.list) || {}
   const lists = useSelector(state => state.boardReducer.board.lists)
 
-  const cardIdx = list.cards?.findIndex(({ _id }) => _id === card._id)
+  const cardIdx = list.cards.findIndex(({ _id }) => _id === card._id)
+
   const initState = { targetList: list, targetIdx: cardIdx }
+
   const [{ targetIdx, targetList }, setTarget] = useSetState(initState)
-  useUpdateEffect(() => setTarget(initState), [lists])
 
-  const handleInput = ({ target: { name, value } }) => setTarget({ [name]: value })
+  useUpdateEffect(() => setTarget(initState), [card])
 
-  useUpdateEffect(() => {
-    setTarget({ targetIdx: targetList === list ? cardIdx : targetList.cards.length })
-  }, [targetList])
+  const handleInput = ({ target: { name, value } }) => {
+    if (name === 'targetIdx') setTarget({ targetIdx: value })
+    else {
+      const targetList = lists.find(({ _id }) => _id === value)
+      setTarget({
+        targetList,
+        targetIdx: targetList._id === list._id ? cardIdx : targetList.cards.length
+      })
+    }
+  }
 
-  const togglePopover = usePopover()
+  const { togglePopover } = usePopover()
   const inModal = useLocation().pathname.includes('board/card')
   const moveCard = ev => {
     dispatch(
@@ -41,29 +49,37 @@ export const MoveCardPopover = () => {
     if (!inModal) togglePopover(ev)
   }
 
+  const isHere =  card._id === targetList.cards[targetIdx]?._id
+
   return (
     <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Move Card" />
       <InputLabel htmlFor="targetList">To List:</InputLabel>
-      <Select value={targetList} onChange={handleInput} inputProps={{ name: 'targetList' }}>
-        {lists.map(currList => (
-          <MenuItem value={currList} key={currList._id}>
-            {`${currList.title} ${currList === list ? '(Current)' : ''}`}
+      <Select value={targetList._id} onChange={handleInput} inputProps={{ name: 'targetList' }}>
+        {lists.map(({ _id, title }) => (
+          <MenuItem value={_id} key={_id}>
+            {`${title} ${_id === list._id ? '(Current)' : ''}`}
           </MenuItem>
         ))}
       </Select>
       <InputLabel htmlFor="targetIdx">Position:</InputLabel>
       <Select value={targetIdx} onChange={handleInput} inputProps={{ name: 'targetIdx' }}>
-        {targetList.cards.map((currCard, idx) => (
-          <MenuItem value={idx} key={currCard._id}>
-            {`${idx + 1} ${card._id === currCard._id ? '(Current)' : ''}`}
+        {targetList.cards.map(({ _id }, idx) => (
+          <MenuItem value={idx} key={_id}>
+            {`${idx + 1} ${_id === card._id ? '(Current)' : ''}`}
           </MenuItem>
         ))}
-        {list !== targetList && (
-          <MenuItem value={targetList.cards.length}>{targetList.cards.length + 1}</MenuItem>
-        )}
+        <MenuItem
+          className={list._id === targetList._id ? 'hidden' : ''}
+          value={targetList.cards.length}>
+          {targetList.cards.length + 1}
+        </MenuItem>
       </Select>
-      <Button size="large" className="green" onClick={moveCard} disabled={targetIdx === card._id}>
+      <Button
+        size="large"
+        onClick={moveCard}
+        disabled={isHere}
+        className={isHere ? 'gray' : 'green'}>
         Move
       </Button>
     </div>

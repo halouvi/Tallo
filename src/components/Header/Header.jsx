@@ -6,6 +6,9 @@ import { useToggle } from 'react-use'
 import { CardAvatar } from '../Avatars/CardAvatar'
 import { CreateBoardModal } from '../CreateBoardModal/CreateBoardModal'
 import { usePopover } from '../Popover/Popover'
+import { ReactSVG } from 'react-svg'
+import plus from 'assets/+.svg'
+
 import UserMenu from '../Popover/PopoverCmps/Menus/UserMenu'
 
 export const Header = () => {
@@ -19,7 +22,7 @@ export const Header = () => {
 
   const isActive = dest => (pathname === dest ? ' active' : '')
 
-  const togglePopover = usePopover()
+  const { togglePopover } = usePopover()
 
   return (
     <>
@@ -35,18 +38,10 @@ export const Header = () => {
           <span>Tallo</span>
         </Link>
         <Trash />
-        <nav className="flex ae gr10">
+        <nav className="gr10">
           {user?._id && (
             <Button size="large" className="trans" onClick={toggleModal}>
-              <svg width="20" height="20" viewBox="0 0 448 448">
-                <g>
-                  <path
-                    d="m408 184H272c-4.417969.0-8-3.582031-8-8V40c0-22.089844-17.910156-40-40-40s-40 17.910156-40 40v136c0 4.417969-3.582031 8-8 8H40c-22.089844.0-40 17.910156-40 40s17.910156 40 40 40h136c4.417969.0 8 3.582031 8 8v136c0 22.089844 17.910156 40 40 40s40-17.910156 40-40V272c0-4.417969 3.582031-8 8-8h136c22.089844.0 40-17.910156 40-40s-17.910156-40-40-40zm0 0"
-                    fill="#fff"
-                    data-original="#000000"
-                  />
-                </g>
-              </svg>
+              <ReactSVG src={plus} className="svg white" />
             </Button>
           )}
           <Button

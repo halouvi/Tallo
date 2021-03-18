@@ -2,15 +2,16 @@ import { Droppable } from 'react-beautiful-dnd'
 import { useSelector } from 'react-redux'
 
 export const Trash = () => {
-  const isDragging = useSelector(state => state.boardReducer.isDragging)
+  const dragType = useSelector(state => state.boardReducer.dragType)
+
+  const classPicker = ({ isDraggingOver }) => {
+    return `trash ${dragType !== 'CARD' ? ' invisible' : isDraggingOver ? ' red' : 'trans'}`
+  }
 
   return (
     <Droppable droppableId="TRASH" type="CARD">
-      {({ droppableProps, placeholder, innerRef }, { isDraggingOver }) => (
-        <section
-          ref={innerRef}
-          {...droppableProps}
-          className={`trash ${!isDragging ? ' invisible' : isDraggingOver ? ' red' : 'trans'}`}>
+      {({ droppableProps, placeholder, innerRef }, snapshot) => (
+        <section ref={innerRef} {...droppableProps} className={classPicker(snapshot)}>
           Drop here to delete
           <div className="hidden">{placeholder}</div>
         </section>
