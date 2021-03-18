@@ -30,7 +30,7 @@ export const CardChecklist = ({ checklist, checklists }) => {
     list.items[value].isChecked = !list.items[value].isChecked
     const listIdx = lists.findIndex(aList => aList._id === list._id)
     lists[listIdx] = list
-    dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
+    dispatch(UPDATE_CARD({ name: 'checklists', value: [...lists], cardId }))
   }
 
   const addNewItem = () => {
@@ -38,7 +38,7 @@ export const CardChecklist = ({ checklist, checklists }) => {
     let lists = clone(checklists)
     const listIdx = lists.findIndex(aList => aList._id === list._id)
     lists[listIdx].items.push(newItem)
-    dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
+    dispatch(UPDATE_CARD({ name: 'checklists', value: [...lists], cardId }))
     setNewItem({ _id: makeId(), desc: '', isChecked: false })
     toggleInput()
   }
@@ -49,7 +49,7 @@ export const CardChecklist = ({ checklist, checklists }) => {
     list.items.splice(value, 1)
     const listIdx = lists.findIndex(aList => aList._id === list._id)
     lists[listIdx] = list
-    dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
+    dispatch(UPDATE_CARD({ name: 'checklists', value: [...lists], cardId }))
   }
 
   const handleInput = ({ target: { name, value } }) => setNewItem({ [name]: value })
@@ -58,7 +58,7 @@ export const CardChecklist = ({ checklist, checklists }) => {
     let lists = clone(checklists)
     const listIdx = lists.findIndex(list => list._id === checklist._id)
     lists.splice(listIdx, 1)
-    dispatch(UPDATE_CARD({ name: 'checklist', value: [...lists], cardId }))
+    dispatch(UPDATE_CARD({ name: 'checklists', value: [...lists], cardId }))
   }
 
   return (
