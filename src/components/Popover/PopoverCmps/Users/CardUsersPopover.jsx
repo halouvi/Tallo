@@ -6,41 +6,39 @@ import { CardAvatar } from '../../../Avatars/CardAvatar'
 import { PopoverHeader } from '../../PopoverHeader'
 import x from 'assets/img/x.svg'
 
-export const CardMembersPopover = () => {
+export const CardUsersPopover = () => {
   const dispatch = useDispatch()
-  const users = useSelector(state => state.boardReducer.board.users) || []
-  const { _id: cardId = '', members = [] } = useSelector(state => state.boardReducer.card) || {}
+  const gUsers = useSelector(state => state.boardReducer.board.users) || []
+  const { _id: cardId = '', users = [] } = useSelector(state => state.boardReducer.card) || {}
 
-  const [{ activeMembers, searchTerm, searchRes }, setState] = useState({
-    activeMembers: [],
+  const [{ activeUsers, searchTerm, searchRes }, setState] = useState({
+    activeUsers: [],
     searchTerm: '',
     searchRes: []
   })
 
   const updateState = ev => {
     setState({
-      activeMembers: users.filter(({ _id }) => members.includes(_id)),
+      activeUsers: gUsers.filter(({ _id }) => users.includes(_id)),
       searchTerm: ev?.target.value ?? searchTerm,
-      searchRes: users.filter(
+      searchRes: gUsers.filter(
         ({ _id, name }) =>
-          !members.includes(_id) && RegExp(ev?.target.value ?? searchTerm, 'i').test(name)
+          !users.includes(_id) && RegExp(ev?.target.value ?? searchTerm, 'i').test(name)
       )
     })
   }
 
-  const toggleMember = userId => {
+  const toggleUser = ({ currentTarget: { value } }) => {
     dispatch(
       UPDATE_CARD({
         cardId,
-        name: 'members',
-        value: members.includes(userId)
-          ? members.filter(memberId => memberId !== userId)
-          : [...members, userId]
+        name: 'users',
+        value: users.includes(value) ? users.filter(userId => userId !== value) : [...users, value]
       })
     )
   }
 
-  useEffect(updateState, [users, members])
+  useEffect(updateState, [gUsers, users])
 
   return (
     <div className="popover-cmp flex col gb6">
@@ -53,11 +51,12 @@ export const CardMembersPopover = () => {
         onChange={updateState}
       />
       <div className="flex col gb6">
-        {activeMembers.map(user => (
+        {activeUsers.map(user => (
           <Button
             key={user._id}
             classes={{ label: 'flex ac js gr10 sbl' }}
-            onClick={() => toggleMember(user._id)}>
+            value={user._id}
+            onClick={toggleUser}>
             <CardAvatar user={user} size="small" />
             <span className="capital tas">{user.name}</span>
             <img src={x} alt="" className="icon small" />{' '}
@@ -71,7 +70,8 @@ export const CardMembersPopover = () => {
             <Button
               key={user._id}
               classes={{ label: 'flex ac js gr10 sbl' }}
-              onClick={() => toggleMember(user._id)}>
+              value={user._id}
+              onClick={toggleUser}>
               <CardAvatar user={user} size="small" />
               <span className="capital tas">{user.name}</span>
               <span>+</span>

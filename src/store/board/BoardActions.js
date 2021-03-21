@@ -42,8 +42,23 @@ export const GET_BOARD_BY_ID = id => async dispatch => {
 
 export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
-  if (name === 'users') _removeUserFromCards(nextBoard, value)
-  nextBoard[name] = value
+  // if (typeof nextBoard[name] === 'string') {
+  //   nextBoard[name] = value
+  // } else {
+  let idx = nextBoard[name].findIndex(({ _id }) => _id === value._id)
+  idx > -1 ? (nextBoard[name][idx] = value) : nextBoard[name].push(value)
+  // }
+  dispatch(SAVE_BOARD(nextBoard))
+}
+
+export const DELETE_FROM_BOARD = ({ name, value }) => (dispatch, getState) => {
+  const nextBoard = clone(getState().boardReducer.board)
+  nextBoard[name] = nextBoard[name].filter(({ _id }) => _id !== value)
+  nextBoard.lists.forEach(list => {
+    list.cards.forEach(card => {
+      card[name] = card[name].filter(itemId => itemId !== value)
+    })
+  })
   dispatch(SAVE_BOARD(nextBoard))
 }
 
@@ -162,17 +177,6 @@ const _findItems = (board, targetId) => {
   return { list, listIdx, card, cardIdx }
 }
 
-const _removeUserFromCards = ({ users, lists }, nextUsers) => {
-  const { _id: userToRemove } = users.find(userId => !nextUsers.includes(userId)) || {}
-  if (userToRemove) {
-    lists.forEach(({ cards }) => {
-      cards.forEach(card => {
-        card.members = card.members.filter(memberId => memberId !== userToRemove)
-      })
-    })
-  }
-}
-
 const _activityLog = (card, field) => (dispatch, getState) => {
   const userId = getState().userReducer.user._id
   var activity
@@ -183,8 +187,8 @@ const _activityLog = (card, field) => (dispatch, getState) => {
     case 'desc':
       activity = 'Changed card description'
       break
-    case 'members':
-      activity = 'Changed card members list'
+    case 'users':
+      activity = 'Changed card users list'
       break
     case 'title':
       activity = 'Changed card title'

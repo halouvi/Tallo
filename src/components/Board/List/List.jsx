@@ -16,16 +16,16 @@ export const List = memo(({ list, idx }) => {
   }
 
   const placeholderClass = ({ isDraggingOver }) => {
-    return !isDraggingOver ? 'hidden' : ''
+    return `placeholder${!isDraggingOver ? ' hidden' : ''}`
   }
 
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
 
   return (
     <Draggable draggableId={listId} index={idx} disableInteractiveElementBlocking={isTitleBlurred}>
       {({ draggableProps, dragHandleProps, innerRef }, snapshot) => (
         <div {...draggableProps} ref={innerRef} className={`list flex col`}>
-          <div className={`list-container gray gb6 flex col${dragClass(snapshot)}`}>
+          <div className={`list-container gray flex col${dragClass(snapshot)}`}>
             <ListHeader
               list={list}
               dragHandleProps={dragHandleProps}
@@ -40,8 +40,8 @@ export const List = memo(({ list, idx }) => {
                   onScroll={togglePopover}>
                   {cards.map((card, idx) => (
                     <CardPreview key={card._id} card={card} idx={idx} />
-                  ))}
-                  <div className={placeholderClass(snapshot)}>{placeholder}</div>
+                    ))}
+                    <div className={placeholderClass(snapshot)}>{placeholder}</div>
                 </div>
               )}
             </Droppable>

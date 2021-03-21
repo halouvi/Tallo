@@ -3,14 +3,14 @@ import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { CardAvatars } from '../../../components/Avatars/CardAvatars'
 import { usePopover } from '../../../components/Popover/Popover'
-import { CardMembersPopover } from '../../../components/Popover/PopoverCmps/Members/CardMembersPopover'
+import { CardUsersPopover } from '../../../components/Popover/PopoverCmps/Users/CardUsersPopover'
 
-export const CardMembers = ({ members }) => {
-  const users = useSelector(state => state.boardReducer.board.users)
-  const activeUsers = users.filter(({ _id }) => members.includes(_id))
-  const { togglePopover } = usePopover()
+export const CardUsers = ({ users }) => {
+  const gUsers = useSelector(state => state.boardReducer.board.users)
+  const activeUsers = gUsers.filter(({ _id }) => users.includes(_id))
+  const [togglePopover] = usePopover()
 
-  const openPopover = ev => togglePopover(ev, CardMembersPopover)
+  const openPopover = ev => togglePopover(ev, CardUsersPopover)
 
   return (
     <div>

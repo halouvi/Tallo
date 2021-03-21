@@ -38,7 +38,7 @@ export const boardService = {
     title,
     desc: '',
     dueDate: '',
-    members: [],
+    users: [],
     labels: [],
     attachments: [],
     checklists: [],
@@ -48,6 +48,6 @@ export const boardService = {
   createNewLabel: title => ({
     _id: makeId(),
     title,
-    color: ''
+    color: 'black'
   })
 }

@@ -27,7 +27,7 @@
 
     > .cards {
       min-height: 0.1px;
-      overflow-y: auto;
+      overflow-y: scroll;
       @include scrollBar(6px, #2934624f);
     }
   }

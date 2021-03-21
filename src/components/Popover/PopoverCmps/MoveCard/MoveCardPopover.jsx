@@ -31,7 +31,7 @@ export const MoveCardPopover = () => {
     }
   }
 
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
   const inModal = useLocation().pathname.includes('board/card')
   const moveCard = ev => {
     dispatch(

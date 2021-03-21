@@ -11,7 +11,7 @@ export const PopoverHeader = ({ title, onBack }) => {
   const list = useSelector(state => state.boardReducer.list)
   const inModal = useLocation().pathname.includes('board/card')
 
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
 
   const backToMenu = ev => togglePopover(ev, card ? CardMenu : ListMenu, true)
 

@@ -1,11 +1,11 @@
 import { usePopover } from 'components/Popover/Popover'
 import { DragDropContext } from 'react-beautiful-dnd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { boardTypes, HANDLE_DROP } from 'store/board/BoardActions'
 
 export const DndProvider = ({ children }) => {
   const dispatch = useDispatch()
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
 
   const onDragStart = ev => {
     document.activeElement.blur()

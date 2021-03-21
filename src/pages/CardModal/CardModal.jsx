@@ -11,10 +11,9 @@ import { CardVideo } from './CardMain/CardVideo'
 import { CardAttachments } from './CardMain/CardAttachments'
 import { CardChecklists } from './CardMain/CardChecklists'
 import { CardNav } from './CardNav/CardNav'
-import { CardMembers } from './CardMain/CardMembers'
+import { CardUsers } from './CardMain/CardUsers'
 import { CardLabels } from './CardMain/CardLabels'
 import { ClickAwayListener } from '@material-ui/core'
-import { usePopper } from 'react-popper'
 import { usePopover } from 'components/Popover/Popover'
 
 export const CardModal = () => {
@@ -30,7 +29,7 @@ export const CardModal = () => {
   const updateEditablesOnCardNav = () => setEditables({ title: card.title, desc: card.desc })
   useUpdateEffect(updateEditablesOnCardNav, [card?._id])
 
-  const { togglePopover, isRedundantClickAway } = usePopover()
+  const [togglePopover, isRedundantClickAway] = usePopover()
 
   const closeModal = ev => {
     if (isRedundantClickAway(ev)) return
@@ -48,7 +47,7 @@ export const CardModal = () => {
     })
   }
 
-  const { members, labels, cardVideo, attachments, checklists, activity } = card || {}
+  const { users, labels, cardVideo, attachments, checklists, activity } = card || {}
   return (
     <div className="card modal-screen">
       <CardNav />
@@ -57,7 +56,7 @@ export const CardModal = () => {
           <section className="card-modal white grid g16">
             <CardHeader title={title} handleEdit={handleEdit} closeModal={closeModal} />
             <main className="flex wrap gb16">
-              <CardMembers members={members} />
+              <CardUsers users={users} />
               <CardLabels labels={labels} />
               {cardVideo && <CardVideo cardVideo={cardVideo} />}
               {attachments?.[0] && <CardAttachments attachments={attachments} />}

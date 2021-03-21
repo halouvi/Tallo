@@ -7,7 +7,7 @@ import { LabelsPopover } from '../../../components/Popover/PopoverCmps/Labels/La
 export const CardLabels = ({ labels }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const activeLabels = gLabels.filter(({ _id }) => labels.includes(_id))
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
 
   const openPopover = ev => togglePopover(ev, LabelsPopover, false)
 

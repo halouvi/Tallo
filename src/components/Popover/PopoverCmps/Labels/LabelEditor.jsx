@@ -1,51 +1,49 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_BOARD } from '../../../../store/board/BoardActions'
-import { Button, TextField } from '@material-ui/core'
+import { DELETE_FROM_BOARD, UPDATE_BOARD } from '../../../../store/board/BoardActions'
+import { Button, Input, TextField } from '@material-ui/core'
 import { useSetState } from 'react-use'
 import { ColorPicker } from '../ColorPicker/ColorPicker'
 import { PopoverHeader } from '../../PopoverHeader'
+import { isEqual } from 'lodash'
+import { useInput } from 'hooks/useInput'
 
-export const LabelEditor = ({ labelToEdit, closeEditor }) => {
+export const LabelEditor = ({ labelToEdit, closeEditor, toggleLabel }) => {
   const dispatch = useDispatch()
   const gLabels = useSelector(state => state.boardReducer.board.labels)
-  const [updatedLabel, setUpdatedLabel] = useSetState({ ...labelToEdit })
+  const [editedLabel, handleInput] = useInput({ ...labelToEdit })
 
-  const handleInput = ({ currentTarget: { name, value } }) => setUpdatedLabel({ [name]: value })
+  const isNewLabel = gLabels.every(({ _id }) => _id !== editedLabel._id)
 
-  const isNewLabel = !gLabels.find(({ _id }) => _id === updatedLabel._id)
-
-  const saveLabel = () => {
-    if (isNewLabel) updateLabels([...gLabels, updatedLabel])
-    else {
-      const idx = gLabels.findIndex(label => label._id === labelToEdit._id)
-      const updatedLabels = [...gLabels]
-      updatedLabels.splice(idx, 1, updatedLabel)
-      updateLabels(updatedLabels)
-    }
+  const deleteLabel = () => {
+    dispatch(DELETE_FROM_BOARD({ name: 'labels', value: editedLabel._id }))
+    closeEditor()
   }
 
-  const deleteLabel = () => updateLabels(gLabels.filter(({ _id }) => _id !== updatedLabel._id))
-
-  const updateLabels = updatedLabels => {
-    dispatch(UPDATE_BOARD({ name: 'labels', value: updatedLabels }))
+  const updateLabel = ev => {
+    ev.preventDefault()
+    if (!isEqual(labelToEdit, editedLabel)) {
+      dispatch(UPDATE_BOARD({ name: 'labels', value: editedLabel }))
+    }
     closeEditor()
   }
 
   return (
-    <div className="labels popover-cmp grid g6 tc4">
+    <form onSubmit={updateLabel} className="labels popover-cmp grid g6 tc4">
       <PopoverHeader title={isNewLabel ? 'Add' : 'Edit'} onBack={closeEditor} />
       <TextField
+        required
+        autoFocus
+        size="small"
         className="gcf"
         variant="outlined"
-        size="small"
         label="Label Name"
         name="title"
-        value={updatedLabel.title}
+        value={editedLabel.title}
         onChange={handleInput}
       />
-      <ColorPicker className="gcf" onClick={handleInput} selected={updatedLabel.color} />
+      <ColorPicker className="gcf" onClick={handleInput} selected={editedLabel.color} />
 
-      <Button size="large" className="green gc1" value={true} onClick={saveLabel}>
+      <Button type="submit" size="large" className="green gc1" value={true}>
         Save
       </Button>
       {!isNewLabel && (
@@ -53,6 +51,6 @@ export const LabelEditor = ({ labelToEdit, closeEditor }) => {
           Delete
         </Button>
       )}
-    </div>
+    </form>
   )
 }

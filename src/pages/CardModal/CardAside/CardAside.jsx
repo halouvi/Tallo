@@ -1,4 +1,4 @@
-import { CardMembersPopover } from 'components/Popover/PopoverCmps/Members/CardMembersPopover'
+import { CardUsersPopover } from 'components/Popover/PopoverCmps/Users/CardUsersPopover'
 import { LabelsPopover } from 'components/Popover/PopoverCmps/Labels/LabelsPopover'
 import { CheckListPopover } from 'components/Popover/PopoverCmps/CheckList/CheckListPopover'
 import { DueDatePopover } from 'components/Popover/PopoverCmps/DueDate/DueDatePopover'
@@ -14,7 +14,7 @@ const menu = [
   [
     'Add To Card',
     [
-      ['Members', CardMembersPopover, img.members],
+      ['Members', CardUsersPopover, img.users],
       ['Labels', LabelsPopover, img.labels],
       ['Check List', CheckListPopover, img.move],
       ['Due Date', DueDatePopover, img.dueDate],
@@ -32,7 +32,7 @@ const menu = [
 ]
 
 export const CardAside = () => {
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
 
   return (
     <aside className="gb18">

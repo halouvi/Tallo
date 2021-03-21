@@ -216,6 +216,11 @@
     margin-bottom: 6px !important;
   }
 }
+.gb6and {
+  > *:not(:last-child):not(:nth-last-child(2)) {
+    margin-bottom: 6px !important;
+  }
+}
 .gb8 {
   > *:not(:last-child) {
     margin-bottom: 8px !important;

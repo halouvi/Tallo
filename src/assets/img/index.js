@@ -2,7 +2,7 @@ import card from './card.png'
 import plus from './plus.svg'
 import dots from './dots.svg'
 import labels from './labels.png'
-import members from './members.png'
+import users from './users.png'
 import video from './video.png'
 import attachment from './attachment.png'
 import checkList from './checkList.png'
@@ -37,7 +37,7 @@ export const img = {
   plus,
   dots,
   labels,
-  members,
+  users,
   video,
   attachment,
   description,

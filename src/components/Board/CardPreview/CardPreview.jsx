@@ -13,15 +13,16 @@ import { Draggable } from 'react-beautiful-dnd'
 import { GET_BY_ID } from 'store/board/BoardActions'
 import { ReactSVG } from 'react-svg'
 
-export const CardPreview = memo(({ card, idx }) => {
+export const CardPreview = ({ card, idx }) => {
   const dispatch = useDispatch()
 
-  const { labels: gLabels, users } = useSelector(state => state.boardReducer.board)
-  const { _id: cardId, title, members, attachments, dueDate, labels, cardVideo } = card
-  const activeMembers = users.filter(({ _id }) => members.includes(_id))
+  const { _id: cardId, labels, users, title, attachments, dueDate, cardVideo } = card
+  const { labels: gLabels, users: gUsers } = useSelector(state => state.boardReducer.board)
+
+  const activeUsers = gUsers.filter(({ _id }) => users.includes(_id))
   const activeLabels = gLabels.filter(({ _id }) => labels.includes(_id))
 
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
   const cardInStore = useSelector(state => state.boardReducer.card)
   const toggleMenu = ev => {
     ev.avoidModal = true
@@ -56,7 +57,7 @@ export const CardPreview = memo(({ card, idx }) => {
           ref={innerRef}
           {...draggableProps}
           {...dragHandleProps}
-          className={`card-preview flex col gb8 sbl`}>
+          className={`card-preview flex col gb6 sbl`}>
           <div
             onClick={openModal}
             className={`card-container white flex col p8 gb8 sbl rel shdw2
@@ -72,7 +73,7 @@ export const CardPreview = memo(({ card, idx }) => {
                 ···
               </Button>
             </div>
-            {cardVideo && <VideoPlayer videoUrl={cardVideo} isGrouped={true} />}
+            {cardVideo && <VideoPlayer videoUrl={cardVideo} grouped />}
             {attachments[0] && (
               <div className="attachments">
                 <img src={attachments[0]} alt="" />
@@ -87,7 +88,7 @@ export const CardPreview = memo(({ card, idx }) => {
                 ))}
               </div>
             )}
-            {(!!dueDate || !!activeMembers[0]) && (
+            {(!!dueDate || !!activeUsers[0]) && (
               <div className="grid tc-a1a">
                 {!!dueDate && (
                   <div className="gc1 due-date flex ac">
@@ -95,7 +96,7 @@ export const CardPreview = memo(({ card, idx }) => {
                     <p>{moment(dueDate).format('MMM Do')}</p>
                   </div>
                 )}
-                {activeMembers[0] && <CardAvatars className="gc3" max={4} users={activeMembers} />}
+                {activeUsers[0] && <CardAvatars className="gc3" max={4} users={activeUsers} />}
               </div>
             )}
           </div>
@@ -103,4 +104,4 @@ export const CardPreview = memo(({ card, idx }) => {
       )}
     </Draggable>
   )
-})
+}

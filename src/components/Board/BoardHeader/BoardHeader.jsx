@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core'
 import { usePopover } from 'components/Popover/Popover'
 import { BoardColor } from 'components/Popover/PopoverCmps/BoardColor'
-import { BoardMembersPopover } from 'components/Popover/PopoverCmps/Members/BoardMembersPopover'
+import { BoardUsersPopover } from 'components/Popover/PopoverCmps/Users/BoardUsersPopover'
 import { BoardSelect } from 'components/Popover/PopoverCmps/Menus/BoardSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { CLEAR_ITEMS } from 'store/board/BoardActions'
@@ -14,7 +14,7 @@ export const BoardHeader = () => {
   const title = useSelector(state => state.boardReducer.board.title)
   const list = useSelector(state => state.boardReducer.list)
 
-  const { togglePopover } = usePopover()
+  const [togglePopover] = usePopover()
   const toggleMenu = (ev, cmp) => {
     if (list) dispatch(CLEAR_ITEMS())
     togglePopover(ev, cmp)
@@ -27,8 +27,8 @@ export const BoardHeader = () => {
           Boards ▼
         </Button>
         <h2>{title}</h2>
-        <Button className="trans" size="large" onClick={ev => toggleMenu(ev, BoardMembersPopover)}>
-          Users ▼
+        <Button className="trans" size="large" onClick={ev => toggleMenu(ev, BoardUsersPopover)}>
+          Members ▼
         </Button>
         <Button size="large" className="trans" onClick={ev => toggleMenu(ev, BoardColor)}>
           <ReactSVG src={img.pallete} className="svg icon white large" />

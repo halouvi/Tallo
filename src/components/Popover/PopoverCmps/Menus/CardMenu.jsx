@@ -1,5 +1,5 @@
 import { LabelsPopover } from 'components/Popover/PopoverCmps/Labels/LabelsPopover'
-import { CardMembersPopover } from 'components/Popover/PopoverCmps/Members/CardMembersPopover'
+import { CardUsersPopover } from 'components/Popover/PopoverCmps/Users/CardUsersPopover'
 import { DeletePopover } from 'components/Popover/PopoverCmps/Delete/DeletePopover'
 import { MoveCardPopover } from 'components/Popover/PopoverCmps/MoveCard/MoveCardPopover'
 import { MenuItem, MenuList } from '@material-ui/core'
@@ -9,7 +9,7 @@ import { img } from 'assets/img'
 export const CardMenu = ({ togglePopover }) => {
   const menu = [
     ['Labels', LabelsPopover, img.labels],
-    ['Members', CardMembersPopover, img.members],
+    ['Members', CardUsersPopover, img.users],
     ['Move Card', MoveCardPopover, img.move],
     ['Delete Card', DeletePopover, img.trash]
   ]

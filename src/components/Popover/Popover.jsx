@@ -42,20 +42,18 @@ const useStyles = makeStyles(theme => ({
 const TOGGLE_POPOVER = 'TOGGLE_POPOVER'
 export const usePopover = () => {
   const eventBus = useBus()
-  return {
-    togglePopover: (ev, cmp, preserveAnchor) => {
+  return [
+    (ev, cmp, preserveAnchor) => {
       eventBus.emit(TOGGLE_POPOVER, [ev, cmp, preserveAnchor])
     },
 
-    isRedundantClickAway: ev => {
-      return ev.isRedundantClickAway || (ev.target === document.body && ev.type === 'click')
-    }
-  }
+    ev => ev.isRedundantClickAway || (ev.target === document.body && ev.type === 'click')
+  ]
 }
 
 export const Popover = () => {
   useListener(TOGGLE_POPOVER, payload => togglePopover(...payload))
-  const { isRedundantClickAway } = usePopover()
+  const [_, isRedundantClickAway] = usePopover()
 
   const dispatch = useDispatch()
 
