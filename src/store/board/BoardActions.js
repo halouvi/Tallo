@@ -40,18 +40,19 @@ export const GET_BOARD_BY_ID = id => async dispatch => {
   }
 }
 
-export const UPDATE_BOARD = ({ name, value }) => (dispatch, getState) => {
+export const UPDATE_BOARD = ({ name = '', value = {} || '' }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   // if (typeof nextBoard[name] === 'string') {
   //   nextBoard[name] = value
   // } else {
-  let idx = nextBoard[name].findIndex(({ _id }) => _id === value._id)
-  idx > -1 ? (nextBoard[name][idx] = value) : nextBoard[name].push(value)
+  const idx = nextBoard[name].findIndex(({ _id }) => _id === value._id)
+  if (idx > -1) nextBoard[name][idx] = value
+  else nextBoard[name].push(value)
   // }
   dispatch(SAVE_BOARD(nextBoard))
 }
 
-export const DELETE_FROM_BOARD = ({ name, value }) => (dispatch, getState) => {
+export const DELETE_FROM_BOARD = ({ name = '', value = '' }) => (dispatch, getState) => {
   const nextBoard = clone(getState().boardReducer.board)
   nextBoard[name] = nextBoard[name].filter(({ _id }) => _id !== value)
   nextBoard.lists.forEach(list => {
@@ -69,17 +70,17 @@ export const SAVE_BOARD = nextBoard => (dispatch, getState) => {
   const itemId = card?._id || list?._id
   dispatch({ type: boardTypes.SET_BOARD, payload: nextBoard })
   if (itemId) dispatch(GET_BY_ID(itemId))
-  clearTimeout(timer)
-  timer = setTimeout(async () => {
-    try {
-      await boardService.update(nextBoard)
-      socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
-    } catch (err) {
-      dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
-      if (itemId) dispatch(GET_BY_ID(itemId))
-      console.error('Could not update board', err)
-    }
-  }, 1500)
+  // clearTimeout(timer)
+  // timer = setTimeout(async () => {
+  //   try {
+  //     await boardService.update(nextBoard)
+  //     socketService.emit(socketTypes.BOARD_UPDATED, nextBoard._id)
+  //   } catch (err) {
+  //     dispatch({ type: boardTypes.SET_BOARD, payload: prevBoard })
+  //     if (itemId) dispatch(GET_BY_ID(itemId))
+  //     console.error('Could not update board', err)
+  //   }
+  // }, 1500)
 }
 
 export const ADD_LIST = title => (dispatch, getState) => {

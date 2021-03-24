@@ -1,16 +1,16 @@
-import { Button, ClickAwayListener, Input, TextField } from '@material-ui/core'
-import { useState } from 'react'
+import { Button, ClickAwayListener } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_CARD } from 'store/board/BoardActions'
 import { img } from 'assets/img'
 import { ReactSVG } from 'react-svg'
+import { useInput } from 'hooks/useInput'
 
 export const AddCard = ({ listId }) => {
   const dispatch = useDispatch()
 
   const [isAddCard, toggleAddCard] = useToggle(false)
-  const [newCardTitle, setNewCardTitle] = useState('')
+  const [newCardTitle, setNewCardTitle] = useInput('')
 
   useUpdateEffect(() => setNewCardTitle(''), [isAddCard])
 
@@ -34,7 +34,7 @@ export const AddCard = ({ listId }) => {
           autoComplete="off"
           placeholder="Enter a title for this card..."
           value={newCardTitle}
-          onChange={ev => setNewCardTitle(ev.target.value)}
+          onChange={setNewCardTitle}
         />
         <div className="flex jb">
           <Button disableTouchRipple={!newCardTitle} className="green" type="submit">

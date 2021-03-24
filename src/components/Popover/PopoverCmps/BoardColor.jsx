@@ -1,5 +1,5 @@
-import { ColorPicker } from './ColorPicker/ColorPicker'
-import { PopoverHeader } from '../PopoverHeader'
+import { PopoverHeader } from "components/Popover/PopoverHeader"
+import { ColorPicker } from "components/Popover/PopoverCmps/ColorPicker/ColorPicker"
 
 export const BoardColor = () => {
   const onColorPick = ({ currentTarget: { value } }) => {
@@ -11,7 +11,7 @@ export const BoardColor = () => {
   return (
     <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Choose Color" />
-      <ColorPicker className="" onClick={onColorPick} />
+      <ColorPicker onClick={onColorPick} />
     </div>
   )
 }

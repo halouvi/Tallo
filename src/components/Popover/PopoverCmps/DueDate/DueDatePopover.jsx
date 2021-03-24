@@ -1,52 +1,39 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_CARD } from '../../../../store/board/BoardActions'
-import { PopoverHeader } from '../../PopoverHeader'
+import DateFnsUtils from '@date-io/date-fns'
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
+import { Button } from '@material-ui/core'
+import { PopoverHeader } from 'components/Popover/PopoverHeader'
+import { UPDATE_CARD } from 'store/board/BoardActions'
+
+const DUE_DATE = 'dueDate'
 
 export const DueDatePopover = ({ togglePopover }) => {
-  const { dueDate: prevDueDate, _id: cardId } = useSelector(state => state.boardReducer.card)
-  const [dateFormat, setDateFormat] = useState('')
-  const [dueDate, setDueDate] = useState(Date.now())
+  const { _id: cardId, dueDate } = useSelector(state => state.boardReducer.card) || {}
+
+  const [nextDueDate, setNextDueDate] = useState(dueDate)
+  const handleInput = date => setNextDueDate(Date.parse(date))
+
   const dispatch = useDispatch()
-
-  const prevDate = () => {
-    if (prevDate) {
-      var toDate = new Date(prevDueDate).getDate()
-      var toMonth = new Date(prevDueDate).getMonth() + 1
-      var toYear = new Date(prevDueDate).getFullYear()
-      if (`${toMonth}`.length < 2) toMonth = '0' + toMonth
-      var originalDate = toYear + '-' + toMonth + '-' + toDate
-      return originalDate
-    } else return ''
-  }
-
   const saveDueDate = ev => {
-    ev.preventDefault()
-    dispatch(UPDATE_CARD({ name: 'dueDate', value: dueDate, cardId }))
+    dispatch(UPDATE_CARD({ name: DUE_DATE, value: nextDueDate, cardId }))
     togglePopover(ev)
   }
 
-  const onHandleChange = ev => {
-    const value = ev.target.value
-    const date = new Date(value)
-    const timestamp = date.getTime()
-    setDateFormat(value)
-    setDueDate(timestamp)
-  }
-
+  const noChange = nextDueDate === dueDate
   return (
-    <div className="popover-cmp due-date-section flex col">
+    <div className="popover-cmp due-date flex col">
       <PopoverHeader title="Due Date" />
-      <form action="" onSubmit={saveDueDate} className="due-date-form flex col">
-        <input
-          type="date"
-          value={dateFormat ? dateFormat : prevDate()}
-          onChange={onHandleChange}
-          name="dueDate"
-          id=""
-        />
-        <button>Save</button>
-      </form>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <DatePicker variant="static" value={nextDueDate} onChange={handleInput} />
+      </MuiPickersUtilsProvider>
+      <Button
+        size="large"
+        disabled={noChange}
+        onClick={saveDueDate}
+        className={noChange ? 'gray' : 'green'}>
+        Save
+      </Button>
     </div>
   )
 }

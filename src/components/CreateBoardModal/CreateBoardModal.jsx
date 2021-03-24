@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useInput } from 'hooks/useInput'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useKey, useLockBodyScroll } from 'react-use'
@@ -7,13 +7,11 @@ import { ADD_BOARD } from 'store/board/BoardActions'
 export const CreateBoardModal = ({ toggleModal }) => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useInput('')
 
   useKey('Escape', toggleModal)
   
   useLockBodyScroll()
-
-  const handleInput = ({ target: { value } }) => setTitle(value)
 
   const addBoard = () => {
     dispatch(ADD_BOARD(title))
@@ -33,7 +31,7 @@ export const CreateBoardModal = ({ toggleModal }) => {
           </div>
           <label className="flex col">
             Board Title:
-            <input value={title} onChange={handleInput} />
+            <input value={title} onChange={setTitle} />
           </label>
           <button onClick={addBoard}>Create Board</button>
         </div>

@@ -1,7 +1,7 @@
-import { DeletePopover } from '../Delete/DeletePopover'
-import { MenuItem, MenuList } from '@material-ui/core'
-import { ReactSVG } from 'react-svg'
 import { img } from 'assets/img'
+import { ReactSVG } from 'react-svg'
+import { MenuItem, MenuList } from '@material-ui/core'
+import { DeletePopover } from 'components/Popover/PopoverCmps/Delete/DeletePopover'
 
 export const ListMenu = ({ togglePopover }) => {
   const menu = [['Delete List', DeletePopover, img.trash]]

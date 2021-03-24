@@ -1,4 +1,4 @@
-import { useSetState, useUpdateEffect } from 'react-use'
+import { useUpdateEffect } from 'react-use'
 import { useDispatch, useSelector } from 'react-redux'
 import { userService } from '../../../../service/userService'
 import { DELETE_FROM_BOARD, UPDATE_BOARD } from '../../../../store/board/BoardActions'
@@ -6,35 +6,31 @@ import { CardAvatar } from '../../../Avatars/CardAvatar'
 import { Button, TextField } from '@material-ui/core'
 import { PopoverHeader } from '../../PopoverHeader'
 import x from 'assets/img/x.svg'
+import { useInput } from 'hooks/useInput'
+import { useState } from 'react'
 
-export const BoardUsersPopover = ({ setAnchorEl }) => {
-  const dispatch = useDispatch()
+const USERS = 'users'
+
+export const BoardUsersPopover = () => {
   const users = useSelector(state => state.boardReducer.board.users)
   const userId = useSelector(state => state.userReducer.user._id)
-  const [{ searchTerm, searchRes, filteredRes }, setState] = useSetState({
-    searchTerm: '',
-    searchRes: [],
-    filteredRes: []
-  })
 
-  const handleInput = ({ target: { value } }) => setState({ searchTerm: value })
+  const [searchTerm, setSearchTerm] = useInput('')
+  const [searchRes, setSearchRes] = useState([])
+  const [filteredRes, setFilteredRes] = useState([])
 
   useUpdateEffect(async () => {
-    setState({ searchRes: searchTerm ? await userService.query(searchTerm) : [] })
+    setSearchRes(searchTerm ? await userService.query(searchTerm) : [])
   }, [searchTerm])
 
   useUpdateEffect(() => {
-    setState({ filteredRes: searchRes.filter(res => users.every(user => res._id !== user._id)) })
+    setFilteredRes(searchRes.filter(res => users.every(user => res._id !== user._id)))
   }, [searchRes, users])
 
-  const toggleUser = user => {
-    console.log(users.includes(user))
-    dispatch(
-      users.includes(user)
-        ? DELETE_FROM_BOARD({ name: 'users', value: user._id })
-        : UPDATE_BOARD({ name: 'users', value: user })
-    )
-  }
+
+  const dispatch = useDispatch()
+  const addUser = user => dispatch(UPDATE_BOARD({ name: USERS, value: user }))
+  const removeUser = userId => dispatch(DELETE_FROM_BOARD({ name: USERS, value: userId }))
 
   const isMe = _id => _id === userId
 
@@ -42,11 +38,12 @@ export const BoardUsersPopover = ({ setAnchorEl }) => {
     <div className="popover-cmp flex col gb6">
       <PopoverHeader title="Board Members" />
       <TextField
+        autoFocus
         size="small"
+        value={searchTerm}
+        onChange={setSearchTerm}
         variant="outlined"
         label="Search Members"
-        value={searchTerm}
-        onChange={handleInput}
       />
       <div className="flex col gb6 ">
         {users.map(user => (
@@ -55,7 +52,7 @@ export const BoardUsersPopover = ({ setAnchorEl }) => {
             classes={{ label: 'flex ac js gr10 sbl' }}
             key={user._id}
             disabled={isMe(user._id)}
-            onClick={() => toggleUser(user)}>
+            onClick={() => removeUser(user._id)}>
             <CardAvatar user={user} size="small" />
             <span className="capital tas">{user.name}</span>
             {isMe(user._id) ? <b>(You)</b> : <img src={x} alt="" className="icon small" />}
@@ -69,7 +66,7 @@ export const BoardUsersPopover = ({ setAnchorEl }) => {
             <Button
               classes={{ label: 'flex ac js gr10 sbl' }}
               key={user._id}
-              onClick={() => toggleUser(user)}>
+              onClick={() => addUser(user)}>
               <CardAvatar user={user} size="small" />
               <span className="capital tas">{user.name}</span>
               <span>+</span>

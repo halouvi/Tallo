@@ -22,7 +22,7 @@ export const Header = () => {
 
   const isActive = dest => (pathname === dest ? ' active' : '')
 
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
 
   return (
     <>

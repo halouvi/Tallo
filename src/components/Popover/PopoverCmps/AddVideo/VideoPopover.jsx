@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useToggle } from 'react-use'
-import { mediaService } from '../../../../service/mediaService.js'
-import { UPDATE_CARD } from '../../../../store/board/BoardActions.js'
+import { mediaService } from 'service/mediaService'
+import { UPDATE_CARD } from 'store/board/BoardActions'
 
 export const AddVideoPopover = ({ togglePopover }) => {
   const cardId = useSelector(state => state.boardReducer.card._id) || ''
   const [videoUrl, setVideoUrl] = useState('')
-  // const [isUploaded, setIsUploaded] = useToggle(false)
   const dispatch = useDispatch()
 
   const saveVideo = ev => {

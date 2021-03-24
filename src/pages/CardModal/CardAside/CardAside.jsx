@@ -16,7 +16,7 @@ const menu = [
     [
       ['Members', CardUsersPopover, img.users],
       ['Labels', LabelsPopover, img.labels],
-      ['Check List', CheckListPopover, img.move],
+      ['Checklist', CheckListPopover, img.checkList],
       ['Due Date', DueDatePopover, img.dueDate],
       ['Attachment', AttachmentPopover, img.attachment],
       ['Video', AddVideoPopover, img.video]
@@ -32,7 +32,7 @@ const menu = [
 ]
 
 export const CardAside = () => {
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
 
   return (
     <aside className="gb18">

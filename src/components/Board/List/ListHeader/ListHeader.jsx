@@ -1,12 +1,14 @@
 import { Button } from '@material-ui/core'
 import { usePopover } from 'components/Popover/Popover'
 import { ListMenu } from 'components/Popover/PopoverCmps/Menus/ListMenu'
-import { useDisableAltKeyBlur } from 'hooks/useDisableAltKeyBlur'
-import { useInputCb } from 'hooks/useInput'
+import { useInput } from 'hooks/useInput'
 import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useKey } from 'react-use'
+import { disableAltKeyBlur } from 'service/utilService'
 import { GET_BY_ID, UPDATE_LIST } from 'store/board/BoardActions'
+
+const TITLE = 'title'
 
 export const ListHeader = ({ list, dragHandleProps, setIsTitleBlurred }) => {
   const dispatch = useDispatch()
@@ -15,36 +17,31 @@ export const ListHeader = ({ list, dragHandleProps, setIsTitleBlurred }) => {
 
   const isBlurred = ref.current !== document.activeElement
 
-  const blurTitle = () => ref.current.blur()
-
   const preventOnFirstMouseDown = ev => isBlurred && ev.preventDefault()
 
-  const selectOnFirstMouseUp = ev => isBlurred && ref.current.select()
+  const selectOnFirstMouseUp = () => isBlurred && ref.current.select()
 
+  const blurTitle = () => ref.current.blur()
   useKey('Escape', blurTitle)
   useKey('Enter', blurTitle)
 
-  const updateList = (name, value) => dispatch(UPDATE_LIST({ name, value, listId }))
+  const updateList = value => dispatch(UPDATE_LIST({ name: TITLE, value, listId }))
+  const [title, setTitle] = useInput(list.title, updateList, 500)
 
-  const [title, handleInput] = useInputCb(list.title, updateList, 500)
-
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
   const { list: listInStore, card: cardInStore } = useSelector(state => state.boardReducer)
   const toggleMenu = ev => {
     if (listInStore?._id !== listId || cardInStore) dispatch(GET_BY_ID(listId))
     togglePopover(ev, ListMenu)
   }
 
-  const disableAltKeyBlur = useDisableAltKeyBlur()
-
   return (
     <header className="flex ac jb gr2 mb6" {...dragHandleProps}>
       <input
         ref={ref}
-        name="title"
         value={title}
+        onChange={setTitle}
         autoComplete="off"
-        onChange={handleInput}
         className="title fg1 fast"
         onKeyUp={disableAltKeyBlur}
         onMouseUp={selectOnFirstMouseUp}

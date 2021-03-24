@@ -1,33 +1,30 @@
 import React from 'react'
-import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { LOGOUT } from '../../../../store/user/UserActions'
+import { LOGOUT } from 'store/user/UserActions'
 import { useHistory } from 'react-router'
-import { usePopover } from '../../Popover'
 import { MenuList } from '@material-ui/core'
 
 export default function UserMenu({ togglePopover }) {
   const user = useSelector(state => state.userReducer.user) || {}
 
-  // const [anchorEl, setAnchorEl] = React.useState(null)
   const dispatch = useDispatch()
   const history = useHistory()
 
   const toHome = ev => {
-    togglePopover(ev)
     history.push('/')
+    togglePopover(ev)
   }
 
   const onLogout = ev => {
-    togglePopover(ev)
     dispatch(LOGOUT())
     history.push('/')
+    togglePopover(ev)
   }
 
   const onLogin = ev => {
-    togglePopover(ev)
     history.push('/login-signup')
+    togglePopover(ev)
   }
 
   return (

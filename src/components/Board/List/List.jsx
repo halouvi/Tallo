@@ -1,15 +1,14 @@
-import { memo, useEffect, useState } from 'react'
 import { ListHeader } from 'components/Board/List/ListHeader/ListHeader'
 import { CardPreview } from 'components/Board/CardPreview/CardPreview'
 import { AddCard } from 'components/Board/List/AddCard/AddCard'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { usePopover } from 'components/Popover/Popover'
-import { useSelector } from 'react-redux'
+import { useToggle } from 'react-use'
 
-export const List = memo(({ list, idx }) => {
+export const List = ({ list, idx }) => {
   const { _id: listId, cards } = list
 
-  const [isTitleBlurred, setIsTitleBlurred] = useState(true)
+  const [isTitleBlurred, setIsTitleBlurred] = useToggle(true)
 
   const dragClass = ({ isDropAnimating, isDragging }) => {
     return isDropAnimating ? ' dropping' : isDragging ? ' dragging' : ''
@@ -19,7 +18,7 @@ export const List = memo(({ list, idx }) => {
     return `placeholder${!isDraggingOver ? ' hidden' : ''}`
   }
 
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
 
   return (
     <Draggable draggableId={listId} index={idx} disableInteractiveElementBlocking={isTitleBlurred}>
@@ -40,8 +39,8 @@ export const List = memo(({ list, idx }) => {
                   onScroll={togglePopover}>
                   {cards.map((card, idx) => (
                     <CardPreview key={card._id} card={card} idx={idx} />
-                    ))}
-                    <div className={placeholderClass(snapshot)}>{placeholder}</div>
+                  ))}
+                  <div className={placeholderClass(snapshot)}>{placeholder}</div>
                 </div>
               )}
             </Droppable>
@@ -51,4 +50,4 @@ export const List = memo(({ list, idx }) => {
       )}
     </Draggable>
   )
-})
+}

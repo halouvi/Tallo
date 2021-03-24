@@ -5,29 +5,29 @@ import { UPDATE_CARD } from '../../../../store/board/BoardActions'
 import { LabelEditor } from './LabelEditor'
 import { boardService } from '../../../../service/boardService'
 import { PopoverHeader } from '../../PopoverHeader'
-import { useSetState, useUpdateEffect } from 'react-use'
+import { useInput } from 'hooks/useInput'
+
+const LABELS = 'labels'
 
 export const LabelsPopover = () => {
   const dispatch = useDispatch()
   const gLabels = useSelector(state => state.boardReducer.board.labels) || []
   const { labels = [], _id: cardId = '' } = useSelector(state => state.boardReducer.card) || {}
-  const [{ labelToEdit, searchTerm }, setState] = useSetState({ labelToEdit: null, searchTerm: '' })
+  const [{ labelToEdit, searchTerm }, setState] = useInput({ labelToEdit: null, searchTerm: '' })
 
-  const toggleLabel = gLabelId => {
+  const toggleLabel = ({ currentTarget: { value } }) => {
     dispatch(
       UPDATE_CARD({
         cardId,
-        name: 'labels',
-        value: labels.includes(gLabelId)
-          ? labels.filter(labelId => labelId !== gLabelId)
-          : [...labels, gLabelId]
+        name: LABELS,
+        value: labels.includes(value)
+          ? labels.filter(labelId => labelId !== value)
+          : [...labels, value]
       })
     )
   }
 
   const filteredLabels = gLabels.filter(({ title }) => RegExp(searchTerm, 'i').test(title))
-
-  const handleInput = ({ target: { value } }) => setState({ searchTerm: value })
 
   const editLabel = gLabel => setState({ labelToEdit: gLabel })
 
@@ -40,19 +40,21 @@ export const LabelsPopover = () => {
       <PopoverHeader title="Labels" />
       <TextField
         autoFocus
-        className="gcf"
         size="small"
+        className="gcf"
         variant="outlined"
-        label="Search Labels"
+        name="searchTerm"
         value={searchTerm}
-        onChange={handleInput}
+        onChange={setState}
+        label="Search Labels"
       />
       {filteredLabels.map(gLabel => (
         <Fragment key={gLabel._id}>
           <Button
             size="large"
             className={`label gcf-1 flex jb ${gLabel.color}`}
-            onClick={() => toggleLabel(gLabel._id)}>
+            value={gLabel._id}
+            onClick={toggleLabel}>
             <span>{gLabel.title}</span>
             <span>{labels.includes(gLabel._id) && 'V'}</span>
           </Button>
@@ -66,6 +68,6 @@ export const LabelsPopover = () => {
       </Button>
     </div>
   ) : (
-    <LabelEditor labelToEdit={labelToEdit} closeEditor={closeEditor} toggleLabel={toggleLabel} />
+    <LabelEditor labelToEdit={labelToEdit} closeEditor={closeEditor} />
   )
 }

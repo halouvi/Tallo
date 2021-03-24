@@ -14,7 +14,7 @@ export const BoardHeader = () => {
   const title = useSelector(state => state.boardReducer.board.title)
   const list = useSelector(state => state.boardReducer.list)
 
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
   const toggleMenu = (ev, cmp) => {
     if (list) dispatch(CLEAR_ITEMS())
     togglePopover(ev, cmp)

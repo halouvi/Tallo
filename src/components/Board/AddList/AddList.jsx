@@ -1,22 +1,22 @@
 import { Button, ClickAwayListener } from '@material-ui/core'
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { ADD_LIST } from 'store/board/BoardActions'
 import { ReactSVG } from 'react-svg'
 import { img } from 'assets/img'
+import { useInput } from 'hooks/useInput'
 
 export const AddList = () => {
   const dispatch = useDispatch()
 
   const [isAddList, toggleAddList] = useToggle(false)
-  const [newListTitle, setNewListTitle] = useState('')
+  const [title, setTitle] = useInput('')
 
-  useUpdateEffect(() => setNewListTitle(''), [isAddList])
+  useUpdateEffect(() => setTitle(''), [isAddList])
 
   const addList = ev => {
     ev.preventDefault()
-    dispatch(ADD_LIST(newListTitle))
+    dispatch(ADD_LIST(title))
     toggleAddList()
   }
 
@@ -30,14 +30,14 @@ export const AddList = () => {
             <input
               required
               autoFocus
+              value={title}
+              onChange={setTitle}
               autoComplete="off"
-              value={newListTitle}
               className="fw white br6"
               placeholder="Enter a title for this list..."
-              onChange={ev => setNewListTitle(ev.target.value)}
             />
             <div className="flex jb">
-              <Button className="green" type="submit" disableTouchRipple={!newListTitle}>
+              <Button className="green" type="submit" disabled={!title.value}>
                 Add List
               </Button>
               <Button onClick={toggleAddList}>

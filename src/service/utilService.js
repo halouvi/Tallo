@@ -42,3 +42,9 @@ export const colorPicker = (name = 'a') => {
       return 'gray'
   }
 }
+
+export const disableAltKeyBlur = () => ev => ev.key === 'Alt' && ev.preventDefault()
+
+export const isRedundantClickAway = ev => {
+  return ev.isRedundantClickAway || (ev.target === document.body && ev.type === 'click')
+}

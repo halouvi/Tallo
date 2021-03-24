@@ -1,5 +1,3 @@
-import { Portal } from '@material-ui/core'
-import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { CardAvatars } from '../../../components/Avatars/CardAvatars'
 import { usePopover } from '../../../components/Popover/Popover'
@@ -8,7 +6,7 @@ import { CardUsersPopover } from '../../../components/Popover/PopoverCmps/Users/
 export const CardUsers = ({ users }) => {
   const gUsers = useSelector(state => state.boardReducer.board.users)
   const activeUsers = gUsers.filter(({ _id }) => users.includes(_id))
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
 
   const openPopover = ev => togglePopover(ev, CardUsersPopover)
 

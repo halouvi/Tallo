@@ -14,6 +14,7 @@ import { Popover } from './components/Popover/Popover'
 import { preLoad } from 'service/preLoadService.js'
 
 import './styles/styles.scss'
+import { CardModalResolver } from 'pages/CardModal/CardModalResolver'
 
 export const App = () => {
   const dispatch = useDispatch()
@@ -38,7 +39,7 @@ export const App = () => {
         <PrivateRoute path="/board" component={Board} />
         <Route path="/" component={Home} />
       </Switch>
-      <PrivateRoute path="/board/card/:cardId" component={CardModal} />
+      <PrivateRoute path="/board/card/:cardId" component={CardModalResolver} />
       <Route path="/login-signup" component={LoginSingup} />
       <Popover />
     </>

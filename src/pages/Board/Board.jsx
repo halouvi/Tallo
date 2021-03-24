@@ -26,7 +26,7 @@ export const Board = () => {
       socketService.off(socketTypes.BOARD_UPDATED)
     }
   }, [])
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
 
   return (
     <main className="board flex fg1 col">

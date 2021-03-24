@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
-import { useKey, useSetState, useUpdateEffect } from 'react-use'
-import { CLEAR_ITEMS, GET_BY_ID, UPDATE_CARD } from '../../store/board/BoardActions'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { useKey, useUpdateEffect } from 'react-use'
+import { CLEAR_ITEMS, UPDATE_CARD } from '../../store/board/BoardActions'
 import { CardHeader } from './CardHeader/CardHeader'
 import { CardAside } from './CardAside/CardAside'
 import { CardActivity } from './CardMain/CardActivity'
@@ -14,40 +13,31 @@ import { CardNav } from './CardNav/CardNav'
 import { CardUsers } from './CardMain/CardUsers'
 import { CardLabels } from './CardMain/CardLabels'
 import { ClickAwayListener } from '@material-ui/core'
-import { usePopover } from 'components/Popover/Popover'
+import { useInput } from 'hooks/useInput'
+import { isRedundantClickAway } from 'service/utilService'
 
-export const CardModal = () => {
+export const CardModal = ({ card }) => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const { cardId } = useParams()
-  useEffect(() => dispatch(GET_BY_ID(cardId)), [cardId])
+  const { _id: cardId, users, labels, cardVideo, attachments, checklists, activity } = card
 
-  const card = useSelector(state => state.boardReducer.card)
-
-  const [{ title, desc, timer }, setEditables] = useSetState({ title: '', desc: '', timer: null })
-  const updateEditablesOnCardNav = () => setEditables({ title: card.title, desc: card.desc })
-  useUpdateEffect(updateEditablesOnCardNav, [card?._id])
-
-  const [togglePopover, isRedundantClickAway] = usePopover()
+  const updateStore = ({ name, value }) => dispatch(UPDATE_CARD({ name, value, cardId }))
+  const [{ title, desc }, handleEdit] = useInput(
+    { title: card.title, desc: card.desc },
+    updateStore,
+    500
+  )
+  const updateEditablesOnCardNav = () => handleEdit({ title: card.title, desc: card.desc }, false)
+  useUpdateEffect(updateEditablesOnCardNav, [card])
 
   const closeModal = ev => {
-    if (isRedundantClickAway(ev)) return
-    togglePopover(ev)
+    if (ev.avoidCardModal || isRedundantClickAway(ev)) return
     history.push('/board')
     dispatch(CLEAR_ITEMS())
   }
   useKey('Escape', ev => setTimeout(() => !ev.avoidCardModal && closeModal(ev), 0))
 
-  const handleEdit = ({ target: { name, value } }) => {
-    clearTimeout(timer)
-    setEditables({
-      [name]: value,
-      timer: setTimeout(() => dispatch(UPDATE_CARD({ name, value, cardId })), 500)
-    })
-  }
-
-  const { users, labels, cardVideo, attachments, checklists, activity } = card || {}
   return (
     <div className="card modal-screen">
       <CardNav />
@@ -59,10 +49,10 @@ export const CardModal = () => {
               <CardUsers users={users} />
               <CardLabels labels={labels} />
               {cardVideo && <CardVideo cardVideo={cardVideo} />}
-              {attachments?.[0] && <CardAttachments attachments={attachments} />}
+              {attachments[0] && <CardAttachments attachments={attachments} />}
               <CardDescription desc={desc} handleEdit={handleEdit} />
-              {checklists?.[0] && <CardChecklists checklists={checklists} />}
-              {activity?.[0] && <CardActivity activity={activity} />}
+              {checklists[0] && <CardChecklists checklists={checklists} />}
+              {activity[0] && <CardActivity activity={activity} />}
             </main>
             <CardAside />
           </section>

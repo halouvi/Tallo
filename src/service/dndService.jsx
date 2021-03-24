@@ -5,7 +5,7 @@ import { boardTypes, HANDLE_DROP } from 'store/board/BoardActions'
 
 export const DndProvider = ({ children }) => {
   const dispatch = useDispatch()
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
 
   const onDragStart = ev => {
     document.activeElement.blur()

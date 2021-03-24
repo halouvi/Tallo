@@ -1,20 +1,22 @@
-&.due-date-section {
-  > p {
-    margin: 0 15px 8px !important;
-  }
-
-  .due-date-form {
-    > :not(:last-child) {
-      margin-bottom: 15px;
+&.due-date {
+  .MuiPickersStaticWrapper-staticWrapperRoot {
+    min-width: 0;
+    max-width: 275px;
+    .MuiPickersBasePicker-pickerView {
+      min-width: 0;
+      min-height: 0;
     }
 
-    button {
-      align-self: flex-start;
-      padding: 3px 6px;
-      border-radius: 3px;
-      background-color: royalblue;
-      color: white;
-      width: fit-content;
+    .MuiToolbar-root.MuiPickersDatePickerRoot-toolbar {
+      margin-top: 6px;
+      height: 30px;
+      justify-content: start;
+      .MuiTypography-root.MuiTypography-h4 {
+        font-size: 20px;
+      }
+    }
+    .MuiPickersCalendar-transitionContainer {
+      min-height: 190px;
     }
   }
 }

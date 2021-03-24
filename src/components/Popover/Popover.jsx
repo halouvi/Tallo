@@ -1,11 +1,11 @@
-import { ClickAwayListener, makeStyles, Popper } from '@material-ui/core'
-import Grow from '@material-ui/core/Grow'
-import { useEffect, useRef, useState } from 'react'
+import { ClickAwayListener, makeStyles, Popper, Grow } from '@material-ui/core'
+import { useRef, useState } from 'react'
 import { useBus, useListener } from 'react-bus'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
-import { useKey, useSetState, useUpdateEffect } from 'react-use'
-import { CLEAR_ITEMS } from '../../store/board/BoardActions'
+import { useKey } from 'react-use'
+import { CLEAR_ITEMS } from 'store/board/BoardActions'
+import { isRedundantClickAway } from 'service/utilService'
 
 const useStyles = makeStyles(theme => ({
   popper: {
@@ -40,33 +40,29 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const TOGGLE_POPOVER = 'TOGGLE_POPOVER'
+
 export const usePopover = () => {
   const eventBus = useBus()
-  return [
-    (ev, cmp, preserveAnchor) => {
-      eventBus.emit(TOGGLE_POPOVER, [ev, cmp, preserveAnchor])
-    },
 
-    ev => ev.isRedundantClickAway || (ev.target === document.body && ev.type === 'click')
-  ]
+  return (ev, cmp, preserveAnchor) => {
+    eventBus.emit(TOGGLE_POPOVER, [ev, cmp, preserveAnchor])
+  }
 }
 
 export const Popover = () => {
   useListener(TOGGLE_POPOVER, payload => togglePopover(...payload))
-  const [_, isRedundantClickAway] = usePopover()
 
   const dispatch = useDispatch()
 
-  const initState = { anchorEl: null, DynCmp: null, rect: null }
-  const [{ anchorEl, DynCmp, rect }, setState] = useSetState(initState)
+  const initState = { anchorEl: null, DynCmp: null, virtualAnchorPos: null }
+  const [{ anchorEl, DynCmp, virtualAnchorPos }, setState] = useState(initState)
   const list = useSelector(state => state.boardReducer.list)
 
-  const closePopover = () => {
-    if (!inModal && list) dispatch(CLEAR_ITEMS())
-    setState(initState)
-  }
-
   const inModal = useLocation().pathname.includes('board/card')
+  const closePopover = () => {
+    setState(initState)
+    if (!inModal && list) dispatch(CLEAR_ITEMS())
+  }
 
   const isSameAnchor = (ev, anchor) => ev.currentTarget === anchorEl || anchor === anchorEl
 
@@ -79,7 +75,7 @@ export const Popover = () => {
       setState({
         anchorEl: nextAnchor,
         DynCmp: cmp,
-        rect: nextAnchor.getBoundingClientRect()
+        virtualAnchorPos: nextAnchor.getBoundingClientRect()
       })
     }
   }
@@ -98,8 +94,8 @@ export const Popover = () => {
   const [arrowRef, setArrowRef] = useState(null)
   const classes = useStyles()
 
-  const anchorRef = useRef()
-  const { left, width, bottom } = rect || {}
+  const virtualAnchoRef = useRef()
+  const { left = 0, width = 0, bottom = 0 } = virtualAnchorPos || {}
 
   return (
     <>
@@ -107,7 +103,7 @@ export const Popover = () => {
         <Popper
           className={classes.popper}
           open={!!anchorEl}
-          anchorEl={anchorRef.current}
+          anchorEl={virtualAnchoRef.current}
           modifiers={{
             offset: {
               offset: '0,6'
@@ -134,12 +130,12 @@ export const Popover = () => {
         </Popper>
       </ClickAwayListener>
       <div
-        ref={anchorRef}
-        className="popover-anchor"
+        ref={virtualAnchoRef}
+        className="popover-virtual-anchor"
         style={{
           position: 'absolute',
-          top: bottom || 0,
-          left: (left || 0) + (width || 0) / 2,
+          top: bottom,
+          left: left + width / 2,
           minWidth: 0.1
         }}
       />

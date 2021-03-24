@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { mediaService } from '../../../../service/mediaService.js'
-import { UPDATE_CARD } from '../../../../store/board/BoardActions.js'
+import { mediaService } from 'service/mediaService.js'
+import { UPDATE_CARD } from 'store/board/BoardActions.js'
 
 export const AttachmentPopover = ({ togglePopover }) => {
   const { attachments = [], _id: cardId = '' } = useSelector(state => state.boardReducer.card) || {}

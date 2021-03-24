@@ -1,31 +1,32 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { DELETE_FROM_BOARD, UPDATE_BOARD } from '../../../../store/board/BoardActions'
-import { Button, Input, TextField } from '@material-ui/core'
-import { useSetState } from 'react-use'
-import { ColorPicker } from '../ColorPicker/ColorPicker'
-import { PopoverHeader } from '../../PopoverHeader'
+import { DELETE_FROM_BOARD, UPDATE_BOARD } from 'store/board/BoardActions'
+import { Button, TextField } from '@material-ui/core'
 import { isEqual } from 'lodash'
 import { useInput } from 'hooks/useInput'
+import { PopoverHeader } from 'components/Popover/PopoverHeader'
+import { ColorPicker } from 'components/Popover/PopoverCmps/ColorPicker/ColorPicker'
 
-export const LabelEditor = ({ labelToEdit, closeEditor, toggleLabel }) => {
+const LABELS = 'labels'
+
+export const LabelEditor = ({ labelToEdit, closeEditor }) => {
   const dispatch = useDispatch()
   const gLabels = useSelector(state => state.boardReducer.board.labels)
-  const [editedLabel, handleInput] = useInput({ ...labelToEdit })
+  const [editedLabel, handleInput] = useInput(labelToEdit)
 
   const isNewLabel = gLabels.every(({ _id }) => _id !== editedLabel._id)
 
   const deleteLabel = () => {
-    dispatch(DELETE_FROM_BOARD({ name: 'labels', value: editedLabel._id }))
+    dispatch(DELETE_FROM_BOARD({ name: LABELS, value: editedLabel._id }))
     closeEditor()
   }
 
   const updateLabel = ev => {
     ev.preventDefault()
-    if (!isEqual(labelToEdit, editedLabel)) {
-      dispatch(UPDATE_BOARD({ name: 'labels', value: editedLabel }))
-    }
+    dispatch(UPDATE_BOARD({ name: LABELS, value: editedLabel }))
     closeEditor()
   }
+
+  const noChange = isEqual(labelToEdit, editedLabel)
 
   return (
     <form onSubmit={updateLabel} className="labels popover-cmp grid g6 tc4">
@@ -43,7 +44,11 @@ export const LabelEditor = ({ labelToEdit, closeEditor, toggleLabel }) => {
       />
       <ColorPicker className="gcf" onClick={handleInput} selected={editedLabel.color} />
 
-      <Button type="submit" size="large" className="green gc1" value={true}>
+      <Button
+        type="submit"
+        size="large"
+        disabled={noChange}
+        className={`gc1${noChange ? ' gray' : ' green'}`}>
         Save
       </Button>
       {!isNewLabel && (

@@ -1,15 +1,14 @@
-import { Button, Portal } from '@material-ui/core'
-import { useEffect, useRef, useState } from 'react'
+import { Button } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { usePopover } from '../../../components/Popover/Popover'
-import { LabelsPopover } from '../../../components/Popover/PopoverCmps/Labels/LabelsPopover'
+import { usePopover } from 'components/Popover/Popover'
+import { LabelsPopover } from 'components/Popover/PopoverCmps/Labels/LabelsPopover'
 
 export const CardLabels = ({ labels }) => {
   const gLabels = useSelector(state => state.boardReducer.board.labels)
   const activeLabels = gLabels.filter(({ _id }) => labels.includes(_id))
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
 
-  const openPopover = ev => togglePopover(ev, LabelsPopover, false)
+  const openPopover = ev => togglePopover(ev, LabelsPopover)
 
   return (
     <div className="fg1">

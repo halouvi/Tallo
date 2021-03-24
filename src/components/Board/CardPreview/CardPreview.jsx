@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Button, Tooltip } from '@material-ui/core'
@@ -22,7 +21,7 @@ export const CardPreview = ({ card, idx }) => {
   const activeUsers = gUsers.filter(({ _id }) => users.includes(_id))
   const activeLabels = gLabels.filter(({ _id }) => labels.includes(_id))
 
-  const [togglePopover] = usePopover()
+  const togglePopover = usePopover()
   const cardInStore = useSelector(state => state.boardReducer.card)
   const toggleMenu = ev => {
     ev.avoidModal = true

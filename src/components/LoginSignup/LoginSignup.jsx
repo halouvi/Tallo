@@ -2,23 +2,19 @@ import { useDispatch } from 'react-redux'
 import { LOGIN, SIGNUP } from '../../store/user/UserActions'
 import { mediaService } from '../../service/mediaService.js'
 import { useHistory } from 'react-router'
-import { useRef } from 'react'
-import { useKey, useSetState, useToggle, useUpdateEffect } from 'react-use'
+import { useKey, useToggle, useUpdateEffect } from 'react-use'
 import { userService } from '../../service/userService'
-import { useEffect } from 'react'
 import { useState } from 'react'
 import { TextField } from '@material-ui/core'
+import { useInput } from 'hooks/useInput'
 
 export const LoginSingup = () => {
   const dispatch = useDispatch()
   const { goBack, push } = useHistory()
-  const [emailAvailable, setEmailAvailable] = useState(true)
+  const [emailAvailable, setEmailAvailable] = useToggle(true)
   const [timer, setTimer] = useState(null)
-  const [creds, setCreds] = useSetState({
-    email: '',
-    password: ''
-  })
-  const [user, setUser] = useSetState({
+  const [creds, setCreds] = useInput({ email: '', password: '' })
+  const [user, setUser] = useInput({
     name: '',
     email: '',
     password: '',
@@ -27,10 +23,6 @@ export const LoginSingup = () => {
   })
 
   useKey('Escape', goBack)
-
-  // const handleInputLogin = ev => console.log(ev.target.name)
-  const handleInputLogin = ({ target: { name, value } }) => setCreds({ [name]: value })
-  const handleInputSignup = ({ target: { name, value } }) => setUser({ [name]: value })
 
   useUpdateEffect(() => {
     clearTimeout(timer)
@@ -73,23 +65,23 @@ export const LoginSingup = () => {
             </button>
           </div>
           <TextField
+            variant="outlined"
+            label="Email"
             size="small"
             type="email"
-            label="Email"
             name="email"
-            variant="outlined"
             value={creds.email}
-            onChange={handleInputLogin}
+            onChange={setCreds}
           />
 
           <TextField
+            variant="outlined"
+            label="Password"
             size="small"
             type="password"
             name="password"
-            label="Password"
-            variant="outlined"
             value={creds.password}
-            onChange={handleInputLogin}
+            onChange={setCreds}
           />
           <button className="btn blue large">Login</button>
         </form>
@@ -97,31 +89,31 @@ export const LoginSingup = () => {
         <form className="signup-form gb10" onSubmit={signup}>
           <h2>Signup</h2>
           <TextField
-            size="small"
-            label="Name"
-            name="name"
             variant="outlined"
+            label="Name"
+            size="small"
+            name="name"
             value={user.name}
-            onChange={handleInputSignup}
+            onChange={setUser}
           />
           <TextField
+            variant="outlined"
+            label="Email"
             size="small"
             type="email"
-            label="Email"
             name="email"
-            variant="outlined"
             value={user.email}
-            onChange={handleInputSignup}
+            onChange={setUser}
           />
 
           <TextField
+            variant="outlined"
+            label="Password"
             size="small"
             type="password"
             name="password"
-            label="Password"
-            variant="outlined"
             value={user.password}
-            onChange={handleInputSignup}
+            onChange={setUser}
           />
           <label>
             <p>Upload a Profile Picture:</p>

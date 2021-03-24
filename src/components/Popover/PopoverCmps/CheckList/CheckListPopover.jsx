@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_CARD } from '../../../../store/board/BoardActions'
-import { makeId } from '../../../../service/utilService'
+import { UPDATE_CARD } from 'store/board/BoardActions'
+import { makeId } from 'service/utilService'
 import { useSetState } from 'react-use'
+import { Button } from '@material-ui/core'
+import { PopoverHeader } from 'components/Popover/PopoverHeader'
 
 export const CheckListPopover = ({ togglePopover }) => {
   const { _id: cardId = '', checklists = [] } = useSelector(state => state.boardReducer.card) || {}
@@ -22,10 +24,7 @@ export const CheckListPopover = ({ togglePopover }) => {
 
   return (
     <div className="popover-cmp checklist-section flex col">
-      <button className="close-btn pos-tr" onClick={togglePopover}>
-        X
-      </button>
-      <p className="title bold asc">Add a Check List</p>
+      <PopoverHeader title="Checklist" ></PopoverHeader>
       <form action="" className="flex col" onSubmit={onAddChecklist}>
         <label htmlFor="checklist-title">Title:</label>
         <input
@@ -36,7 +35,7 @@ export const CheckListPopover = ({ togglePopover }) => {
           type="text"
           placeholder="Insert a title..."
         />
-        <button>Add</button>
+        <Button>Add</Button>
       </form>
     </div>
   )
